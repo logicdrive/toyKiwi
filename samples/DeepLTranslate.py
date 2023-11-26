@@ -1,4 +1,4 @@
-# DeepL을 이용해서 번역을 수행하는 샘플파일
+# DeepL을 이용해서 번역을 수행하는 샘플 파일
 
 import os
 import deepl
