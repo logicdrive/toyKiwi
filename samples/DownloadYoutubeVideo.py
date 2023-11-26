@@ -7,4 +7,4 @@ def downloadYoutubeVideo(url:str, outputFilePath:str, outputFileName:str) -> Non
         .streams.get_highest_resolution()\
         .download(output_path=outputFilePath, filename=outputFileName)
 
-downloadYoutubeVideo("https://www.youtube.com/watch?v=fkvhqBMmnCg", ".", "temp.mp4")
+downloadYoutubeVideo("https://www.youtube.com/watch?v=fkvhqBMmnCg", "./tmp", "temp.mp4")
