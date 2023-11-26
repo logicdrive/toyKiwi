@@ -1,4 +1,4 @@
-# 특정 비디오의 오디오를 묵음 기간을 기준으로 분리시켜서 오디오들을 저장하기 위해서
+# 특정 비디오의 오디오를 묵음 기간을 기준으로 분리시켜서 오디오들을 저장하기 위한 샘플 파일
 
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
