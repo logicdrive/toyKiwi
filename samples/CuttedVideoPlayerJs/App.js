@@ -6,7 +6,7 @@ import CuttedVideoPlayer from './CuttedVideoPlayer';
 
 function App() {
   const [videoProps, setVideoProps] = useState({
-    url: "/public/tempCuted.mp4",
+    url: "/public/tempCutted.mp4",
     currentTimeIndex: 0,
     timeRanges: [
       {startTimeSec: 0, endTimeSec: 3},
