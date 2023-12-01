@@ -5,11 +5,11 @@ import SelectQuiz from './SelectQuiz';
 
 function App() {
 
-  const [words, setWords] = useState(["A", "B", "C", "D"])
+  const [words, setWords] = useState(["App", "Banana", "Clue", "Do"])
 
   const onAllCorrect = () => {
     console.log("ALL CORRECT !")
-    setWords(["E", "F", "G", "H"])
+    setWords(["Extra", "Flag", "Guess", "Help"])
   }
   
 

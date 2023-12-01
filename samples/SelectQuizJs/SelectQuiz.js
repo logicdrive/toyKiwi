@@ -5,17 +5,21 @@
 import React, { useState, useEffect } from 'react';
 
 function SelectQuiz(props) {
+    const shuffledSelectableWords = [...props.words].sort(() => Math.random() - 0.5)
     const [wordProps, setWordProps] = useState({
         answerWords: [...props.words],
         currentCheckIndex: 0,
-        selectableWords: [...props.words].sort(() => Math.random() - 0.5),
+        selectableWords: [...shuffledSelectableWords],
+        initialSelectableWords: [...shuffledSelectableWords]
     });
 
     useEffect(() => {
+        const shuffledSelectableWords = [...props.words].sort(() => Math.random() - 0.5)
         setWordProps({
             answerWords: [...props.words],
             currentCheckIndex: 0,
-            selectableWords: [...props.words].sort(() => Math.random() - 0.5),   
+            selectableWords: [...shuffledSelectableWords],  
+            initialSelectableWords: [...shuffledSelectableWords] 
         })
     }, [props.words])
 
@@ -69,7 +73,10 @@ function SelectQuiz(props) {
                     return (
                         <div key={index} index={index} onClick={onClickSeletableWord}>{selectableWord}</div>
                     )
-                return null;
+                else
+                    return (
+                        <div key={index}>{"_".repeat(wordProps.initialSelectableWords[index].length)}</div>
+                    )
             })
         }
     </>
