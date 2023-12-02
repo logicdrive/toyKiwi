@@ -12,5 +12,9 @@ video/target
 subtitle/.vscode
 subtitle/target
 
+# collectedData
+collectedData/.vscode
+collectedData/target
+
 # gateway
 gateway/.vscode
