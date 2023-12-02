@@ -1,2 +1,16 @@
 __workshop
 tmp
+
+# frontend
+frontend/node_modules
+
+# video
+video/.vscode
+video/target
+
+# subtitle
+subtitle/.vscode
+subtitle/target
+
+# gateway
+gateway/.vscode
