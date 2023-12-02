@@ -1,17 +1,23 @@
 package toykiwi.domain;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import javax.persistence.*;
-import lombok.Data;
 import toykiwi.VideoApplication;
-import toykiwi.domain.VideoUploadRequested;
+import toykiwi.event.VideoUploadRequested;
+import toykiwi.event.VideoUploadNotified;
+import toykiwi.dto.NotifyUploadedVideoReqDto;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.PostPersist;
+
+import lombok.Data;
 
 @Entity
-@Table(name = "Video_table")
+@Table(name = "Video")
 @Data
-//<<< DDD / Aggregate Root
 public class Video {
 
     @Id
@@ -26,6 +32,7 @@ public class Video {
 
     private String uploadedUrl;
 
+    
     @PostPersist
     public void onPostPersist() {
         VideoUploadRequested videoUploadRequested = new VideoUploadRequested(
@@ -34,6 +41,7 @@ public class Video {
         videoUploadRequested.publishAfterCommit();
     }
 
+
     public static VideoRepository repository() {
         VideoRepository videoRepository = VideoApplication.applicationContext.getBean(
             VideoRepository.class
@@ -41,16 +49,10 @@ public class Video {
         return videoRepository;
     }
 
-    //<<< Clean Arch / Port Method
     public void notifyUploadedVideo(
-        NotifyUploadedVideoCommand notifyUploadedVideoCommand
+        NotifyUploadedVideoReqDto notifyUploadedVideoReqDto
     ) {
-        //implement business logic here:
-
         VideoUploadNotified videoUploadNotified = new VideoUploadNotified(this);
         videoUploadNotified.publishAfterCommit();
     }
-    //>>> Clean Arch / Port Method
-
 }
-//>>> DDD / Aggregate Root

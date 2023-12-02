@@ -1,12 +1,11 @@
-package toykiwi.domain;
+package toykiwi.event;
 
-import java.time.LocalDate;
-import java.util.*;
-import lombok.*;
-import toykiwi.domain.*;
+import toykiwi.domain.Video;
 import toykiwi.infra.AbstractEvent;
 
-//<<< DDD / Domain Event
+import lombok.Data;
+import lombok.ToString;
+
 @Data
 @ToString
 public class VideoUploadNotified extends AbstractEvent {
@@ -25,4 +24,3 @@ public class VideoUploadNotified extends AbstractEvent {
         super();
     }
 }
-//>>> DDD / Domain Event

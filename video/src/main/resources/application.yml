@@ -4,6 +4,7 @@ server:
 spring:
   application:
     name: video
+
 ---
 
 spring:
@@ -30,14 +31,10 @@ spring:
       bindings:
         event-in:
           group: video
-#<<< EDA / Topic Name
           destination: toykiwi
-#>>> EDA / Topic Name
           contentType: application/json
         event-out:
-#<<< EDA / Topic Name
           destination: toykiwi
-#>>> EDA / Topic Name
           contentType: application/json
 
 logging:
