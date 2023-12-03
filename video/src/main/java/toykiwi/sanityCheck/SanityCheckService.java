@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import toykiwi.event.UploadingVideoCompleted;
+import toykiwi.logger.CustomLogger;
+import toykiwi.logger.CustomLoggerType;
 
 @Service
 public class SanityCheckService {
-    private final Logger logger = LoggerFactory.getLogger("toykiwi.video.custom");
     private final String logFilePath = "./logs/logback.log";
 
     // 출력된 로그들 중에서 끝부분 몇라인을 읽어서 반환시키기 위해서
@@ -20,20 +21,26 @@ public class SanityCheckService {
             List<String> logs = new ArrayList<>();
 
             try {
-                logger.debug(String.format("[EFFECT] Try to read logs: {filePath: %s}", logFilePath));
+                
+                CustomLogger.debug(CustomLoggerType.EFFECT, "Try to read logs", String.format("{filePath: %s}", logFilePath));
                 
                 Scanner myReader = new Scanner(new File(logFilePath));
                 while (myReader.hasNextLine()) 
                     logs.add(myReader.nextLine());
                 myReader.close();
+                
+                CustomLogger.debug(CustomLoggerType.EFFECT, "Read logs", String.format("{logsSize: %d}", logs.size()));
 
-                logger.debug(String.format("[EFFECT] Read logs: {logsSize: %d}", logs.size()));
             } catch (FileNotFoundException e) {
-                logger.error(String.format("[%s] Error while reading logs: {filePath: %s, stackTrace: %s}", 
-                    e.getClass().getName(), logFilePath, e.getStackTrace().toString()));
+                CustomLogger.error(e, "Error while reading logs", String.format("{filePath: %s}", logFilePath));
                 throw new FileNotFoundException();
             }
 
             return logs.subList(Math.max(logs.size()-logsReqDto.getLineLength(), 0), logs.size());
+    }
+
+    // Policy 테스트용으로 UploadingVideoCompleted 이벤트를 강제로 발생시키기 위해서
+    public void mockUploadingVideoCompleted(MockUploadingVideoCompletedReqDto mockData) {
+        (new UploadingVideoCompleted(mockData)).publish();
     }
 }

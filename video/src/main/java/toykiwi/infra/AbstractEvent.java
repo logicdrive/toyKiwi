@@ -2,9 +2,9 @@ package toykiwi.infra;
 
 import toykiwi.VideoApplication;
 import toykiwi.config.kafka.KafkaProcessor;
+import toykiwi.logger.CustomLogger;
+import toykiwi.logger.CustomLoggerType;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
@@ -15,8 +15,6 @@ import org.springframework.util.MimeTypeUtils;
 
 // Kafka 이벤트들을 관리하기 위한 기반 클래스
 public class AbstractEvent {
-    private final Logger logger = LoggerFactory.getLogger("toykiwi.video.custom");
-
     String eventType;
     Long timestamp;
 
@@ -37,7 +35,7 @@ public class AbstractEvent {
         );
         MessageChannel outputChannel = processor.outboundTopic();
         
-        logger.debug(String.format("[EFFECT] Publish event: {event: %s}", this.toString()));
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Publish event", String.format("{event: %s}", this.toString()));
         outputChannel.send(
             MessageBuilder
                 .withPayload(this)

@@ -6,25 +6,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import lombok.RequiredArgsConstructor;
+import toykiwi.logger.CustomLogger;
+import toykiwi.logger.CustomLoggerType;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/sanityCheck")
 public class SanityCheckController {
-    private final Logger logger = LoggerFactory.getLogger("toykiwi.video.custom");
     private final SanityCheckService sanityCheckService;
 
     // 정상적인 통신 여부를 단순하게 확인해보기 위해서
     @GetMapping
     public void sanityCheck() {
-        logger.debug("[ENTER/EXIT] sanityCheck: {}");
+        CustomLogger.debug(CustomLoggerType.ENTER_EXIT);
         return;
     }
 
@@ -33,17 +33,24 @@ public class SanityCheckController {
     public ResponseEntity<LogsResDto> logs(@ModelAttribute LogsReqDto logsReqDto) {
         try {
 
-            logger.debug(String.format("[ENTER] logs: {logsReqDto: %s}", logsReqDto.toString()));
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{logsReqDto: %s}", logsReqDto.toString()));
 
             List<String> logs = this.sanityCheckService.logs(logsReqDto);
 
-            logger.debug(String.format("[EXIT] logs: {logsSize: %d}", logs.size()));
+            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{logsSize: %d}", logs.size()));
             return ResponseEntity.ok(new LogsResDto(logs));
 
         } catch(Exception e) {
-            logger.error(String.format("[%s] logs: {logsReqDto: %s, stackTrace: %s}", 
-                e.getClass().getName(), logsReqDto.toString(), e.getStackTrace().toString()));
+            CustomLogger.error(e, "", String.format("{logsReqDto: %s}", logsReqDto.toString()));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    // Policy 테스트용으로 UploadingVideoCompleted 이벤트를 강제로 발생시키기 위해서
+    @PostMapping("/mock/UploadingVideoCompleted")
+    public void mockUploadingVideoCompleted(@RequestBody MockUploadingVideoCompletedReqDto mockData) {
+        CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
+        this.sanityCheckService.mockUploadingVideoCompleted(mockData);
+        CustomLogger.debug(CustomLoggerType.EXIT);
     }
 }

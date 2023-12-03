@@ -10,7 +10,7 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode(callSuper=false)
-public class VideoUploadNotified extends AbstractEvent {
+public class VideoUrlUploaded extends AbstractEvent {
 
     private Long id;
     private String youtubeUrl;
@@ -18,11 +18,11 @@ public class VideoUploadNotified extends AbstractEvent {
     private Integer cuttedEndSecond;
     private String uploadedUrl;
 
-    public VideoUploadNotified(Video aggregate) {
+    public VideoUrlUploaded(Video aggregate) {
         super(aggregate);
     }
 
-    public VideoUploadNotified() {
+    public VideoUrlUploaded() {
         super();
     }
 }
