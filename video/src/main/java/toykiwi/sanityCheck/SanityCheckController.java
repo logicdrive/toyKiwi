@@ -2,6 +2,8 @@ package toykiwi.sanityCheck;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -28,12 +30,20 @@ public class SanityCheckController {
 
     // 현재 저장된 로그들 중에서 일부분을 간편하게 가져오기 위해서
     @GetMapping("/logs")
-    public LogsResDto logs(@ModelAttribute LogsReqDto logsReqDto) {
-        logger.debug(String.format("[ENTER] logs: {logsReqDto.toString(): %s}", logsReqDto.toString()));
+    public ResponseEntity<LogsResDto> logs(@ModelAttribute LogsReqDto logsReqDto) {
+        try {
 
-        List<String> logs = this.sanityCheckService.logs(logsReqDto);
+            logger.debug(String.format("[ENTER] logs: {logsReqDto.toString(): %s}", logsReqDto.toString()));
 
-        logger.debug(String.format("[EXIT] logs: {logs.size(): %d}", logs.size()));
-        return new LogsResDto(logs);
+            List<String> logs = this.sanityCheckService.logs(logsReqDto);
+
+            logger.debug(String.format("[EXIT] logs: {logs.size(): %d}", logs.size()));
+            return ResponseEntity.ok(new LogsResDto(logs));
+
+        } catch(Exception e) {
+            logger.error(String.format("[%s] logs: {logsReqDto.toString(): %s, stackTrace: %s}", 
+                logsReqDto.toString(), e.getStackTrace().toString()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

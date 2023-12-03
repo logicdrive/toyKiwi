@@ -6,5 +6,5 @@ import lombok.ToString;
 @Data
 @ToString
 public class LogsReqDto {
-    private Long lineLength = 10L;
+    private int lineLength = 10;
 }
