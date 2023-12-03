@@ -18,3 +18,4 @@ collectedData/target
 
 # gateway
 gateway/.vscode
+gateway/target

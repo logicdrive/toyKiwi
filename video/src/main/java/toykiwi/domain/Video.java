@@ -5,7 +5,6 @@ import toykiwi.event.VideoUploadRequested;
 import toykiwi.event.VideoUploadNotified;
 import toykiwi.dto.NotifyUploadedVideoReqDto;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
