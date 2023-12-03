@@ -40,7 +40,7 @@ spring:
 logging:
   level:
     root: WARN
-    toykiwi.custom: INFO
+    toykiwi.custom: DEBUG
 
 server:
   port: 8082
