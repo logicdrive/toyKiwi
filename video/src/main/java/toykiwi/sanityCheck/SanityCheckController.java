@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/sanityCheck")
 public class SanityCheckController {
-    private final Logger logger = LoggerFactory.getLogger("toykiwi.custom");
+    private final Logger logger = LoggerFactory.getLogger("toykiwi.video.custom");
     private final SanityCheckService sanityCheckService;
 
     // 정상적인 통신 여부를 단순하게 확인해보기 위해서
@@ -42,7 +42,7 @@ public class SanityCheckController {
 
         } catch(Exception e) {
             logger.error(String.format("[%s] logs: {logsReqDto: %s, stackTrace: %s}", 
-                logsReqDto.toString(), e.getStackTrace().toString()));
+                e.getClass().getName(), logsReqDto.toString(), e.getStackTrace().toString()));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

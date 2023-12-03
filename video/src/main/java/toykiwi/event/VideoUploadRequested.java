@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+// 유저측에서 비디오 업로드를 요청했을 경우, 이를 알리기 위한 이벤트
 @Data
 @ToString
 @EqualsAndHashCode(callSuper=false)

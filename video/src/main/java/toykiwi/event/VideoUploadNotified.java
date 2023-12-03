@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+// 비디오가 외부 저장소에 업로드되고, 관련 URL이 업데이트 되었을 경우, 이를 알리기 위한 이벤트
 @Data
 @ToString
 @EqualsAndHashCode(callSuper=false)
