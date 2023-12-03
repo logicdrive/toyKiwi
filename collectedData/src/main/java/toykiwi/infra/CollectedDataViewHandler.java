@@ -43,21 +43,19 @@ public class CollectedDataViewHandler {
     }
 
     @StreamListener(KafkaProcessor.INPUT)
-    public void whenVideoUploadNotified_then_UPDATE_1(
-        @Payload VideoUploadNotified videoUploadNotified
+    public void whenVideoUrlUploaded_then_UPDATE_1(
+        @Payload VideoUrlUploaded videoUrlUploaded
     ) {
         try {
-            if (!videoUploadNotified.validate()) return;
+            if (!videoUrlUploaded.validate()) return;
             // view 객체 조회
 
             List<CollectedData> collectedDataList = collectedDataRepository.findByVideoId(
-                videoUploadNotified.getId()
+                videoUrlUploaded.getId()
             );
             for (CollectedData collectedData : collectedDataList) {
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                collectedData.setUploadedUrl(
-                    videoUploadNotified.getUploadedUrl()
-                );
+                collectedData.setUploadedUrl(videoUrlUploaded.getUploadedUrl());
                 collectedData.setStatus("VideoUploadNotified");
                 // view 레파지 토리에 save
                 collectedDataRepository.save(collectedData);
@@ -68,29 +66,7 @@ public class CollectedDataViewHandler {
     }
 
     @StreamListener(KafkaProcessor.INPUT)
-    public void whenSubtitleUploadRequested_then_UPDATE_2(
-        @Payload SubtitleUploadRequested subtitleUploadRequested
-    ) {
-        try {
-            if (!subtitleUploadRequested.validate()) return;
-            // view 객체 조회
-
-            List<CollectedData> collectedDataList = collectedDataRepository.findByVideoId(
-                subtitleUploadRequested.getVideoId()
-            );
-            for (CollectedData collectedData : collectedDataList) {
-                // view 객체에 이벤트의 eventDirectValue 를 set 함
-                collectedData.setStatus("SubtitleUploadRequested");
-                // view 레파지 토리에 save
-                collectedDataRepository.save(collectedData);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @StreamListener(KafkaProcessor.INPUT)
-    public void whenGeneratedSubtitleUploaded_then_UPDATE_3(
+    public void whenGeneratedSubtitleUploaded_then_UPDATE_2(
         @Payload GeneratedSubtitleUploaded generatedSubtitleUploaded
     ) {
         try {
@@ -115,7 +91,7 @@ public class CollectedDataViewHandler {
     }
 
     @StreamListener(KafkaProcessor.INPUT)
-    public void whenTranlatedSubtitleUploaded_then_UPDATE_4(
+    public void whenTranlatedSubtitleUploaded_then_UPDATE_3(
         @Payload TranlatedSubtitleUploaded tranlatedSubtitleUploaded
     ) {
         try {

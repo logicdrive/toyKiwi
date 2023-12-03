@@ -12,23 +12,6 @@ public class SubtitleHateoasProcessor
 
     @Override
     public EntityModel<Subtitle> process(EntityModel<Subtitle> model) {
-        model.add(
-            Link
-                .of(
-                    model.getRequiredLink("self").getHref() +
-                    "/uploadgeneratedsubtitle"
-                )
-                .withRel("uploadgeneratedsubtitle")
-        );
-        model.add(
-            Link
-                .of(
-                    model.getRequiredLink("self").getHref() +
-                    "/uploadtranslatedsubtitle"
-                )
-                .withRel("uploadtranslatedsubtitle")
-        );
-
         return model;
     }
 }

@@ -21,8 +21,12 @@ spring:
           uri: http://localhost:8084
           predicates:
             - Path=, 
-        - id: External Systems
+        - id: externalSystem
           uri: http://localhost:8085
+          predicates:
+            - Path=, 
+        - id: externalSystemProxy
+          uri: http://localhost:8086
           predicates:
             - Path=, 
         - id: frontend
@@ -61,8 +65,12 @@ spring:
           uri: http://collectedData:8080
           predicates:
             - Path=, 
-        - id: External Systems
-          uri: http://externalSystems:8080
+        - id: externalSystem
+          uri: http://externalSystem:8080
+          predicates:
+            - Path=, 
+        - id: externalSystemProxy
+          uri: http://externalSystemProxy:8080
           predicates:
             - Path=, 
         - id: frontend

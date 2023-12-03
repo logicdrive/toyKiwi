@@ -6,7 +6,8 @@ import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
 import toykiwi.SubtitleApplication;
-import toykiwi.domain.SubtitleUploadRequested;
+import toykiwi.domain.GeneratedSubtitleUploaded;
+import toykiwi.domain.TranlatedSubtitleUploaded;
 
 @Entity
 @Table(name = "Subtitle_table")
@@ -30,10 +31,15 @@ public class Subtitle {
 
     @PostPersist
     public void onPostPersist() {
-        SubtitleUploadRequested subtitleUploadRequested = new SubtitleUploadRequested(
+        GeneratedSubtitleUploaded generatedSubtitleUploaded = new GeneratedSubtitleUploaded(
             this
         );
-        subtitleUploadRequested.publishAfterCommit();
+        generatedSubtitleUploaded.publishAfterCommit();
+
+        TranlatedSubtitleUploaded tranlatedSubtitleUploaded = new TranlatedSubtitleUploaded(
+            this
+        );
+        tranlatedSubtitleUploaded.publishAfterCommit();
     }
 
     public static SubtitleRepository repository() {
@@ -44,31 +50,8 @@ public class Subtitle {
     }
 
     //<<< Clean Arch / Port Method
-    public void uploadGeneratedSubtitle() {
-        //implement business logic here:
-
-        GeneratedSubtitleUploaded generatedSubtitleUploaded = new GeneratedSubtitleUploaded(
-            this
-        );
-        generatedSubtitleUploaded.publishAfterCommit();
-    }
-
-    //>>> Clean Arch / Port Method
-    //<<< Clean Arch / Port Method
-    public void uploadTranslatedSubtitle() {
-        //implement business logic here:
-
-        TranlatedSubtitleUploaded tranlatedSubtitleUploaded = new TranlatedSubtitleUploaded(
-            this
-        );
-        tranlatedSubtitleUploaded.publishAfterCommit();
-    }
-
-    //>>> Clean Arch / Port Method
-
-    //<<< Clean Arch / Port Method
-    public static void requestSubtitleUpload(
-        VideoUploadNotified videoUploadNotified
+    public static void uploadGeneratedSubtitle(
+        GeneratingSubtitleCompleted generatingSubtitleCompleted
     ) {
         //implement business logic here:
 
@@ -76,19 +59,49 @@ public class Subtitle {
         Subtitle subtitle = new Subtitle();
         repository().save(subtitle);
 
-        SubtitleUploadRequested subtitleUploadRequested = new SubtitleUploadRequested(subtitle);
-        subtitleUploadRequested.publishAfterCommit();
+        GeneratedSubtitleUploaded generatedSubtitleUploaded = new GeneratedSubtitleUploaded(subtitle);
+        generatedSubtitleUploaded.publishAfterCommit();
         */
 
         /** Example 2:  finding and process
         
-        repository().findById(videoUploadNotified.get???()).ifPresent(subtitle->{
+        repository().findById(generatingSubtitleCompleted.get???()).ifPresent(subtitle->{
             
             subtitle // do something
             repository().save(subtitle);
 
-            SubtitleUploadRequested subtitleUploadRequested = new SubtitleUploadRequested(subtitle);
-            subtitleUploadRequested.publishAfterCommit();
+            GeneratedSubtitleUploaded generatedSubtitleUploaded = new GeneratedSubtitleUploaded(subtitle);
+            generatedSubtitleUploaded.publishAfterCommit();
+
+         });
+        */
+
+    }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
+    public static void uploadTranslatedSubtitle(
+        TranslatingSubtitleCompleted translatingSubtitleCompleted
+    ) {
+        //implement business logic here:
+
+        /** Example 1:  new item 
+        Subtitle subtitle = new Subtitle();
+        repository().save(subtitle);
+
+        TranlatedSubtitleUploaded tranlatedSubtitleUploaded = new TranlatedSubtitleUploaded(subtitle);
+        tranlatedSubtitleUploaded.publishAfterCommit();
+        */
+
+        /** Example 2:  finding and process
+        
+        repository().findById(translatingSubtitleCompleted.get???()).ifPresent(subtitle->{
+            
+            subtitle // do something
+            repository().save(subtitle);
+
+            TranlatedSubtitleUploaded tranlatedSubtitleUploaded = new TranlatedSubtitleUploaded(subtitle);
+            tranlatedSubtitleUploaded.publishAfterCommit();
 
          });
         */

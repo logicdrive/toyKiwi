@@ -6,7 +6,7 @@ import lombok.Data;
 import toykiwi.infra.AbstractEvent;
 
 @Data
-public class VideoUploadNotified extends AbstractEvent {
+public class VideoUrlUploaded extends AbstractEvent {
 
     private Long id;
     private String youtubeUrl;

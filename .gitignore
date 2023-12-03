@@ -14,6 +14,11 @@ subtitle/.vscode
 subtitle/target
 subtitle/logs
 
+# externalSystemProxy
+externalSystemProxy/.vscode
+externalSystemProxy/target
+externalSystemProxy/logs
+
 # collectedData
 collectedData/.vscode
 collectedData/target

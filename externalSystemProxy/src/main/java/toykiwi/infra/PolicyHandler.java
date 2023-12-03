@@ -17,9 +17,6 @@ import toykiwi.domain.*;
 @Transactional
 public class PolicyHandler {
 
-    @Autowired
-    SubtitleRepository subtitleRepository;
-
     @StreamListener(KafkaProcessor.INPUT)
     public void whatever(@Payload String eventString) {}
 }
