@@ -39,9 +39,8 @@ spring:
 
 logging:
   level:
-    org.hibernate.type: trace
-    org.springframework.cloud: debug
-
+    root: WARN
+    toykiwi.custom: INFO
 
 server:
   port: 8082
@@ -77,5 +76,3 @@ spring:
         event-out:
           destination: toykiwi
           contentType: application/json
-
-

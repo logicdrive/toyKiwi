@@ -7,15 +7,19 @@ frontend/node_modules
 # video
 video/.vscode
 video/target
+video/logs
 
 # subtitle
 subtitle/.vscode
 subtitle/target
+subtitle/logs
 
 # collectedData
 collectedData/.vscode
 collectedData/target
+collectedData/logs
 
 # gateway
 gateway/.vscode
 gateway/target
+gateway/logs
