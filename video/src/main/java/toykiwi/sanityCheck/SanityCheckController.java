@@ -33,15 +33,15 @@ public class SanityCheckController {
     public ResponseEntity<LogsResDto> logs(@ModelAttribute LogsReqDto logsReqDto) {
         try {
 
-            logger.debug(String.format("[ENTER] logs: {logsReqDto.toString(): %s}", logsReqDto.toString()));
+            logger.debug(String.format("[ENTER] logs: {logsReqDto: %s}", logsReqDto.toString()));
 
             List<String> logs = this.sanityCheckService.logs(logsReqDto);
 
-            logger.debug(String.format("[EXIT] logs: {logs.size(): %d}", logs.size()));
+            logger.debug(String.format("[EXIT] logs: {logsSize: %d}", logs.size()));
             return ResponseEntity.ok(new LogsResDto(logs));
 
         } catch(Exception e) {
-            logger.error(String.format("[%s] logs: {logsReqDto.toString(): %s, stackTrace: %s}", 
+            logger.error(String.format("[%s] logs: {logsReqDto: %s, stackTrace: %s}", 
                 logsReqDto.toString(), e.getStackTrace().toString()));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
