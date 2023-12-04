@@ -13,11 +13,13 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper=false)
 public class UploadingVideoCompleted extends AbstractEvent {
     private Long videoId;
+    private String videoTitle;
     private String uploadedUrl;
 
     public UploadingVideoCompleted(MockUploadingVideoCompletedReqDto mockData) {
         super();
         this.videoId = mockData.getVideoId();
+        this.videoTitle = mockData.getVideoTitle();
         this.uploadedUrl = mockData.getUploadedUrl();
     }
 

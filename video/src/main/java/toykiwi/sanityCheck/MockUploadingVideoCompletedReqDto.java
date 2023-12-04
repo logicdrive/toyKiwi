@@ -7,5 +7,6 @@ import lombok.ToString;
 @ToString
 public class MockUploadingVideoCompletedReqDto {
     private Long videoId;
+    private String videoTitle;
     private String uploadedUrl;
 }

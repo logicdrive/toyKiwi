@@ -13,6 +13,7 @@ import lombok.ToString;
 public class VideoUrlUploaded extends AbstractEvent {
 
     private Long id;
+    private String title;
     private String youtubeUrl;
     private Integer cuttedStartSecond;
     private Integer cuttedEndSecond;

@@ -28,6 +28,8 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String title;
+
     private String youtubeUrl;
 
     private Integer cuttedStartSecond;
@@ -79,6 +81,7 @@ public class Video {
             
             CustomLogger.debug(CustomLoggerType.EFFECT, "Video is searched by using JPA", String.format("{video: %s}", video.toString()));
 
+            video.setTitle(uploadingVideoCompleted.getVideoTitle());
             video.setUploadedUrl(uploadingVideoCompleted.getUploadedUrl());
             repository().save(video);
 
