@@ -2,6 +2,7 @@ package toykiwi.event;
 
 import toykiwi.domain.Video;
 import toykiwi.infra.AbstractEvent;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
