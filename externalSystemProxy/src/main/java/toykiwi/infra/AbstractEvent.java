@@ -1,7 +1,10 @@
 package toykiwi.infra;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import toykiwi.ExternalSystemProxyApplication;
+import toykiwi.config.kafka.KafkaProcessor;
+import toykiwi.logger.CustomLogger;
+import toykiwi.logger.CustomLoggerType;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
@@ -9,12 +12,9 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.MimeTypeUtils;
-import toykiwi.ExternalSystemProxyApplication;
-import toykiwi.config.kafka.KafkaProcessor;
 
-//<<< Clean Arch / Outbound Adaptor
+// Kafka 이벤트들을 관리하기 위한 기반 클래스
 public class AbstractEvent {
-
     String eventType;
     Long timestamp;
 
@@ -28,15 +28,14 @@ public class AbstractEvent {
         this.timestamp = System.currentTimeMillis();
     }
 
+    // 생성된 이벤트를 Kafka로 발행시키기 위해서
     public void publish() {
-        /**
-         * spring streams 방식
-         */
         KafkaProcessor processor = ExternalSystemProxyApplication.applicationContext.getBean(
             KafkaProcessor.class
         );
         MessageChannel outputChannel = processor.outboundTopic();
-
+        
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Publish event", String.format("{event: %s}", this.toString()));
         outputChannel.send(
             MessageBuilder
                 .withPayload(this)
@@ -80,4 +79,3 @@ public class AbstractEvent {
         return getEventType().equals(getClass().getSimpleName());
     }
 }
-//>>> Clean Arch / Outbound Adaptor
