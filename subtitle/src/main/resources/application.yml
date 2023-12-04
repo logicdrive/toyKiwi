@@ -11,7 +11,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
         format_sql: true
         implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
   cloud:
@@ -30,20 +30,16 @@ spring:
       bindings:
         event-in:
           group: subtitle
-#<<< EDA / Topic Name
           destination: toykiwi
-#>>> EDA / Topic Name
           contentType: application/json
         event-out:
-#<<< EDA / Topic Name
           destination: toykiwi
-#>>> EDA / Topic Name
           contentType: application/json
 
 logging:
   level:
-    org.hibernate.type: trace
-    org.springframework.cloud: debug
+    root: WARN
+    toykiwi.subtitle.custom: DEBUG
 
 
 server:
@@ -56,7 +52,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
         format_sql: true
         implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
   cloud:

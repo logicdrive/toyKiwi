@@ -1,18 +1,29 @@
 package toykiwi.domain;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import javax.persistence.*;
-import lombok.Data;
 import toykiwi.SubtitleApplication;
-import toykiwi.domain.GeneratedSubtitleUploaded;
-import toykiwi.domain.TranlatedSubtitleUploaded;
+import toykiwi.event.GeneratedSubtitleUploaded;
+import toykiwi.event.GeneratingSubtitleCompleted;
+import toykiwi.event.TranlatedSubtitleUploaded;
+import toykiwi.event.TranslatingSubtitleCompleted;
+import toykiwi.logger.CustomLogger;
+import toykiwi.logger.CustomLoggerType;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+
+import lombok.Data;
 
 @Entity
-@Table(name = "Subtitle_table")
+@Table(name = "Subtitle")
 @Data
-//<<< DDD / Aggregate Root
 public class Subtitle {
 
     @Id
@@ -29,19 +40,6 @@ public class Subtitle {
 
     private Integer endSecond;
 
-    @PostPersist
-    public void onPostPersist() {
-        GeneratedSubtitleUploaded generatedSubtitleUploaded = new GeneratedSubtitleUploaded(
-            this
-        );
-        generatedSubtitleUploaded.publishAfterCommit();
-
-        TranlatedSubtitleUploaded tranlatedSubtitleUploaded = new TranlatedSubtitleUploaded(
-            this
-        );
-        tranlatedSubtitleUploaded.publishAfterCommit();
-    }
-
     public static SubtitleRepository repository() {
         SubtitleRepository subtitleRepository = SubtitleApplication.applicationContext.getBean(
             SubtitleRepository.class
@@ -49,65 +47,64 @@ public class Subtitle {
         return subtitleRepository;
     }
 
-    //<<< Clean Arch / Port Method
+
+
+    @PrePersist
+    public void onPrePersist() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to create subtitle by using JPA", String.format("{subtitle: %s}", this.toString()));
+    }
+
+    @PostPersist
+    public void onPostPersist() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Subtitle is created by using JPA", String.format("{subtitle: %s}", this.toString()));
+    }
+
+
+    @PreUpdate
+    public void onPreUpdate() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to update subtitle by using JPA", String.format("{subtitle: %s}", this.toString()));
+    }
+
+    @PostUpdate
+    public void onPostUpdate() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Subtitle is updated by using JPA", String.format("{subtitle: %s}", this.toString()));
+    }
+
+
+    // 자막이 생성되었을 경우, 생성된 자막 관련 정보를 새로 추가시키기 위해서
     public static void uploadGeneratedSubtitle(
         GeneratingSubtitleCompleted generatingSubtitleCompleted
     ) {
-        //implement business logic here:
 
-        /** Example 1:  new item 
         Subtitle subtitle = new Subtitle();
-        repository().save(subtitle);
+        subtitle.setVideoId(generatingSubtitleCompleted.getVideoId());
+        subtitle.setSubtitle(generatingSubtitleCompleted.getSubtitle());
+        subtitle.setStartSecond(generatingSubtitleCompleted.getStartSecond());
+        subtitle.setEndSecond(generatingSubtitleCompleted.getEndSecond());
+        Subtitle createdSubtitle = repository().save(subtitle);
 
-        GeneratedSubtitleUploaded generatedSubtitleUploaded = new GeneratedSubtitleUploaded(subtitle);
+        GeneratedSubtitleUploaded generatedSubtitleUploaded = new GeneratedSubtitleUploaded(createdSubtitle);
         generatedSubtitleUploaded.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
-        
-        repository().findById(generatingSubtitleCompleted.get???()).ifPresent(subtitle->{
-            
-            subtitle // do something
-            repository().save(subtitle);
-
-            GeneratedSubtitleUploaded generatedSubtitleUploaded = new GeneratedSubtitleUploaded(subtitle);
-            generatedSubtitleUploaded.publishAfterCommit();
-
-         });
-        */
 
     }
 
-    //>>> Clean Arch / Port Method
-    //<<< Clean Arch / Port Method
+    // 자막에 대한 번역문이 생성되었을 경우, 해당 번역문을 업데이트시키기 위해서
     public static void uploadTranslatedSubtitle(
         TranslatingSubtitleCompleted translatingSubtitleCompleted
     ) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        Subtitle subtitle = new Subtitle();
-        repository().save(subtitle);
-
-        TranlatedSubtitleUploaded tranlatedSubtitleUploaded = new TranlatedSubtitleUploaded(subtitle);
-        tranlatedSubtitleUploaded.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
-        
-        repository().findById(translatingSubtitleCompleted.get???()).ifPresent(subtitle->{
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search Subtitle by using JPA", String.format("{translatingSubtitleCompleted: %s}", translatingSubtitleCompleted.toString()));
+        repository().findById(translatingSubtitleCompleted.getSubtitleId()).ifPresent(subtitle->{
             
-            subtitle // do something
+            CustomLogger.debug(CustomLoggerType.EFFECT, "Subtitle is searched by using JPA", String.format("{subtitle: %s}", subtitle.toString()));
+
+            subtitle.setTranslatedSubtitle(translatingSubtitleCompleted.getTranslatedSubtitle());
             repository().save(subtitle);
+
 
             TranlatedSubtitleUploaded tranlatedSubtitleUploaded = new TranlatedSubtitleUploaded(subtitle);
             tranlatedSubtitleUploaded.publishAfterCommit();
 
          });
-        */
 
     }
-    //>>> Clean Arch / Port Method
-
 }
-//>>> DDD / Aggregate Root
