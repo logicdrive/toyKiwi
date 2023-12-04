@@ -47,12 +47,12 @@ public class Video {
 
     @PrePersist
     public void onPrePersist() {
-        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to create video by using JPA", String.format("{Video: %s}", this.toString()));
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to create video by using JPA", String.format("{video: %s}", this.toString()));
     }
 
     @PostPersist
     public void onPostPersist() {
-        CustomLogger.debug(CustomLoggerType.EFFECT, "Video is created by using JPA", String.format("{Video: %s}", this.toString()));
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Video is created by using JPA", String.format("{video: %s}", this.toString()));
 
         VideoUploadRequested videoUploadRequested = new VideoUploadRequested(
             this
@@ -63,21 +63,21 @@ public class Video {
 
     @PreUpdate
     public void onPreUpdate() {
-        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to update video by using JPA", String.format("{Video: %s}", this.toString()));
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to update video by using JPA", String.format("{video: %s}", this.toString()));
     }
 
     @PostUpdate
     public void onPostUpdate() {
-        CustomLogger.debug(CustomLoggerType.EFFECT, "Video is updated by using JPA", String.format("{Video: %s}", this.toString()));
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Video is updated by using JPA", String.format("{video: %s}", this.toString()));
     }
 
 
     // 외부 저장소에서 URL이 업로드 되었을 경우, 그 URL을 반영시키고, 관련 이벤트를 발생시키기 위해서
     public static void uploadVideoUrl(UploadingVideoCompleted uploadingVideoCompleted) {
-        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search Video by using JPA", String.format("{UploadingVideoCompleted: %s}", uploadingVideoCompleted.toString()));
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search Video by using JPA", String.format("{uploadingVideoCompleted: %s}", uploadingVideoCompleted.toString()));
         repository().findById(uploadingVideoCompleted.getVideoId()).ifPresent(video->{
             
-            CustomLogger.debug(CustomLoggerType.EFFECT, "Video is searched by using JPA", String.format("{Video: %s}", video.toString()));
+            CustomLogger.debug(CustomLoggerType.EFFECT, "Video is searched by using JPA", String.format("{video: %s}", video.toString()));
 
             video.setUploadedUrl(uploadingVideoCompleted.getUploadedUrl());
             repository().save(video);

@@ -31,8 +31,15 @@ public class PolicyHandler {
     public void wheneverUploadingVideoCompleted_UploadVideoUrl(
         @Payload UploadingVideoCompleted uploadingVideoCompleted
     ) {
-        CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{UploadingVideoCompleted: %s}", uploadingVideoCompleted.toString()));
-        Video.uploadVideoUrl(uploadingVideoCompleted);
-        CustomLogger.debug(CustomLoggerType.EXIT);
+        try
+        {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{uploadingVideoCompleted: %s}", uploadingVideoCompleted.toString()));
+            Video.uploadVideoUrl(uploadingVideoCompleted);
+            CustomLogger.debug(CustomLoggerType.EXIT);
+
+        } catch(Exception e) {
+            CustomLogger.error(e, "", String.format("{uploadingVideoCompleted: %s}", uploadingVideoCompleted.toString()));
+        }
     }
 }
