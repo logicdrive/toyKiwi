@@ -9,6 +9,7 @@ import toykiwi.infra.AbstractEvent;
 public class VideoUploadRequested extends AbstractEvent {
 
     private Long id;
+    private String title;
     private String youtubeUrl;
     private Integer cuttedStartSecond;
     private Integer cuttedEndSecond;

@@ -56,7 +56,8 @@ public class CollectedDataViewHandler {
             for (CollectedData collectedData : collectedDataList) {
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
                 collectedData.setUploadedUrl(videoUrlUploaded.getUploadedUrl());
-                collectedData.setStatus("VideoUploadNotified");
+                collectedData.setVideoTitle(videoUrlUploaded.getTitle());
+                collectedData.setStatus("videoUrlUploaded");
                 // view 레파지 토리에 save
                 collectedDataRepository.save(collectedData);
             }

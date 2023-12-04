@@ -17,6 +17,7 @@ public class CollectedData {
     private Long id;
 
     private Long videoId;
+    private String videoTitle;
     private Integer cuttedStartSecond;
     private Integer cuttedEndSecond;
     private String uploadedUrl;
