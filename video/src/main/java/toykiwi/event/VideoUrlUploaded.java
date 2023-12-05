@@ -12,7 +12,6 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(callSuper=false)
 public class VideoUrlUploaded extends AbstractEvent {
-
     private Long id;
     private String title;
     private String youtubeUrl;

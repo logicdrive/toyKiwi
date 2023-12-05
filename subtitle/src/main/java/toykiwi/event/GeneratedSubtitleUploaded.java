@@ -12,7 +12,6 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(callSuper=false)
 public class GeneratedSubtitleUploaded extends AbstractEvent {
-
     private Long id;
     private Long videoId;
     private String subtitle;
