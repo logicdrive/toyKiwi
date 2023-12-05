@@ -41,6 +41,8 @@ public class Video {
 
     private Integer subtitleCount;
 
+    private String thumbnailUrl;
+
     public static VideoRepository repository() {
         VideoRepository videoRepository = VideoApplication.applicationContext.getBean(
             VideoRepository.class
@@ -86,6 +88,7 @@ public class Video {
 
             video.setTitle(uploadingVideoCompleted.getVideoTitle());
             video.setUploadedUrl(uploadingVideoCompleted.getUploadedUrl());
+            video.setThumbnailUrl(uploadingVideoCompleted.getThumbnailUrl());
             repository().save(video);
 
             

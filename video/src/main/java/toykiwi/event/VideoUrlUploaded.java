@@ -19,6 +19,7 @@ public class VideoUrlUploaded extends AbstractEvent {
     private Integer cuttedEndSecond;
     private String uploadedUrl;
     private Integer subtitleCount;
+    private String thumbnailUrl;
 
     public VideoUrlUploaded(Video aggregate) {
         super(aggregate);

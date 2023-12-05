@@ -15,12 +15,14 @@ public class UploadingVideoCompleted extends AbstractEvent {
     private Long videoId;
     private String videoTitle;
     private String uploadedUrl;
+    private String thumbnailUrl;
 
     public UploadingVideoCompleted(MockUploadingVideoCompletedReqDto mockData) {
         super();
         this.videoId = mockData.getVideoId();
         this.videoTitle = mockData.getVideoTitle();
         this.uploadedUrl = mockData.getUploadedUrl();
+        this.thumbnailUrl = mockData.getThumbnailUrl();
     }
 
     public UploadingVideoCompleted() {

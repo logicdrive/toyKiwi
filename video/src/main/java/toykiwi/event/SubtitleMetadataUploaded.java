@@ -19,6 +19,7 @@ public class SubtitleMetadataUploaded extends AbstractEvent {
     private Integer cuttedEndSecond;
     private String uploadedUrl;
     private Integer subtitleCount;
+    private String thumbnailUrl;
 
     public SubtitleMetadataUploaded(Video aggregate) {
         super(aggregate);
