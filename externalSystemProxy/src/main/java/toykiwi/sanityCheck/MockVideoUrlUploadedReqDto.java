@@ -12,4 +12,5 @@ public class MockVideoUrlUploadedReqDto {
     private Integer cuttedStartSecond;
     private Integer cuttedEndSecond;
     private String uploadedUrl;
+    private Integer subtitleCount;
 }

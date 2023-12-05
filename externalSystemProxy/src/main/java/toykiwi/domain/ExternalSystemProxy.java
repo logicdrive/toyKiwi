@@ -2,6 +2,7 @@ package toykiwi.domain;
 
 import toykiwi.event.GeneratedSubtitleUploaded;
 import toykiwi.event.GeneratingSubtitleCompleted;
+import toykiwi.event.GeneratingSubtitleStarted;
 import toykiwi.event.TranslatingSubtitleCompleted;
 import toykiwi.event.UploadingVideoCompleted;
 import toykiwi.event.VideoUploadRequested;
@@ -38,6 +39,11 @@ public class ExternalSystemProxy {
         if(videoUrlUploaded.getId() == 1)
         {
             CustomLogger.debug(CustomLoggerType.EFFECT, "MOCK: Generating subtitle from ExternalSystem", String.format("{videoUrlUploaded: %s}", videoUrlUploaded.toString()));
+
+            GeneratingSubtitleStarted generatingSubtitleStarted = new GeneratingSubtitleStarted();
+            generatingSubtitleStarted.setVideoId(1L);
+            generatingSubtitleStarted.setSubtitleCount(2);
+            generatingSubtitleStarted.publishAfterCommit();
 
             GeneratingSubtitleCompleted generatingSubtitleCompleted = new GeneratingSubtitleCompleted();
             generatingSubtitleCompleted.setVideoId(1L);
