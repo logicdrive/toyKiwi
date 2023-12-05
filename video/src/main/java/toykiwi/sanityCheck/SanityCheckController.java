@@ -46,11 +46,20 @@ public class SanityCheckController {
         }
     }
 
+    
     // Policy 테스트용으로 UploadingVideoCompleted 이벤트를 강제로 발생시키기 위해서
     @PostMapping("/mock/UploadingVideoCompleted")
     public void mockUploadingVideoCompleted(@RequestBody MockUploadingVideoCompletedReqDto mockData) {
         CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
         this.sanityCheckService.mockUploadingVideoCompleted(mockData);
+        CustomLogger.debug(CustomLoggerType.EXIT);
+    }
+
+    // Policy 테스트용으로 GeneratingSubtitleStarted 이벤트를 강제로 발생시키기 위해서
+    @PostMapping("/mock/GeneratingSubtitleStarted")
+    public void mockGeneratingSubtitleStarted(@RequestBody MockGeneratingSubtitleStartedReqDto mockData) {
+        CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
+        this.sanityCheckService.mockGeneratingSubtitleStarted(mockData);
         CustomLogger.debug(CustomLoggerType.EXIT);
     }
 }

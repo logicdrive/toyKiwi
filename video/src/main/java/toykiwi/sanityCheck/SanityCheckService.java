@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
 
+import toykiwi.event.GeneratingSubtitleStarted;
 import toykiwi.event.UploadingVideoCompleted;
 import toykiwi.logger.CustomLogger;
 import toykiwi.logger.CustomLoggerType;
@@ -39,8 +40,14 @@ public class SanityCheckService {
             return logs.subList(Math.max(logs.size()-logsReqDto.getLineLength(), 0), logs.size());
     }
 
+
     // Policy 테스트용으로 UploadingVideoCompleted 이벤트를 강제로 발생시키기 위해서
     public void mockUploadingVideoCompleted(MockUploadingVideoCompletedReqDto mockData) {
         (new UploadingVideoCompleted(mockData)).publish();
+    }
+
+    // Policy 테스트용으로 GeneratingSubtitleStarted 이벤트를 강제로 발생시키기 위해서
+    public void mockGeneratingSubtitleStarted(MockGeneratingSubtitleStartedReqDto mockData) {
+        (new GeneratingSubtitleStarted(mockData)).publish();
     }
 }

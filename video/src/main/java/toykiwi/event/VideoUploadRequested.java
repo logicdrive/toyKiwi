@@ -18,6 +18,7 @@ public class VideoUploadRequested extends AbstractEvent {
     private Integer cuttedStartSecond;
     private Integer cuttedEndSecond;
     private String uploadedUrl;
+    private Integer subtitleCount;
 
     public VideoUploadRequested(Video aggregate) {
         super(aggregate);

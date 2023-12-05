@@ -1,6 +1,8 @@
 package toykiwi.domain;
 
 import toykiwi.VideoApplication;
+import toykiwi.event.GeneratingSubtitleStarted;
+import toykiwi.event.SubtitleMetadataUploaded;
 import toykiwi.event.UploadingVideoCompleted;
 import toykiwi.event.VideoUploadRequested;
 import toykiwi.event.VideoUrlUploaded;
@@ -36,6 +38,8 @@ public class Video {
     private Integer cuttedEndSecond;
 
     private String uploadedUrl;
+
+    private Integer subtitleCount;
 
     public static VideoRepository repository() {
         VideoRepository videoRepository = VideoApplication.applicationContext.getBean(
@@ -87,6 +91,23 @@ public class Video {
             
             VideoUrlUploaded videoUrlUploaded = new VideoUrlUploaded(video);
             videoUrlUploaded.publishAfterCommit();
+
+         });
+    }
+
+    // 자막 생성이 시작되었을 경우, 관련 메타데이터들을 업데이트하기 위해서
+    public static void uploadSubtitleMetadata(GeneratingSubtitleStarted generatingSubtitleStarted) {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search Video by using JPA", String.format("{generatingSubtitleStarted: %s}", generatingSubtitleStarted.toString()));
+        repository().findById(generatingSubtitleStarted.getVideoId()).ifPresent(video->{
+            
+            CustomLogger.debug(CustomLoggerType.EFFECT, "Video is searched by using JPA", String.format("{video: %s}", video.toString()));
+
+            video.setSubtitleCount(generatingSubtitleStarted.getSubtitleCount());
+            repository().save(video);
+
+            
+            SubtitleMetadataUploaded subtitleMetadataUploaded = new SubtitleMetadataUploaded(video);
+            subtitleMetadataUploaded.publishAfterCommit();
 
          });
     }

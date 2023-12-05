@@ -7,11 +7,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-// 비디오가 외부 저장소에 업로드되고, 관련 URL이 업데이트 되었을 경우, 이를 알리기 위한 이벤트
+// 비디오 자막관련 메타데이터가 업데이트되었을 경우, 이를 알리기 위한 이벤트
 @Data
 @ToString
 @EqualsAndHashCode(callSuper=false)
-public class VideoUrlUploaded extends AbstractEvent {
+public class SubtitleMetadataUploaded extends AbstractEvent {
     private Long id;
     private String title;
     private String youtubeUrl;
@@ -20,11 +20,11 @@ public class VideoUrlUploaded extends AbstractEvent {
     private String uploadedUrl;
     private Integer subtitleCount;
 
-    public VideoUrlUploaded(Video aggregate) {
+    public SubtitleMetadataUploaded(Video aggregate) {
         super(aggregate);
     }
 
-    public VideoUrlUploaded() {
+    public SubtitleMetadataUploaded() {
         super();
     }
 }
