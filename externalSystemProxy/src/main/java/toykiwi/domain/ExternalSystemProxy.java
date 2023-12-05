@@ -23,6 +23,7 @@ public class ExternalSystemProxy {
             uploadingVideoCompleted.setVideoId(1L);
             uploadingVideoCompleted.setVideoTitle("Test Video Title");
             uploadingVideoCompleted.setUploadedUrl("https://s3.testurl.mp4");
+            uploadingVideoCompleted.setThumbnailUrl("https://test.thumbnailUrl.jpg");
             uploadingVideoCompleted.publishAfterCommit();
             return;
         }

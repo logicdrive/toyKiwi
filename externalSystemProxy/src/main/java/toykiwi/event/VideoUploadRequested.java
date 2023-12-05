@@ -19,6 +19,7 @@ public class VideoUploadRequested extends AbstractEvent {
     private Integer cuttedEndSecond;
     private String uploadedUrl;
     private Integer subtitleCount;
+    private String thumbnailUrl;
 
     public VideoUploadRequested(MockVideoUploadRequestedReqDto mockData) {
         super();
@@ -29,6 +30,7 @@ public class VideoUploadRequested extends AbstractEvent {
         this.cuttedEndSecond = mockData.getCuttedEndSecond();
         this.uploadedUrl = mockData.getUploadedUrl();
         this.subtitleCount = mockData.getSubtitleCount();
+        this.thumbnailUrl = mockData.getThumbnailUrl();
     }
 
     public VideoUploadRequested() {

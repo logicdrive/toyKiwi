@@ -14,6 +14,7 @@ public class UploadingVideoCompleted extends AbstractEvent {
     private Long videoId;
     private String videoTitle;
     private String uploadedUrl;
+    private String thumbnailUrl;
 
     public UploadingVideoCompleted() {
         super();
