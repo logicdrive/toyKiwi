@@ -1,119 +1,215 @@
 package toykiwi.infra;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
+
 import toykiwi.config.kafka.KafkaProcessor;
-import toykiwi.domain.*;
+import toykiwi.logger.CustomLogger;
+import toykiwi.logger.CustomLoggerType;
+import toykiwi.domain.Subtitle;
+import toykiwi.domain.SubtitleRepository;
+import toykiwi.domain.Video;
+import toykiwi.domain.VideoRepository;
+
+import toykiwi.event.GeneratedSubtitleUploaded;
+import toykiwi.event.SubtitleMetadataUploaded;
+import toykiwi.event.TranlatedSubtitleUploaded;
+import toykiwi.event.VideoUploadRequested;
+import toykiwi.event.VideoUrlUploaded;
+import toykiwi.exceptions.InvalidSubtitleIdException;
+import toykiwi.exceptions.InvalidVideoIdException;
 
 @Service
 public class CollectedDataViewHandler {
-
-    //<<< DDD / CQRS
     @Autowired
-    private CollectedDataRepository collectedDataRepository;
+    private VideoRepository videoRepository;
 
-    @StreamListener(KafkaProcessor.INPUT)
+    @Autowired
+    private SubtitleRepository subtitleRepository;
+
+
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='VideoUploadRequested'"
+    )
     public void whenVideoUploadRequested_then_CREATE_1(
         @Payload VideoUploadRequested videoUploadRequested
     ) {
         try {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{videoUploadRequested: %s}", videoUploadRequested.toString()));
             if (!videoUploadRequested.validate()) return;
 
-            // view 객체 생성
-            CollectedData collectedData = new CollectedData();
-            // view 객체에 이벤트의 Value 를 set 함
-            collectedData.setVideoId(videoUploadRequested.getId());
-            collectedData.setCuttedStartSecond(
-                videoUploadRequested.getCuttedStartSecond()
-            );
-            collectedData.setCuttedEndSecond(
-                videoUploadRequested.getCuttedEndSecond()
-            );
-            collectedData.setStatus("VideoUploadRequested");
-            // view 레파지 토리에 save
-            collectedDataRepository.save(collectedData);
+            Video videoToCreate = new Video();
+            videoToCreate.setVideoId(videoUploadRequested.getId());
+            videoToCreate.setYoutubeUrl(videoUploadRequested.getYoutubeUrl());
+            videoToCreate.setCuttedStartSecond(videoUploadRequested.getCuttedStartSecond());
+            videoToCreate.setCuttedEndSecond(videoUploadRequested.getCuttedEndSecond());
+            videoToCreate.setStatus("VideoUploadRequested");
+            this.videoRepository.save(videoToCreate);
+
+            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{videoToCreate: %s}", videoToCreate.toString()));
+
         } catch (Exception e) {
-            e.printStackTrace();
+            CustomLogger.error(e, "", String.format("{videoUploadRequested: %s}", videoUploadRequested.toString()));
         }
     }
 
-    @StreamListener(KafkaProcessor.INPUT)
+
+
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='VideoUrlUploaded'"
+    )
     public void whenVideoUrlUploaded_then_UPDATE_1(
         @Payload VideoUrlUploaded videoUrlUploaded
     ) {
         try {
-            if (!videoUrlUploaded.validate()) return;
-            // view 객체 조회
 
-            List<CollectedData> collectedDataList = collectedDataRepository.findByVideoId(
-                videoUrlUploaded.getId()
-            );
-            for (CollectedData collectedData : collectedDataList) {
-                // view 객체에 이벤트의 eventDirectValue 를 set 함
-                collectedData.setUploadedUrl(videoUrlUploaded.getUploadedUrl());
-                collectedData.setVideoTitle(videoUrlUploaded.getTitle());
-                collectedData.setStatus("videoUrlUploaded");
-                // view 레파지 토리에 save
-                collectedDataRepository.save(collectedData);
-            }
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{videoUrlUploaded: %s}", videoUrlUploaded.toString()));
+            if (!videoUrlUploaded.validate()) return;
+
+            CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search video", String.format("{videoId: %s}", videoUrlUploaded.getId()));
+            List<Video> videos = this.videoRepository.findAllByVideoId(videoUrlUploaded.getId());
+            if(videos.size() != 1)
+                throw new InvalidVideoIdException();
+            
+            Video videoToUpdate = videos.get(0);
+            videoToUpdate.setVideoTitle(videoUrlUploaded.getTitle());
+            videoToUpdate.setUploadedUrl(videoUrlUploaded.getUploadedUrl());
+            videoToUpdate.setThumbnailUrl(videoUrlUploaded.getThumbnailUrl());
+            videoToUpdate.setStatus("videoUrlUploaded");
+            this.videoRepository.save(videoToUpdate);
+
+            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{videoToUpdate: %s}", videoToUpdate.toString()));
+
         } catch (Exception e) {
-            e.printStackTrace();
+            CustomLogger.error(e, "", String.format("{videoUrlUploaded: %s}", videoUrlUploaded.toString()));
         }
     }
 
-    @StreamListener(KafkaProcessor.INPUT)
-    public void whenGeneratedSubtitleUploaded_then_UPDATE_2(
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='SubtitleMetadataUploaded'"
+    )
+    public void whenSubtitleMetadataUploaded_then_UPDATE_2(
+        @Payload SubtitleMetadataUploaded subtitleMetadataUploaded
+    ) {
+        try {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{subtitleMetadataUploaded: %s}", subtitleMetadataUploaded.toString()));
+            if (!subtitleMetadataUploaded.validate()) return;
+
+            CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search video", String.format("{videoId: %s}", subtitleMetadataUploaded.getId()));
+            List<Video> videos = this.videoRepository.findAllByVideoId(subtitleMetadataUploaded.getId());
+            if(videos.size() != 1)
+                throw new InvalidVideoIdException();
+            
+            Video videoToUpdate = videos.get(0);
+            videoToUpdate.setSubtitleCount(subtitleMetadataUploaded.getSubtitleCount());
+            videoToUpdate.setStatus("subtitleMetadataUploaded");
+            this.videoRepository.save(videoToUpdate);
+
+            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{videoToUpdate: %s}", videoToUpdate.toString()));
+
+        } catch (Exception e) {
+            CustomLogger.error(e, "", String.format("{subtitleMetadataUploaded: %s}", subtitleMetadataUploaded.toString()));
+        }
+    }
+    
+
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='GeneratedSubtitleUploaded'"
+    )
+    public void whenGeneratedSubtitleUploaded_then_UPDATE_3(
         @Payload GeneratedSubtitleUploaded generatedSubtitleUploaded
     ) {
         try {
-            if (!generatedSubtitleUploaded.validate()) return;
-            // view 객체 조회
 
-            List<CollectedData> collectedDataList = collectedDataRepository.findByVideoId(
-                generatedSubtitleUploaded.getVideoId()
-            );
-            for (CollectedData collectedData : collectedDataList) {
-                // view 객체에 이벤트의 eventDirectValue 를 set 함
-                collectedData.setSubtitles(
-                    generatedSubtitleUploaded.getSubtitle()
-                );
-                collectedData.setStatus("GeneratedSubtitleUploaded");
-                // view 레파지 토리에 save
-                collectedDataRepository.save(collectedData);
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{generatedSubtitleUploaded: %s}", generatedSubtitleUploaded.toString()));
+            if (!generatedSubtitleUploaded.validate()) return;
+
+            List<Video> videos = this.videoRepository.findAllByVideoId(generatedSubtitleUploaded.getVideoId());
+            if(videos.size() != 1)
+                throw new InvalidVideoIdException();
+            Video subtitleVideo = videos.get(0);
+
+
+            // 해당 비디오에 대한 자막 정보를 새로 생성시키기 위해서
+            Subtitle subtitleToCreate = new Subtitle();
+            subtitleToCreate.setSubtitleId(generatedSubtitleUploaded.getId());
+            subtitleToCreate.setSubtitle(generatedSubtitleUploaded.getSubtitle());
+            subtitleToCreate.setStartSecond(generatedSubtitleUploaded.getStartSecond());
+            subtitleToCreate.setEndSecond(generatedSubtitleUploaded.getEndSecond());
+            subtitleToCreate.setVideo(subtitleVideo);
+            this.subtitleRepository.save(subtitleToCreate);
+
+            // 해당 비디오에 대한 모든 자막이 생성되었을 경우, 상태를 업데이트시키기 위해서
+            List<Subtitle> subtitlesToCheck = this.subtitleRepository.findAllByVideo(subtitleVideo);
+            if(subtitlesToCheck.size() == subtitleVideo.getSubtitleCount())
+            {
+                subtitleVideo.setStatus("GeneratedSubtitleUploaded");
+                this.videoRepository.save(subtitleVideo);
             }
+
+
+            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{subtitleToCreate: %s, subtitlesToCheckSize: %d}", subtitleToCreate.toString(), subtitlesToCheck.size()));
+
         } catch (Exception e) {
-            e.printStackTrace();
+            CustomLogger.error(e, "", String.format("{generatedSubtitleUploaded: %s}", generatedSubtitleUploaded.toString()));
         }
     }
 
-    @StreamListener(KafkaProcessor.INPUT)
-    public void whenTranlatedSubtitleUploaded_then_UPDATE_3(
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='TranlatedSubtitleUploaded'"
+    )
+    public void whenTranlatedSubtitleUploaded_then_UPDATE_4(
         @Payload TranlatedSubtitleUploaded tranlatedSubtitleUploaded
     ) {
         try {
-            if (!tranlatedSubtitleUploaded.validate()) return;
-            // view 객체 조회
 
-            List<CollectedData> collectedDataList = collectedDataRepository.findByVideoId(
-                tranlatedSubtitleUploaded.getVideoId()
-            );
-            for (CollectedData collectedData : collectedDataList) {
-                // view 객체에 이벤트의 eventDirectValue 를 set 함
-                collectedData.setSubtitles(
-                    tranlatedSubtitleUploaded.getSubtitle()
-                );
-                collectedData.setStatus("TranslatedSubtitleUploaded");
-                // view 레파지 토리에 save
-                collectedDataRepository.save(collectedData);
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{tranlatedSubtitleUploaded: %s}", tranlatedSubtitleUploaded.toString()));
+            if (!tranlatedSubtitleUploaded.validate()) return;
+
+
+            // 해당하는 자막에 번역문을 업데이트시키기 위해서
+            List<Subtitle> subtitles = this.subtitleRepository.findAllBySubtitleId(tranlatedSubtitleUploaded.getId());
+            if(subtitles.size() != 1)
+                throw new InvalidSubtitleIdException();
+            Subtitle subtitleToUpdate = subtitles.get(0);
+
+            subtitleToUpdate.setTranslatedSubtitle(tranlatedSubtitleUploaded.getTranslatedSubtitle());
+            this.subtitleRepository.save(subtitleToUpdate);
+
+
+            // 모든 자막에 번역문이 업데이트되었을 경우, 상태를 업데이트시키기 위해서
+            List<Video> videos = this.videoRepository.findAllByVideoId(tranlatedSubtitleUploaded.getVideoId());
+            if(videos.size() != 1)
+                throw new InvalidVideoIdException();
+            Video subtitleVideo = videos.get(0);
+
+            List<Subtitle> subtitlesToCheck = this.subtitleRepository.findAllByVideo(subtitleVideo);
+            int translatedSubtitleCount = subtitlesToCheck.stream().filter((subtitle) -> {
+                return !((subtitle.getTranslatedSubtitle()==null) || (subtitle.getTranslatedSubtitle().isEmpty()));
+            }).toArray().length;
+
+            if(translatedSubtitleCount == subtitleVideo.getSubtitleCount())
+            {
+                subtitleVideo.setStatus("tranlatedSubtitleUploaded");
+                this.videoRepository.save(subtitleVideo);
             }
+
+
+            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{subtitleToUpdate: %s, translatedSubtitleCount: %d}", subtitleToUpdate.toString(), translatedSubtitleCount));
+
         } catch (Exception e) {
-            e.printStackTrace();
+            CustomLogger.error(e, "", String.format("{tranlatedSubtitleUploaded: %s}", tranlatedSubtitleUploaded.toString()));
         }
     }
-    //>>> DDD / CQRS
 }

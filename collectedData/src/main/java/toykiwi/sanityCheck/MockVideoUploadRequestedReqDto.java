@@ -1,17 +1,17 @@
-package toykiwi.domain;
+package toykiwi.sanityCheck;
 
-import java.time.LocalDate;
-import java.util.*;
 import lombok.Data;
-import toykiwi.infra.AbstractEvent;
+import lombok.ToString;
 
 @Data
-public class VideoUrlUploaded extends AbstractEvent {
-
+@ToString
+public class MockVideoUploadRequestedReqDto {
     private Long id;
     private String title;
     private String youtubeUrl;
     private Integer cuttedStartSecond;
     private Integer cuttedEndSecond;
     private String uploadedUrl;
+    private Integer subtitleCount;
+    private String thumbnailUrl;
 }

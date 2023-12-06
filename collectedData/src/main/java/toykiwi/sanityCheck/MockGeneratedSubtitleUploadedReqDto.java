@@ -1,13 +1,11 @@
-package toykiwi.domain;
+package toykiwi.sanityCheck;
 
-import java.time.LocalDate;
-import java.util.*;
 import lombok.Data;
-import toykiwi.infra.AbstractEvent;
+import lombok.ToString;
 
 @Data
-public class GeneratedSubtitleUploaded extends AbstractEvent {
-
+@ToString
+public class MockGeneratedSubtitleUploadedReqDto {
     private Long id;
     private Long videoId;
     private String subtitle;
