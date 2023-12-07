@@ -1,35 +1,13 @@
 __workshop
 tmp
 
-# frontend
-frontend/node_modules
-
-# video
-video/.vscode
-video/target
-video/logs
-
-# subtitle
-subtitle/.vscode
-subtitle/target
-subtitle/logs
-
-# externalSystemProxy
-externalSystemProxy/.vscode
-externalSystemProxy/target
-externalSystemProxy/logs
-
-# collectedData
-collectedData/.vscode
-collectedData/target
-collectedData/logs
+# Common
+**/.vscode
+**/logs
+**/target
 
 # externalSystem
-externalSystem/.vscode
-externalSystem/logs
 externalSystem/**/__pycache__
 
-# gateway
-gateway/.vscode
-gateway/target
-gateway/logs
+# frontend
+frontend/node_modules
