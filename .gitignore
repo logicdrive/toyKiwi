@@ -8,6 +8,9 @@ tmp
 
 # externalSystem
 externalSystem/**/__pycache__
+externalSystem/envs/development.env
+externalSystem/envs/production.env
+externalSystem/.flaskenv
 
 # frontend
 frontend/node_modules

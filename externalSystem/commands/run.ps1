@@ -1,1 +1,1 @@
-flask run --port 8085 --debug
+flask run
