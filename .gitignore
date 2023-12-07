@@ -24,6 +24,11 @@ collectedData/.vscode
 collectedData/target
 collectedData/logs
 
+# externalSystem
+externalSystem/.vscode
+externalSystem/logs
+externalSystem/**/__pycache__
+
 # gateway
 gateway/.vscode
 gateway/target
