@@ -1,4 +1,7 @@
+from .LogsReqDto import LogsReqDto
+
 from .._global import CustomLogger
 
-def logs(lineLength:int) -> list[str] :
-    return [str(lineLength)]*lineLength
+
+def logs(logsReqDto:LogsReqDto) -> list[str] :
+    return [str(logsReqDto.lineLength)]*logsReqDto.lineLength

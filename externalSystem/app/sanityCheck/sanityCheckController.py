@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from http import HTTPStatus
 
 from . import SanityCheckService
+from .LogsReqDto import LogsReqDto
 
 from .._global import CustomLogger
 from .._global import CustomLoggerType
@@ -17,15 +18,15 @@ def sanityCheck() -> str:
 @bp.route("/logs", methods=("GET",))
 def logs() -> str:
     try :
+        
+        logsReqDto:LogsReqDto = LogsReqDto(request)
 
-        lineLength:int = int(request.args.get("lineLength") or 10)
-    
 
-        CustomLogger.debug(CustomLoggerType.ENTER, "", "<lineLength: {}>".format(lineLength))
+        CustomLogger.debug(CustomLoggerType.ENTER, "", "<logsReqDto: {}>".format(logsReqDto))
 
-        logs = SanityCheckService.logs(lineLength)
+        logs = SanityCheckService.logs(logsReqDto)
 
-        CustomLogger.debug(CustomLoggerType.EXIT, "", "<lineLength: {}>".format(lineLength))
+        CustomLogger.debug(CustomLoggerType.EXIT, "", "<logsReqDto: {}>".format(logsReqDto))
         return (jsonify({"logs": logs}), HTTPStatus.OK)
 
     except Exception as e:
