@@ -1,11 +1,11 @@
 from flask import Flask
-from .sanityCheck import sanityCheckController
-from .config import logging
+from .config import Logging
+from .sanityCheck import SanityCheckController
 
 def create_app():
     app = Flask(__name__)
-    logging.setupLoggingConfig()
+    Logging.setupLoggingConfig()
 
-    app.register_blueprint(sanityCheckController.bp)
+    app.register_blueprint(SanityCheckController.bp)
 
     return app
