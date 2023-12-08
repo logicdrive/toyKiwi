@@ -6,22 +6,27 @@ loggingConfig = {
     "version": 1,
     "formatters": {
         "default": {
-            "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+            "format": "%(asctime)s [%(threadName)s] %(levelname)s %(name)s - %(message)s",
         }
     },
     "handlers": {
         "file": {
             "level": "DEBUG",
-            "class": "logging.handlers.RotatingFileHandler",
+            "class": "logging.handlers.TimedRotatingFileHandler",
             "filename": os.path.join(WORK_DIR, "logs/logback.log"),
-            "maxBytes": 1024 * 1024 * 5,  # 5 MB
-            "backupCount": 5,
-            "formatter": "default",
+            "when": "midnight",
+            "interval": 1,
+            "encoding": "utf-8",
+            "formatter": "default"
         },
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "default"
+        }
     },
     "root": {
         "level": "DEBUG",
-        "handlers": ["file"]
+        "handlers": ["file", "console"]
     }
 }
 
