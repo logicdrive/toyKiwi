@@ -1,4 +1,4 @@
 from .._global import CustomLogger
 
-def sanityCheck() -> None :
-    CustomLogger.debug("HELLO DEBUG !")
+def logs(lineLength:int) -> list[str] :
+    return [str(lineLength)]*lineLength
