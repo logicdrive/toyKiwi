@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, request
+from flask import Blueprint, request, jsonify
 from http import HTTPStatus
 
 from . import SanityCheckService
@@ -12,7 +12,7 @@ bp = Blueprint("sanityCheck", __name__, url_prefix="/sanityCheck")
 @bp.route("/", methods=("GET",))
 def sanityCheck() -> str:
     CustomLogger.debug(CustomLoggerType.ENTER_EXIT)
-    return Response("", status=200)
+    return ("", HTTPStatus.OK)
 
 @bp.route("/logs", methods=("GET",))
 def logs() -> str:
@@ -20,14 +20,14 @@ def logs() -> str:
 
         lineLength:int = int(request.args.get("lineLength") or 10)
     
-    
+
         CustomLogger.debug(CustomLoggerType.ENTER, "", "<lineLength: {}>".format(lineLength))
 
         logs = SanityCheckService.logs(lineLength)
 
         CustomLogger.debug(CustomLoggerType.EXIT, "", "<lineLength: {}>".format(lineLength))
-        return Response(logs, status=HTTPStatus.OK)
+        return (jsonify({"logs": logs}), HTTPStatus.OK)
 
     except Exception as e:
         CustomLogger.error(e, "", "<lineLength: {}>".format(request.args.get("lineLength") or "None"))
-        return Response("", status=HTTPStatus.BAD_REQUEST)
+        return ("", HTTPStatus.BAD_REQUEST)
