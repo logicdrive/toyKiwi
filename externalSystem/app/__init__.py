@@ -7,7 +7,7 @@ from .sanityCheck import SanityCheckController
 from .s3 import s3Controller
 
 
-dirPathsToCreate = ["./logs", "./tmps"]
+dirPathsToCreate = ["./logs", "./workDirs"]
 
 def create_app():
     for dirPathToCreate in dirPathsToCreate :
