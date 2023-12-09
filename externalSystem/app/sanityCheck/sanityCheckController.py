@@ -25,7 +25,7 @@ def logs() -> str :
         logsReqDto:LogsReqDto = LogsReqDto(request)
 
 
-        CustomLogger.debug(CustomLoggerType.ENTER, "", "<logsReqDto: {}>".format(logsReqDto))
+        CustomLogger.debug(CustomLoggerType.ENTER)
 
         logs = SanityCheckService.logs(logsReqDto)
 
