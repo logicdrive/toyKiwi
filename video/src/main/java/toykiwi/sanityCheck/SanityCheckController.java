@@ -40,7 +40,7 @@ public class SanityCheckController {
 
             LogsResDto logsResDto = this.sanityCheckService.logs(logsReqDto);
 
-            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{logsResDto: %s}", logsResDto.toString()));
+            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{logsSize: %d}", logsResDto.getLogs().size()));
             return ResponseEntity.ok(logsResDto);
 
         } catch(Exception e) {
