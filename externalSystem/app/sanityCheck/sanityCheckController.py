@@ -36,6 +36,18 @@ def logs() -> str :
         CustomLogger.error(e, "", "<lineLength: {}>".format(request.args.get("lineLength") or "None"))
         return ("", HTTPStatus.BAD_REQUEST)
 
+# 정상적인 에러 로그 출력 여부를 테스트해보기 위해서
+@bp.route("/divByZeroCheck", methods=("GET",))
+def divByZeroCheck() -> str :
+    try :
+
+        returnNum:int = 1/0
+        return (returnNum, HTTPStatus.OK)
+
+    except Exception as e :
+        CustomLogger.error(e, "Div By Zero Check Message", "<returnNum: {}>".format("Undefined"))
+        return ("", HTTPStatus.INTERNAL_SERVER_ERROR)
+
 # JSON 송수신 여부를 간편하게 테스트해보기 위해서
 @bp.route("/echoWithJson", methods=("PUT",))
 def echoWithJson() -> str :
