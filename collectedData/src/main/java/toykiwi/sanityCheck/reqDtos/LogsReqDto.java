@@ -7,4 +7,5 @@ import lombok.ToString;
 @ToString
 public class LogsReqDto {
     private int lineLength = 10;
+    private String regFilter = "";
 }

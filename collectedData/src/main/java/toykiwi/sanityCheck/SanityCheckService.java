@@ -36,8 +36,12 @@ public class SanityCheckService {
                 CustomLogger.debug(CustomLoggerType.EFFECT, "Try to read logs", String.format("{filePath: %s}", logFilePath));
                 
                 Scanner myReader = new Scanner(new File(logFilePath));
-                while (myReader.hasNextLine()) 
-                    logs.add(myReader.nextLine());
+                while (myReader.hasNextLine())
+                {
+                    String readLog = myReader.nextLine();
+                    if (logsReqDto.getRegFilter().isEmpty()) logs.add(readLog);
+                    else if(readLog.matches(logsReqDto.getRegFilter())) logs.add(readLog);
+                }
                 myReader.close();
                 
                 CustomLogger.debug(CustomLoggerType.EFFECT, "Read logs", String.format("{logsSize: %d}", logs.size()));
