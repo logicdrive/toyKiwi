@@ -1,17 +1,16 @@
-package toykiwi.infra;
+package toykiwi.domain;
+
+import toykiwi._global.config.kafka.KafkaProcessor;
+import toykiwi._global.event.GeneratingSubtitleStarted;
+import toykiwi._global.event.UploadingVideoCompleted;
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
 
 import javax.transaction.Transactional;
 
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-
-import toykiwi.domain.Video;
-import toykiwi.config.kafka.KafkaProcessor;
-import toykiwi.event.GeneratingSubtitleStarted;
-import toykiwi.event.UploadingVideoCompleted;
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
 
 @Service
 @Transactional

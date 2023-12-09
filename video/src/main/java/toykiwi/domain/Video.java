@@ -1,13 +1,13 @@
 package toykiwi.domain;
 
 import toykiwi.VideoApplication;
-import toykiwi.event.GeneratingSubtitleStarted;
-import toykiwi.event.SubtitleMetadataUploaded;
-import toykiwi.event.UploadingVideoCompleted;
-import toykiwi.event.VideoUploadRequested;
-import toykiwi.event.VideoUrlUploaded;
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
+import toykiwi._global.event.GeneratingSubtitleStarted;
+import toykiwi._global.event.SubtitleMetadataUploaded;
+import toykiwi._global.event.UploadingVideoCompleted;
+import toykiwi._global.event.VideoUploadRequested;
+import toykiwi._global.event.VideoUrlUploaded;
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

@@ -1,4 +1,4 @@
-package toykiwi.infra;
+package toykiwi._global.infra;
 
 import toykiwi.domain.Video;
 

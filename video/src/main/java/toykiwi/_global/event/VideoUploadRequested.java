@@ -1,17 +1,17 @@
-package toykiwi.event;
+package toykiwi._global.event;
 
+import toykiwi._global.infra.AbstractEvent;
 import toykiwi.domain.Video;
-import toykiwi.infra.AbstractEvent;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-// 비디오가 외부 저장소에 업로드되고, 관련 URL이 업데이트 되었을 경우, 이를 알리기 위한 이벤트
+// 유저측에서 비디오 업로드를 요청했을 경우, 이를 알리기 위한 이벤트
 @Data
 @ToString
 @EqualsAndHashCode(callSuper=false)
-public class VideoUrlUploaded extends AbstractEvent {
+public class VideoUploadRequested extends AbstractEvent {
     private Long id;
     private String title;
     private String youtubeUrl;
@@ -21,11 +21,11 @@ public class VideoUrlUploaded extends AbstractEvent {
     private Integer subtitleCount;
     private String thumbnailUrl;
 
-    public VideoUrlUploaded(Video aggregate) {
+    public VideoUploadRequested(Video aggregate) {
         super(aggregate);
     }
 
-    public VideoUrlUploaded() {
+    public VideoUploadRequested() {
         super();
     }
 }

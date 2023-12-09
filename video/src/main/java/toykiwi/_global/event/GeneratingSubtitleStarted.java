@@ -1,7 +1,8 @@
-package toykiwi.event;
+package toykiwi._global.event;
 
-import toykiwi.infra.AbstractEvent;
-import toykiwi.sanityCheck.MockGeneratingSubtitleStartedReqDto;
+import toykiwi._global.infra.AbstractEvent;
+import toykiwi.sanityCheck.reqDtos.MockGeneratingSubtitleStartedReqDto;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

@@ -1,9 +1,10 @@
-package toykiwi.infra;
+package toykiwi._global.infra;
 
 import toykiwi.VideoApplication;
-import toykiwi.config.kafka.KafkaProcessor;
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
+
+import toykiwi._global.config.kafka.KafkaProcessor;
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.MessageChannel;
