@@ -7,28 +7,28 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.BodyInserters;
 
+import toykiwi._global.externalSystemProxy.ExternalSystemProxyService;
+import toykiwi._global.externalSystemProxy.reqDtos.EchoWithJsonReqDto;
+import toykiwi._global.externalSystemProxy.resDtos.EchoWithJsonResDto;
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
 import toykiwi.event.GeneratedSubtitleUploaded;
 import toykiwi.event.VideoUploadRequested;
 import toykiwi.event.VideoUrlUploaded;
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
 import toykiwi.sanityCheck.reqDtos.EchoToExternalSystemReqDto;
-import toykiwi.sanityCheck.reqDtos.EchoWithJsonReqDto;
 import toykiwi.sanityCheck.reqDtos.LogsReqDto;
 import toykiwi.sanityCheck.reqDtos.MockGeneratedSubtitleUploadedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockVideoUploadRequestedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockVideoUrlUploadedReqDto;
-import toykiwi.sanityCheck.resDtos.EchoWithJsonResDto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class SanityCheckService {
     private final String logFilePath = "./logs/logback.log";
+    private final ExternalSystemProxyService externalSystemProxyService;
 
     // 출력된 로그들 중에서 끝부분 몇라인을 읽어서 반환시키기 위해서
     public List<String> logs(LogsReqDto logsReqDto) throws FileNotFoundException {
@@ -72,32 +72,8 @@ public class SanityCheckService {
 
     // ExternalSystem과의 JSON 기반 통신이 정상적으로 진행되는지 테스트해보기 위해서
     public String echoToExternalSystem(EchoToExternalSystemReqDto echoToExternalSystemReqDto) throws Exception {
-            
         EchoWithJsonReqDto echoWithJsonReqDto = new EchoWithJsonReqDto(echoToExternalSystemReqDto.getMessage());
-        CustomLogger.debug(CustomLoggerType.EFFECT, "Request to external system", String.format("{echoWithJsonReqDto: %s}", echoWithJsonReqDto));
-        
-        try {
-
-                String resultRawText = WebClient.create("http://localhost:8085/sanityCheck/echoWithJson")
-                    .put()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .body(BodyInserters.fromValue(echoWithJsonReqDto.hashMap()))
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
-                CustomLogger.debug(CustomLoggerType.EFFECT, "Read results from external system", String.format("{resultRawText: %s}", resultRawText));
-
-                ObjectMapper mapper = new ObjectMapper();
-                EchoWithJsonResDto echoWithJsonResDto = mapper.readValue(resultRawText, EchoWithJsonResDto.class);
-                CustomLogger.debug(CustomLoggerType.EFFECT, "Read results from external system", String.format("{echoWithJsonResDto: %s}", echoWithJsonResDto));
-
-                return echoWithJsonReqDto.getMessage();
-
-        } catch (Exception e) {
-            CustomLogger.error(e, "Error while requesting to externalSystem", String.format("{echoWithJsonReqDto: %s}", echoWithJsonReqDto));
-            throw e;
-        }
-
+        EchoWithJsonResDto echoWithJsonResDto = this.externalSystemProxyService.echoWithJson(echoWithJsonReqDto);
+        return echoWithJsonResDto.getMessage();
     }
 }

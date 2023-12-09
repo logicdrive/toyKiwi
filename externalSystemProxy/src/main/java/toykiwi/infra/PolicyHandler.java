@@ -6,13 +6,13 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
-import toykiwi.config.kafka.KafkaProcessor;
+import toykiwi._global.config.kafka.KafkaProcessor;
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
 import toykiwi.domain.ExternalSystemProxy;
 import toykiwi.event.VideoUploadRequested;
 import toykiwi.event.VideoUrlUploaded;
 import toykiwi.event.GeneratedSubtitleUploaded;
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
 
 @Service
 @Transactional

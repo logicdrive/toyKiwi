@@ -1,4 +1,4 @@
-package toykiwi.sanityCheck.reqDtos;
+package toykiwi._global.externalSystemProxy.reqDtos;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class EchoWithJsonReqDto {
+public class EchoWithJsonReqDto implements ExternalSystemProxyReqDto {
     private final String message;
 
     public EchoWithJsonReqDto(String message) {

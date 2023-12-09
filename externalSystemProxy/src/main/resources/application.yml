@@ -45,6 +45,10 @@ logging:
 server:
   port: 8086
 
+externalSystem:
+  ip: localhost
+  port: 8085
+
 ---
 
 spring:
@@ -77,4 +81,6 @@ spring:
           destination: toykiwi
           contentType: application/json
 
-
+externalSystem:
+  ip: localhost
+  port: 8085

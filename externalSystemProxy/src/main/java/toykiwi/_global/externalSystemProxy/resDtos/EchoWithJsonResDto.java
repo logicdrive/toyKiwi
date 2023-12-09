@@ -1,4 +1,4 @@
-package toykiwi.sanityCheck.resDtos;
+package toykiwi._global.externalSystemProxy.resDtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,7 +7,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class EchoWithJsonResDto {
+public class EchoWithJsonResDto implements ExternalSystemProxyResDto {
     @JsonProperty
     private String message;
 }

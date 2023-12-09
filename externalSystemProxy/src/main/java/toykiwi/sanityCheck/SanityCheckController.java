@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
 import toykiwi.sanityCheck.reqDtos.EchoToExternalSystemReqDto;
 import toykiwi.sanityCheck.reqDtos.LogsReqDto;
 import toykiwi.sanityCheck.reqDtos.MockGeneratedSubtitleUploadedReqDto;

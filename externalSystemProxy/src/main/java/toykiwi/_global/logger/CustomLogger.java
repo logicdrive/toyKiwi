@@ -1,4 +1,4 @@
-package toykiwi.logger;
+package toykiwi._global.logger;
 
 import java.util.HashMap;
 import java.util.Map;

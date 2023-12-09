@@ -1,5 +1,7 @@
 package toykiwi.domain;
 
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
 import toykiwi.event.GeneratedSubtitleUploaded;
 import toykiwi.event.GeneratingSubtitleCompleted;
 import toykiwi.event.GeneratingSubtitleStarted;
@@ -7,9 +9,6 @@ import toykiwi.event.TranslatingSubtitleCompleted;
 import toykiwi.event.UploadingVideoCompleted;
 import toykiwi.event.VideoUploadRequested;
 import toykiwi.event.VideoUrlUploaded;
-
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
 
 public class ExternalSystemProxy {
     // 비디오 업로드 요청관련 이벤트 발생시 비디오를 업로드하고, 관련 정보를 이벤트로 전달하기 위해서
