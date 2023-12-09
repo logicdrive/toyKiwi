@@ -56,4 +56,10 @@ public class SanityCheckService {
     public void mockGeneratedSubtitleUploaded(MockGeneratedSubtitleUploadedReqDto mockData) {
         (new GeneratedSubtitleUploaded(mockData)).publish();
     }
+
+
+    // ExternalSystem과의 JSON 기반 통신이 정상적으로 진행되는지 테스트해보기 위해서
+    public String echoToExternalSystem(EchoToExternalSystemReqDto echoToExternalSystemReqDto) {
+        return echoToExternalSystemReqDto.getMessage();
+    }
 }

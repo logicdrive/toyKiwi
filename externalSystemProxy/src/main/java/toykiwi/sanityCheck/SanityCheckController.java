@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -69,5 +70,24 @@ public class SanityCheckController {
         CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
         this.sanityCheckService.mockGeneratedSubtitleUploaded(mockData);
         CustomLogger.debug(CustomLoggerType.EXIT);
+    }
+
+
+    // ExternalSystem과의 JSON 기반 통신이 정상적으로 진행되는지 테스트해보기 위해서
+    @PutMapping("/echoToExternalSystem")
+    public ResponseEntity<EchoToExternalSystemResDto> echoToExternalSystem(@RequestBody EchoToExternalSystemReqDto echoToExternalSystemReqDto) {
+        try {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{echoToExternalSystemReqDto: %s}", echoToExternalSystemReqDto.toString()));
+
+            String message = this.sanityCheckService.echoToExternalSystem(echoToExternalSystemReqDto);
+
+            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{message: %s}", message));
+            return ResponseEntity.ok(new EchoToExternalSystemResDto(message));
+
+        } catch(Exception e) {
+            CustomLogger.error(e, "", String.format("{echoToExternalSystemReqDto: %s}", echoToExternalSystemReqDto.toString()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
