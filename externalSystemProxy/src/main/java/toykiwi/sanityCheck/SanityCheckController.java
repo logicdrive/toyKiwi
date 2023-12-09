@@ -54,6 +54,18 @@ public class SanityCheckController {
         }
     }
 
+    // 정상적인 에러 로그 출력 여부를 테스트해보기 위해서
+    @GetMapping("/divByZeroCheck")
+    public ResponseEntity<Integer> divByZeroCheck() {
+        try {
+            Integer returnNum = 1/0;
+            return ResponseEntity.ok(returnNum);
+        } catch(Exception e) {
+            CustomLogger.error(e, "Div By Zero Check Message", String.format("{returnNum: %s}", "Undefined"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }    
+    }
+
 
     // Policy 테스트용으로 VideoUploadRequested 이벤트를 강제로 발생시키기 위해서
     @PostMapping("/mock/VideoUploadRequested")
