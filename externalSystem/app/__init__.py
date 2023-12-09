@@ -4,18 +4,21 @@ from flask import Flask
 
 from ._global.logger import LoggingConfig
 from .sanityCheck import SanityCheckController
+from .s3 import s3Controller
 
 
-loggingDirPath = "./logs"
+dirPathsToCreate = ["./logs", "./tmps"]
 
 def create_app():
-    if not os.path.exists(loggingDirPath):
-        os.makedirs(loggingDirPath)
+    for dirPathToCreate in dirPathsToCreate :
+        if not os.path.exists(dirPathToCreate):
+            os.makedirs(dirPathToCreate)
 
 
     app = Flask(__name__)
     LoggingConfig.setupLoggingConfig()
 
     app.register_blueprint(SanityCheckController.bp)
+    app.register_blueprint(s3Controller.bp)
 
     return app

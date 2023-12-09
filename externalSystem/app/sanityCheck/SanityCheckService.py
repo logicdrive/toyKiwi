@@ -1,6 +1,7 @@
 import re
 
 from .reqDtos.LogsReqDto import LogsReqDto
+from .resDtos.LogsResDto import LogsResDto
 
 from .._global.logger import CustomLogger
 from .._global.logger import CustomLoggerType
@@ -8,7 +9,7 @@ from .._global.logger import CustomLoggerType
 
 logFilePath:str = "./logs/logback.log"
 
-def logs(logsReqDto:LogsReqDto) -> list[str] :
+def logs(logsReqDto:LogsReqDto) -> LogsResDto :
     readLogs:list[str] = []
 
 
@@ -24,4 +25,4 @@ def logs(logsReqDto:LogsReqDto) -> list[str] :
     CustomLogger.debug(CustomLoggerType.EFFECT, "", "<readLogsSize: {}>".format(len(readLogs)))
 
 
-    return readLogs
+    return LogsResDto(readLogs)

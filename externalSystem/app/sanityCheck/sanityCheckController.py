@@ -19,7 +19,7 @@ def sanityCheck() -> str :
     return ("", HTTPStatus.OK)
 
 @bp.route("/logs", methods=("GET",))
-def logs() -> str :
+def logs() -> LogsResDto :
     try :
 
         logsReqDto:LogsReqDto = LogsReqDto(request)
@@ -27,10 +27,10 @@ def logs() -> str :
 
         CustomLogger.debug(CustomLoggerType.ENTER)
 
-        logs = SanityCheckService.logs(logsReqDto)
+        logsResDto:LogsResDto = SanityCheckService.logs(logsReqDto)
 
-        CustomLogger.debug(CustomLoggerType.EXIT, "", "<logsReqDto: {}>".format(logsReqDto))
-        return (LogsResDto(logs).json(), HTTPStatus.OK)
+        CustomLogger.debug(CustomLoggerType.EXIT, "", "<logsSize: {}>".format(len(logsResDto.logs)))
+        return (logsResDto.json(), HTTPStatus.OK)
 
     except Exception as e :
         CustomLogger.error(e, "", "<lineLength: {}>".format(request.args.get("lineLength") or "None"))
@@ -50,7 +50,7 @@ def divByZeroCheck() -> str :
 
 # JSON 송수신 여부를 간편하게 테스트해보기 위해서
 @bp.route("/echoWithJson", methods=("PUT",))
-def echoWithJson() -> str :
+def echoWithJson() -> EchoWithJsonResDto :
     try :
 
         echoWithJsonReqDto:EchoWithJsonReqDto = EchoWithJsonReqDto(request)

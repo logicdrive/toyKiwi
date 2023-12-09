@@ -4,6 +4,7 @@ tmp
 # Common
 **/.vscode
 **/logs
+**/tmps
 **/target
 
 # externalSystem
