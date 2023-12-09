@@ -1,4 +1,4 @@
-package toykiwi.collectedData;
+package toykiwi.collectedData.resDtos;
 
 import toykiwi.domain.Subtitle;
 

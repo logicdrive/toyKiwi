@@ -3,9 +3,7 @@ package toykiwi.collectedData;
 import toykiwi._global.customExceptionControl.CustomException;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
-import toykiwi.domain.Subtitle;
-
-import java.util.List;
+import toykiwi.collectedData.resDtos.VideoSubtitlesResDto;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +25,10 @@ public class CollectedDataController {
 
             CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{id: %d}", id));
 
-            List<Subtitle> subtitles = this.collectedDataService.videoSubtitles(id);
+            VideoSubtitlesResDto videoSubtitlesResDto = this.collectedDataService.videoSubtitles(id);
 
-            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{subtitlesSize: %d}", subtitles.size()));
-            return ResponseEntity.ok(new VideoSubtitlesResDto(subtitles));
+            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{subtitlesSize: %d}", videoSubtitlesResDto.getSubtitles().size()));
+            return ResponseEntity.ok(videoSubtitlesResDto);
 
         } catch(CustomException e) {
             CustomLogger.error(e, "", String.format("{id: %d}", id));
