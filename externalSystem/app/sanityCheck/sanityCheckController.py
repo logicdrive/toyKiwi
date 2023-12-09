@@ -2,13 +2,13 @@ from flask import Blueprint, request
 from http import HTTPStatus
 
 from . import SanityCheckService
-from .LogsReqDto import LogsReqDto
-from .LogsResDto import LogsResDto
-from .EchoWithJsonReqDto import EchoWithJsonReqDto
-from .EchoWithJsonResDto import EchoWithJsonResDto
+from .reqDtos.LogsReqDto import LogsReqDto
+from .resDtos.LogsResDto import LogsResDto
+from .reqDtos.EchoWithJsonReqDto import EchoWithJsonReqDto
+from .resDtos.EchoWithJsonResDto import EchoWithJsonResDto
 
-from .._global import CustomLogger
-from .._global import CustomLoggerType
+from .._global.logger import CustomLogger
+from .._global.logger import CustomLoggerType
 
 
 bp = Blueprint("sanityCheck", __name__, url_prefix="/sanityCheck")

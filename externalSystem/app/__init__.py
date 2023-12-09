@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 
-from .config import Logging
+from ._global.logger import LoggingConfig
 from .sanityCheck import SanityCheckController
 
 
@@ -14,7 +14,7 @@ def create_app():
 
 
     app = Flask(__name__)
-    Logging.setupLoggingConfig()
+    LoggingConfig.setupLoggingConfig()
 
     app.register_blueprint(SanityCheckController.bp)
 

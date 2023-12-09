@@ -1,7 +1,5 @@
-import os
 from logging.config import dictConfig
 
-WORK_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 loggingConfig = {
     "version": 1,
     "formatters": {
@@ -13,7 +11,7 @@ loggingConfig = {
         "file": {
             "level": "DEBUG",
             "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": os.path.join(WORK_DIR, "logs/logback.log"),
+            "filename": "logs/logback.log",
             "when": "midnight",
             "interval": 1,
             "encoding": "utf-8",

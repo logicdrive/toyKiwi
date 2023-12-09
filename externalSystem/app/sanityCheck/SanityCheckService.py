@@ -1,7 +1,7 @@
-from .LogsReqDto import LogsReqDto
+from .reqDtos.LogsReqDto import LogsReqDto
 
-from .._global import CustomLogger
-from .._global import CustomLoggerType
+from .._global.logger import CustomLogger
+from .._global.logger import CustomLoggerType
 
 
 logFilePath:str = "./logs/logback.log"

@@ -1,6 +1,6 @@
 from flask import current_app
-from . import CustomLoggerType
 import traceback
+from . import CustomLoggerType
 
 
 customLoggerTypeMap = {
