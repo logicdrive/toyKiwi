@@ -1,14 +1,14 @@
 package toykiwi.domain;
 
+import toykiwi._global.event.GeneratedSubtitleUploaded;
+import toykiwi._global.event.GeneratingSubtitleCompleted;
+import toykiwi._global.event.GeneratingSubtitleStarted;
+import toykiwi._global.event.TranslatingSubtitleCompleted;
+import toykiwi._global.event.UploadingVideoCompleted;
+import toykiwi._global.event.VideoUploadRequested;
+import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
-import toykiwi.event.GeneratedSubtitleUploaded;
-import toykiwi.event.GeneratingSubtitleCompleted;
-import toykiwi.event.GeneratingSubtitleStarted;
-import toykiwi.event.TranslatingSubtitleCompleted;
-import toykiwi.event.UploadingVideoCompleted;
-import toykiwi.event.VideoUploadRequested;
-import toykiwi.event.VideoUrlUploaded;
 
 public class ExternalSystemProxy {
     // 비디오 업로드 요청관련 이벤트 발생시 비디오를 업로드하고, 관련 정보를 이벤트로 전달하기 위해서

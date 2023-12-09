@@ -1,4 +1,4 @@
-package toykiwi.infra;
+package toykiwi.domain;
 
 import javax.transaction.Transactional;
 
@@ -7,12 +7,11 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 import toykiwi._global.config.kafka.KafkaProcessor;
+import toykiwi._global.event.GeneratedSubtitleUploaded;
+import toykiwi._global.event.VideoUploadRequested;
+import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
-import toykiwi.domain.ExternalSystemProxy;
-import toykiwi.event.VideoUploadRequested;
-import toykiwi.event.VideoUrlUploaded;
-import toykiwi.event.GeneratedSubtitleUploaded;
 
 @Service
 @Transactional
