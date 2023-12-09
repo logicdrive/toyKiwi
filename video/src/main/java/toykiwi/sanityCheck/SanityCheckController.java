@@ -38,7 +38,7 @@ public class SanityCheckController {
     public ResponseEntity<LogsResDto> logs(@ModelAttribute LogsReqDto logsReqDto) {
         try {
 
-            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{logsReqDto: %s}", logsReqDto.toString()));
+            CustomLogger.debug(CustomLoggerType.ENTER);
 
             List<String> logs = this.sanityCheckService.logs(logsReqDto);
 
