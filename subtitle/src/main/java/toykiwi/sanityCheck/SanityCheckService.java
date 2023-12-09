@@ -1,5 +1,14 @@
 package toykiwi.sanityCheck;
 
+import toykiwi._global.event.GeneratingSubtitleCompleted;
+import toykiwi._global.event.TranslatingSubtitleCompleted;
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
+
+import toykiwi.sanityCheck.reqDtos.LogsReqDto;
+import toykiwi.sanityCheck.reqDtos.MockGeneratingSubtitleCompletedReqDto;
+import toykiwi.sanityCheck.resDtos.MockTranslatingSubtitleCompletedReqDto;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -7,11 +16,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
-
-import toykiwi.event.GeneratingSubtitleCompleted;
-import toykiwi.event.TranslatingSubtitleCompleted;
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
 
 @Service
 public class SanityCheckService {

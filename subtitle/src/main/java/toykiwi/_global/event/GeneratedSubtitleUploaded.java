@@ -1,7 +1,8 @@
-package toykiwi.event;
+package toykiwi._global.event;
+
+import toykiwi._global.infra.AbstractEvent;
 
 import toykiwi.domain.Subtitle;
-import toykiwi.infra.AbstractEvent;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

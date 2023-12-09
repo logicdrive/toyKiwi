@@ -1,12 +1,12 @@
 package toykiwi.domain;
 
 import toykiwi.SubtitleApplication;
-import toykiwi.event.GeneratedSubtitleUploaded;
-import toykiwi.event.GeneratingSubtitleCompleted;
-import toykiwi.event.TranlatedSubtitleUploaded;
-import toykiwi.event.TranslatingSubtitleCompleted;
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
+import toykiwi._global.event.GeneratedSubtitleUploaded;
+import toykiwi._global.event.GeneratingSubtitleCompleted;
+import toykiwi._global.event.TranlatedSubtitleUploaded;
+import toykiwi._global.event.TranslatingSubtitleCompleted;
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
