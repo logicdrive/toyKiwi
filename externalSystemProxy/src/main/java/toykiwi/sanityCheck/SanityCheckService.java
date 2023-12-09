@@ -14,6 +14,7 @@ import toykiwi.sanityCheck.reqDtos.LogsReqDto;
 import toykiwi.sanityCheck.reqDtos.MockGeneratedSubtitleUploadedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockVideoUploadRequestedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockVideoUrlUploadedReqDto;
+import toykiwi.sanityCheck.resDtos.LogsResDto;
 
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class SanityCheckService {
     private final ExternalSystemProxyService externalSystemProxyService;
 
     // 출력된 로그들 중에서 끝부분 몇라인을 읽어서 반환시키기 위해서
-    public List<String> logs(LogsReqDto logsReqDto) throws FileNotFoundException {
+    public LogsResDto logs(LogsReqDto logsReqDto) throws FileNotFoundException {
             List<String> logs = new ArrayList<>();
 
             try {
@@ -55,7 +56,7 @@ public class SanityCheckService {
                 throw new FileNotFoundException();
             }
 
-            return logs.subList(Math.max(logs.size()-logsReqDto.getLineLength(), 0), logs.size());
+            return new LogsResDto(logs.subList(Math.max(logs.size()-logsReqDto.getLineLength(), 0), logs.size()));
     }
 
 
