@@ -1,12 +1,12 @@
 package toykiwi.collectedData;
 
+import toykiwi.domain.Subtitle;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.Getter;
 import lombok.ToString;
-
-import toykiwi.domain.Subtitle;
 
 @Getter
 @ToString

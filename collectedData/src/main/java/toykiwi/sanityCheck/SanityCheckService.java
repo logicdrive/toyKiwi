@@ -1,5 +1,20 @@
 package toykiwi.sanityCheck;
 
+import toykiwi._global.event.GeneratedSubtitleUploaded;
+import toykiwi._global.event.SubtitleMetadataUploaded;
+import toykiwi._global.event.TranlatedSubtitleUploaded;
+import toykiwi._global.event.VideoUploadRequested;
+import toykiwi._global.event.VideoUrlUploaded;
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
+
+import toykiwi.sanityCheck.reqDtos.LogsReqDto;
+import toykiwi.sanityCheck.reqDtos.MockGeneratedSubtitleUploadedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockSubtitleMetadataUploadedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockTranlatedSubtitleUploadedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockVideoUploadRequestedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockVideoUrlUploadedReqDto;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -7,15 +22,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
-
-import toykiwi.event.GeneratedSubtitleUploaded;
-import toykiwi.event.SubtitleMetadataUploaded;
-import toykiwi.event.TranlatedSubtitleUploaded;
-import toykiwi.event.VideoUploadRequested;
-import toykiwi.event.VideoUrlUploaded;
-
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
 
 @Service
 public class SanityCheckService {

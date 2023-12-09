@@ -1,4 +1,4 @@
-package toykiwi.customExceptionControl;
+package toykiwi._global.customExceptionControl;
 
 import org.springframework.http.ResponseEntity;
 

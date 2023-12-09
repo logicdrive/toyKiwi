@@ -1,16 +1,18 @@
-package toykiwi.event;
+package toykiwi._global.event;
 
-import toykiwi.infra.AbstractEvent;
-import toykiwi.sanityCheck.MockSubtitleMetadataUploadedReqDto;
+import toykiwi._global.infra.AbstractEvent;
+
+import toykiwi.sanityCheck.reqDtos.MockVideoUrlUploadedReqDto;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-// 비디오 자막관련 메타데이터가 업데이트되었을 경우, 이를 알리기 위한 이벤트
+// 비디오가 외부 저장소에 업로드되고, 관련 URL이 업데이트 되었을 경우, 이를 알리기 위한 이벤트
 @Data
 @ToString
 @EqualsAndHashCode(callSuper=false)
-public class SubtitleMetadataUploaded extends AbstractEvent {
+public class VideoUrlUploaded extends AbstractEvent {
     private Long id;
     private String title;
     private String youtubeUrl;
@@ -20,7 +22,7 @@ public class SubtitleMetadataUploaded extends AbstractEvent {
     private Integer subtitleCount;
     private String thumbnailUrl;
 
-    public SubtitleMetadataUploaded(MockSubtitleMetadataUploadedReqDto mockData) {
+    public VideoUrlUploaded(MockVideoUrlUploadedReqDto mockData) {
         super();
         this.id = mockData.getId();
         this.title = mockData.getTitle();
@@ -32,7 +34,7 @@ public class SubtitleMetadataUploaded extends AbstractEvent {
         this.thumbnailUrl = mockData.getThumbnailUrl();
     }
 
-    public SubtitleMetadataUploaded() {
+    public VideoUrlUploaded() {
         super();
     }
 }

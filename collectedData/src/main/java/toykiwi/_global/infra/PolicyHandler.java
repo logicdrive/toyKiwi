@@ -1,12 +1,12 @@
-package toykiwi.infra;
+package toykiwi._global.infra;
+
+import toykiwi._global.config.kafka.KafkaProcessor;
 
 import javax.transaction.Transactional;
 
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-
-import toykiwi.config.kafka.KafkaProcessor;
 
 @Service
 @Transactional

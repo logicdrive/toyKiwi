@@ -1,16 +1,18 @@
-package toykiwi.event;
+package toykiwi._global.event;
 
-import toykiwi.infra.AbstractEvent;
-import toykiwi.sanityCheck.MockGeneratedSubtitleUploadedReqDto;
+import toykiwi._global.infra.AbstractEvent;
+
+import toykiwi.sanityCheck.reqDtos.MockTranlatedSubtitleUploadedReqDto;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-// 생성된 자막을 기반으로 Subtitle을 만들었을 경우 발생하는 이벤트
+// 생성된 자막에 대한 번역문에 대한 업데이트를 완료했을 경우 발생하는 이벤트
 @Data
 @ToString
 @EqualsAndHashCode(callSuper=false)
-public class GeneratedSubtitleUploaded extends AbstractEvent {
+public class TranlatedSubtitleUploaded extends AbstractEvent {
     private Long id;
     private Long videoId;
     private String subtitle;
@@ -18,7 +20,7 @@ public class GeneratedSubtitleUploaded extends AbstractEvent {
     private Integer startSecond;
     private Integer endSecond;
 
-    public GeneratedSubtitleUploaded(MockGeneratedSubtitleUploadedReqDto mockData) {
+    public TranlatedSubtitleUploaded(MockTranlatedSubtitleUploadedReqDto mockData) {
         super();
         this.id = mockData.getId();
         this.videoId = mockData.getVideoId();
@@ -28,7 +30,7 @@ public class GeneratedSubtitleUploaded extends AbstractEvent {
         this.endSecond = mockData.getEndSecond();
     }
 
-    public GeneratedSubtitleUploaded() {
+    public TranlatedSubtitleUploaded() {
         super();
     }
 }

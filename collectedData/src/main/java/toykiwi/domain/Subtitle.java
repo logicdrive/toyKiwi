@@ -1,11 +1,13 @@
 package toykiwi.domain;
 
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
@@ -14,9 +16,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 import lombok.Data;
-
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
 
 @Entity
 @Table(name = "Subtitle")

@@ -1,5 +1,16 @@
 package toykiwi.sanityCheck;
 
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
+
+import toykiwi.sanityCheck.reqDtos.LogsReqDto;
+import toykiwi.sanityCheck.reqDtos.MockGeneratedSubtitleUploadedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockSubtitleMetadataUploadedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockTranlatedSubtitleUploadedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockVideoUploadRequestedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockVideoUrlUploadedReqDto;
+import toykiwi.sanityCheck.resDtos.LogsResDto;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
@@ -12,9 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,6 +53,18 @@ public class SanityCheckController {
             CustomLogger.error(e, "", String.format("{logsReqDto: %s}", logsReqDto.toString()));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    // 정상적인 에러 로그 출력 여부를 테스트해보기 위해서
+    @GetMapping("/divByZeroCheck")
+    public ResponseEntity<Integer> divByZeroCheck() {
+        try {
+            Integer returnNum = 1/0;
+            return ResponseEntity.ok(returnNum);
+        } catch(Exception e) {
+            CustomLogger.error(e, "Div By Zero Check Message", String.format("{returnNum: %s}", "Undefined"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }    
     }
 
     

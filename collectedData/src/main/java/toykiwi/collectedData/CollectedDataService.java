@@ -1,17 +1,18 @@
 package toykiwi.collectedData;
 
+import toykiwi._global.exceptions.InvalidVideoIdException;
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
+import toykiwi.domain.Subtitle;
+import toykiwi.domain.SubtitleRepository;
+import toykiwi.domain.Video;
+import toykiwi.domain.VideoRepository;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import toykiwi.domain.Subtitle;
-import toykiwi.domain.SubtitleRepository;
-import toykiwi.domain.Video;
-import toykiwi.domain.VideoRepository;
-import toykiwi.exceptions.InvalidVideoIdException;
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
 
 @Service
 @RequiredArgsConstructor

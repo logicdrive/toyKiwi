@@ -1,8 +1,8 @@
-package toykiwi.exceptions;
+package toykiwi._global.exceptions;
+
+import toykiwi._global.customExceptionControl.CustomException;
 
 import org.springframework.http.HttpStatus;
-
-import toykiwi.customExceptionControl.CustomException;
 
 import lombok.Getter;
 

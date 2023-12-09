@@ -1,4 +1,15 @@
-package toykiwi.infra;
+package toykiwi.domain;
+
+import toykiwi._global.config.kafka.KafkaProcessor;
+import toykiwi._global.event.GeneratedSubtitleUploaded;
+import toykiwi._global.event.SubtitleMetadataUploaded;
+import toykiwi._global.event.TranlatedSubtitleUploaded;
+import toykiwi._global.event.VideoUploadRequested;
+import toykiwi._global.event.VideoUrlUploaded;
+import toykiwi._global.exceptions.InvalidSubtitleIdException;
+import toykiwi._global.exceptions.InvalidVideoIdException;
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
 
 import java.util.List;
 
@@ -6,22 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-
-import toykiwi.config.kafka.KafkaProcessor;
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
-import toykiwi.domain.Subtitle;
-import toykiwi.domain.SubtitleRepository;
-import toykiwi.domain.Video;
-import toykiwi.domain.VideoRepository;
-
-import toykiwi.event.GeneratedSubtitleUploaded;
-import toykiwi.event.SubtitleMetadataUploaded;
-import toykiwi.event.TranlatedSubtitleUploaded;
-import toykiwi.event.VideoUploadRequested;
-import toykiwi.event.VideoUrlUploaded;
-import toykiwi.exceptions.InvalidSubtitleIdException;
-import toykiwi.exceptions.InvalidVideoIdException;
 
 @Service
 public class CollectedDataViewHandler {

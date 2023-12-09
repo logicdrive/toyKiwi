@@ -1,9 +1,9 @@
 package toykiwi.collectedData;
 
+import toykiwi.domain.Subtitle;
+
 import lombok.Getter;
 import lombok.ToString;
-
-import toykiwi.domain.Subtitle;
 
 @Getter
 @ToString

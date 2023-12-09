@@ -1,5 +1,8 @@
 package toykiwi.domain;
 
+import toykiwi._global.logger.CustomLogger;
+import toykiwi._global.logger.CustomLoggerType;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -11,9 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 import lombok.Data;
-
-import toykiwi.logger.CustomLogger;
-import toykiwi.logger.CustomLoggerType;
 
 @Entity
 @Table(name = "Video")
