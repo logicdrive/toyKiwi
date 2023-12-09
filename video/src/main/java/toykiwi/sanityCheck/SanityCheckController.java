@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -40,10 +38,10 @@ public class SanityCheckController {
 
             CustomLogger.debug(CustomLoggerType.ENTER);
 
-            List<String> logs = this.sanityCheckService.logs(logsReqDto);
+            LogsResDto logsResDto = this.sanityCheckService.logs(logsReqDto);
 
-            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{logsSize: %d}", logs.size()));
-            return ResponseEntity.ok(new LogsResDto(logs));
+            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{logsResDto: %s}", logsResDto.toString()));
+            return ResponseEntity.ok(logsResDto);
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{logsReqDto: %s}", logsReqDto.toString()));

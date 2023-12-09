@@ -8,6 +8,7 @@ import toykiwi._global.logger.CustomLoggerType;
 import toykiwi.sanityCheck.reqDtos.LogsReqDto;
 import toykiwi.sanityCheck.reqDtos.MockGeneratingSubtitleStartedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockUploadingVideoCompletedReqDto;
+import toykiwi.sanityCheck.resDtos.LogsResDto;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,7 +23,7 @@ public class SanityCheckService {
     private final String logFilePath = "./logs/logback.log";
 
     // 출력된 로그들 중에서 끝부분 몇라인을 읽어서 반환시키기 위해서
-    public List<String> logs(LogsReqDto logsReqDto) throws FileNotFoundException {
+    public LogsResDto logs(LogsReqDto logsReqDto) throws FileNotFoundException {
             List<String> logs = new ArrayList<>();
 
             try {
@@ -45,7 +46,7 @@ public class SanityCheckService {
                 throw new FileNotFoundException();
             }
 
-            return logs.subList(Math.max(logs.size()-logsReqDto.getLineLength(), 0), logs.size());
+            return new LogsResDto(logs.subList(Math.max(logs.size()-logsReqDto.getLineLength(), 0), logs.size()));
     }
 
 
