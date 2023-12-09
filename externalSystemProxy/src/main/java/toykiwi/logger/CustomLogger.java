@@ -49,6 +49,6 @@ public class CustomLogger {
 
     public static String buildErrorMessages(Exception e, String message, String params) {
         final StackTraceElement[] ste = Thread.currentThread().getStackTrace();
-        return String.format("[%s] [%s] %s: %s", ste[3].toString(), e.getClass().getName(), message, params) + "\n" + e.getStackTrace().toString();
+        return String.format("[%s] [%s] %s: %s", ste[3].toString(), e.getClass().getName(), e.getMessage() + " / " + message, params) + "\n" + e.getStackTrace().toString();
     }
 }

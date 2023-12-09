@@ -1,4 +1,4 @@
-package toykiwi.sanityCheck;
+package toykiwi.sanityCheck.resDtos;
 
 import lombok.Getter;
 import lombok.ToString;

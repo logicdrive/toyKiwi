@@ -1,8 +1,7 @@
 package toykiwi.event;
 
 import toykiwi.infra.AbstractEvent;
-import toykiwi.sanityCheck.MockVideoUrlUploadedReqDto;
-
+import toykiwi.sanityCheck.reqDtos.MockVideoUrlUploadedReqDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
