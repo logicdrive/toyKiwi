@@ -5,10 +5,11 @@ from .._global.workdir.WorkDirManager import WorkDirManager
 from .reqDtos.UploadYoutubeVideoReqDto import UploadYoutubeVideoReqDto
 from .resDtos.UploadYoutubeVideoResDto import UploadYoutubeVideoResDto
 
+from .YoutubeVideoDownloadService import VideoMetadataDto, downloadYoutubeVideo
+
+
 def uploadYoutubeVideo(uploadedYoutubVideoReqDto:UploadYoutubeVideoReqDto) -> UploadYoutubeVideoResDto :
-    with WorkDirManager() as path:
-        print("Used work dir:", path())
-        print("Used video file path:", path("video.mp4"))
+    with WorkDirManager(isAfterClear=False) as path:
+        videoMetadataDto:VideoMetadataDto = downloadYoutubeVideo(uploadedYoutubVideoReqDto.youtubeUrl, path(), "video.mp4")
     
-    return UploadYoutubeVideoResDto("Test title", "Test upload url", "Test thumbnail Url")
-    
+    return UploadYoutubeVideoResDto(videoMetadataDto.title, "Test upload url", "Test thumbnail Url")
