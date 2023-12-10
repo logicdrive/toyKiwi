@@ -32,3 +32,7 @@ def uploadToPublicS3(filePath:str) -> str :
     uploadUrl:str = f"https://{AWS_BUCKET_NAME}.s3.{AWS_REGION_CODE}.amazonaws.com/{objectKey}"
     CustomLogger.debug(CustomLoggerType.EFFECT, "File was successfully uploaded to S3", "<uploadUrl: {}>".format(uploadUrl))
     return uploadUrl
+
+# 주어진 버킷에 있는 해당 키를 가진 파일을 삭제시키기 위해서
+def deleteToPublic3(objectKey:str) -> None :
+    CLIENT_S3.Object(AWS_BUCKET_NAME, objectKey).delete()

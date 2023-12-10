@@ -5,7 +5,7 @@ from .resDtos.UploadYoutubeVideoResDto import UploadYoutubeVideoResDto
 from .reqDtos.RemoveFileVideoReqDto import RemoveFileVideoReqDto
 
 from .services.YoutubeVideoDownloadService import VideoMetadataDto, downloadCuttedYoutubeVideo
-from .services.S3ProxyService import uploadToPublicS3
+from .services.S3ProxyService import uploadToPublicS3, deleteToPublic3
 
 # 주어진 유튜브 URL에서 동영상을 다운로드 받고, 관련 동영상 및 썸네일을 업로드해서 그 정보를 반환시키기 위해서
 def uploadYoutubeVideo(uploadedYoutubVideoReqDto:UploadYoutubeVideoReqDto) -> UploadYoutubeVideoResDto :
@@ -23,5 +23,6 @@ def uploadYoutubeVideo(uploadedYoutubVideoReqDto:UploadYoutubeVideoReqDto) -> Up
     
     return uploadYoutubeVideoResDto
 
+# 주어진 경로에 있는 파일을 삭제시키기 위해서
 def removeFile(removeFileVideoReqDto:RemoveFileVideoReqDto) -> None :
-    return
+    deleteToPublic3(removeFileVideoReqDto.fileUrl.split("/")[-1])
