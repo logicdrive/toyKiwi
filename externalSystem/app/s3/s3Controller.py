@@ -1,12 +1,12 @@
 from flask import Blueprint, request
 from http import HTTPStatus
 
+from .._global.logger import CustomLogger
+from .._global.logger import CustomLoggerType
+
 from . import s3Service
 from .reqDtos.UploadYoutubeVideoReqDto import UploadYoutubeVideoReqDto
 from .resDtos.UploadYoutubeVideoResDto import UploadYoutubeVideoResDto
-
-from .._global.logger import CustomLogger
-from .._global.logger import CustomLoggerType
 
 
 bp = Blueprint("s3", __name__, url_prefix="/s3")

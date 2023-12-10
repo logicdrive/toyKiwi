@@ -1,8 +1,8 @@
 import os
-
 from flask import Flask
 
 from ._global.logger import LoggingConfig
+
 from .sanityCheck import SanityCheckController
 from .s3 import s3Controller
 

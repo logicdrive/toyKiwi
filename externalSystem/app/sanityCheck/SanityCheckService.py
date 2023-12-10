@@ -1,11 +1,10 @@
 import re
 
-from .reqDtos.LogsReqDto import LogsReqDto
-from .resDtos.LogsResDto import LogsResDto
-
 from .._global.logger import CustomLogger
 from .._global.logger import CustomLoggerType
 
+from .reqDtos.LogsReqDto import LogsReqDto
+from .resDtos.LogsResDto import LogsResDto
 
 logFilePath:str = "./logs/logback.log"
 
