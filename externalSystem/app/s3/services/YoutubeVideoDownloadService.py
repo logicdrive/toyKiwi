@@ -1,5 +1,5 @@
-from .._global.logger import CustomLogger
-from .._global.logger import CustomLoggerType
+from ..._global.logger import CustomLogger
+from ..._global.logger import CustomLoggerType
 
 import pytube
 from dataclasses import dataclass

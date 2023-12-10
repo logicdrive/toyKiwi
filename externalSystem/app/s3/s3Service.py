@@ -5,7 +5,7 @@ from .._global.workdir.WorkDirManager import WorkDirManager
 from .reqDtos.UploadYoutubeVideoReqDto import UploadYoutubeVideoReqDto
 from .resDtos.UploadYoutubeVideoResDto import UploadYoutubeVideoResDto
 
-from .YoutubeVideoDownloadService import VideoMetadataDto, downloadYoutubeVideo
+from .services.YoutubeVideoDownloadService import VideoMetadataDto, downloadYoutubeVideo
 
 
 def uploadYoutubeVideo(uploadedYoutubVideoReqDto:UploadYoutubeVideoReqDto) -> UploadYoutubeVideoResDto :
