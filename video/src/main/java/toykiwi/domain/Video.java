@@ -4,6 +4,7 @@ import toykiwi.VideoApplication;
 import toykiwi._global.event.GeneratingSubtitleStarted;
 import toykiwi._global.event.SubtitleMetadataUploaded;
 import toykiwi._global.event.UploadingVideoCompleted;
+import toykiwi._global.event.VideoRemoveRequested;
 import toykiwi._global.event.VideoUploadRequested;
 import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.logger.CustomLogger;
@@ -17,6 +18,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PostRemove;
 import javax.persistence.PreUpdate;
 
 import lombok.Data;
@@ -76,6 +79,19 @@ public class Video {
     @PostUpdate
     public void onPostUpdate() {
         CustomLogger.debug(CustomLoggerType.EFFECT, "Video is updated by using JPA", String.format("{video: %s}", this.toString()));
+    }
+
+
+    @PreRemove
+    public void onPreRemove() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to delete video by using JPA", String.format("{video: %s}", this.toString()));
+        VideoRemoveRequested videoDeleteRequested = new VideoRemoveRequested(this);
+        videoDeleteRequested.publishAfterCommit();
+    }
+
+    @PostRemove
+    public void onPostRemove() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Video is deleted video by using JPA", String.format("{video: %s}", this.toString()));
     }
 
 
