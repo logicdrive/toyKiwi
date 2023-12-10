@@ -1,7 +1,7 @@
 from flask import jsonify
 
 class UploadYoutubeVideoResDto:
-    def __init__(self, videoTitle:str, uploadedUrl:str, thumbnailUrl:str) :
+    def __init__(self, videoTitle:str="", uploadedUrl:str="", thumbnailUrl:str="") :
         self.__videoTitle:str = videoTitle
         self.__uploadedUrl:str = uploadedUrl
         self.__thumbnailUrl:str = thumbnailUrl
@@ -24,7 +24,20 @@ class UploadYoutubeVideoResDto:
     def thumbnailUrl(self) -> str :
         return self.__thumbnailUrl
     
+
+    @videoTitle.setter
+    def videoTitle(self, videoTitle) :
+        self.__videoTitle = videoTitle
+
+    @uploadedUrl.setter
+    def uploadedUrl(self, uploadedUrl) :
+        self.__uploadedUrl = uploadedUrl
+
+    @thumbnailUrl.setter
+    def thumbnailUrl(self, thumbnailUrl) :
+        self.__thumbnailUrl = thumbnailUrl
     
+
     def json(self) -> str :
         return jsonify({
             "videoTitle": self.__videoTitle,
