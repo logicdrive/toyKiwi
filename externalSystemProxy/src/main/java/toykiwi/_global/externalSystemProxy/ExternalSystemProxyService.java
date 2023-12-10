@@ -10,9 +10,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import toykiwi._global.externalSystemProxy.reqDtos.EchoWithJsonReqDto;
 import toykiwi._global.externalSystemProxy.reqDtos.ExternalSystemProxyReqDto;
+import toykiwi._global.externalSystemProxy.reqDtos.GenerateSubtitleReqDto;
+import toykiwi._global.externalSystemProxy.reqDtos.TranslateSubtitleReqDto;
 import toykiwi._global.externalSystemProxy.reqDtos.UploadYoutubeVideoReqDto;
 import toykiwi._global.externalSystemProxy.resDtos.EchoWithJsonResDto;
 import toykiwi._global.externalSystemProxy.resDtos.ExternalSystemProxyResDto;
+import toykiwi._global.externalSystemProxy.resDtos.GenerateSubtitleResDto;
+import toykiwi._global.externalSystemProxy.resDtos.TranslateSubtitleResDto;
 import toykiwi._global.externalSystemProxy.resDtos.UploadYoutubeVideoResDto;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
@@ -35,6 +39,16 @@ public class ExternalSystemProxyService {
     // 주어진 유튜브 URL에서 동영상을 다운로드 받고, 관련 동영상 및 썸네일을 업로드해서 그 정보를 반환시키기 위해서
     public UploadYoutubeVideoResDto uploadYoutubeVideo(UploadYoutubeVideoReqDto uploadYoutubeVideoReqDto) throws Exception {
         return this.jsonCommunication("/s3/uploadYoutubeVideo", uploadYoutubeVideoReqDto, UploadYoutubeVideoResDto.class);
+    }
+
+    // 주어진 동영상들을 분석해서 자막들을 추출해서 관련 정보들을 반환시키기 위해서
+    public GenerateSubtitleResDto generateSubtitle(GenerateSubtitleReqDto generateSubtitleReqDto) throws Exception {
+        return this.jsonCommunication("/openai/generateSubtitle", generateSubtitleReqDto, GenerateSubtitleResDto.class);
+    }
+
+    // 주어진 자막에 대한 한글 번역문을 반환시키기 위해서
+    public TranslateSubtitleResDto translateSubtitle(TranslateSubtitleReqDto translateSubtitleReqDto) throws Exception {
+        return this.jsonCommunication("/deepl/translateSubtitle", translateSubtitleReqDto, TranslateSubtitleResDto.class);
     }
 
 

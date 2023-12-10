@@ -10,8 +10,11 @@ import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.externalSystemProxy.ExternalSystemProxyService;
 import toykiwi._global.externalSystemProxy.reqDtos.UploadYoutubeVideoReqDto;
 import toykiwi._global.externalSystemProxy.resDtos.UploadYoutubeVideoResDto;
-import toykiwi._global.logger.CustomLogger;
-import toykiwi._global.logger.CustomLoggerType;
+import toykiwi._global.externalSystemProxy.reqDtos.GenerateSubtitleReqDto;
+import toykiwi._global.externalSystemProxy.reqDtos.TranslateSubtitleReqDto;
+import toykiwi._global.externalSystemProxy.resDtos.GenerateSubtitleResDto;
+import toykiwi._global.externalSystemProxy.resDtos.SubtitleResDto;
+import toykiwi._global.externalSystemProxy.resDtos.TranslateSubtitleResDto;
 
 import org.springframework.stereotype.Service;
 
@@ -40,64 +43,41 @@ public class ExternalSystemProxy {
     }
 
     // 비디오 URL 업데이트 완료시, 해당 URL에 접속해서 자막을 추출하고, 관련 정보를 이벤트로 전달하기 위해서
-    public void requestGeneratingSubtitle(VideoUrlUploaded videoUrlUploaded) {
+    public void requestGeneratingSubtitle(VideoUrlUploaded videoUrlUploaded) throws Exception {
 
-        if(videoUrlUploaded.getId() == 1)
-        {
-            CustomLogger.debug(CustomLoggerType.EFFECT, "MOCK: Generating subtitle from ExternalSystem", String.format("{videoUrlUploaded: %s}", videoUrlUploaded.toString()));
+        GenerateSubtitleReqDto generateSubtitleReqDto = new GenerateSubtitleReqDto(
+            videoUrlUploaded.getUploadedUrl()
+        );
+        
+        GenerateSubtitleResDto generateSubtitleResDto = this.externalSystemProxyService.generateSubtitle(generateSubtitleReqDto);
 
-            GeneratingSubtitleStarted generatingSubtitleStarted = new GeneratingSubtitleStarted();
-            generatingSubtitleStarted.setVideoId(1L);
-            generatingSubtitleStarted.setSubtitleCount(2);
-            generatingSubtitleStarted.publishAfterCommit();
-
+        GeneratingSubtitleStarted generatingSubtitleStarted = new GeneratingSubtitleStarted();
+        generatingSubtitleStarted.setVideoId(videoUrlUploaded.getId());
+        generatingSubtitleStarted.setSubtitleCount(generateSubtitleResDto.getSubtitles().size());
+        generatingSubtitleStarted.publishAfterCommit();
+        for(SubtitleResDto subtitleResDto : generateSubtitleResDto.getSubtitles()) {
             GeneratingSubtitleCompleted generatingSubtitleCompleted = new GeneratingSubtitleCompleted();
-            generatingSubtitleCompleted.setVideoId(1L);
-            generatingSubtitleCompleted.setSubtitle("Test Subtitle No.1");
-            generatingSubtitleCompleted.setStartSecond(0);
-            generatingSubtitleCompleted.setEndSecond(5);
+            generatingSubtitleCompleted.setVideoId(videoUrlUploaded.getId());
+            generatingSubtitleCompleted.setSubtitle(subtitleResDto.getSubtitle());
+            generatingSubtitleCompleted.setStartSecond(subtitleResDto.getStartSecond());
+            generatingSubtitleCompleted.setEndSecond(subtitleResDto.getEndSecond());
             generatingSubtitleCompleted.publishAfterCommit();
-
-            GeneratingSubtitleCompleted generatingSubtitleCompleted_2 = new GeneratingSubtitleCompleted();
-            generatingSubtitleCompleted_2.setVideoId(1L);
-            generatingSubtitleCompleted_2.setSubtitle("Test Subtitle No.2");
-            generatingSubtitleCompleted_2.setStartSecond(5);
-            generatingSubtitleCompleted_2.setEndSecond(10);
-            generatingSubtitleCompleted_2.publishAfterCommit();
-            return;
         }
 
-        GeneratingSubtitleCompleted generatingSubtitleCompleted = new GeneratingSubtitleCompleted();
-        generatingSubtitleCompleted.publishAfterCommit();
-    
     }
 
     // 비디오 자막 업데이트시, 해당 자막에 대한 번역문을 생성하고, 관련 정보를 이벤트로 전달하기 위해서
-    public void requestTranslatingSubtitle(GeneratedSubtitleUploaded generatingSubtitleUploaded) {
+    public void requestTranslatingSubtitle(GeneratedSubtitleUploaded generatingSubtitleUploaded) throws Exception {
 
-        if(generatingSubtitleUploaded.getId() == 1)
-        {
-            CustomLogger.debug(CustomLoggerType.EFFECT, "MOCK: Get translatedSubtitle and from ExternalSystem", String.format("{generatingSubtitleUploaded: %s}", generatingSubtitleUploaded.toString()));
-        
-            TranslatingSubtitleCompleted translatingSubtitleCompleted = new TranslatingSubtitleCompleted();
-            translatingSubtitleCompleted.setSubtitleId(1L);
-            translatingSubtitleCompleted.setTranslatedSubtitle("테스트 자막 No.1");
-            translatingSubtitleCompleted.publishAfterCommit();
-            return;
-        }
+        TranslateSubtitleReqDto translateSubtitleReqDto = new TranslateSubtitleReqDto(
+                generatingSubtitleUploaded.getSubtitle()
+        );
 
-        if(generatingSubtitleUploaded.getId() == 2)
-        {
-            CustomLogger.debug(CustomLoggerType.EFFECT, "MOCK: Get translatedSubtitle and from ExternalSystem", String.format("{generatingSubtitleUploaded: %s}", generatingSubtitleUploaded.toString()));
-        
-            TranslatingSubtitleCompleted translatingSubtitleCompleted = new TranslatingSubtitleCompleted();
-            translatingSubtitleCompleted.setSubtitleId(2L);
-            translatingSubtitleCompleted.setTranslatedSubtitle("테스트 자막 No.2");
-            translatingSubtitleCompleted.publishAfterCommit();
-            return;        
-        }
+        TranslateSubtitleResDto translateSubtitleResDto = this.externalSystemProxyService.translateSubtitle(translateSubtitleReqDto);
 
         TranslatingSubtitleCompleted translatingSubtitleCompleted = new TranslatingSubtitleCompleted();
+        translatingSubtitleCompleted.setSubtitleId(generatingSubtitleUploaded.getId());
+        translatingSubtitleCompleted.setTranslatedSubtitle(translateSubtitleResDto.getTranslatedSubtitle());
         translatingSubtitleCompleted.publishAfterCommit();
     
     }
