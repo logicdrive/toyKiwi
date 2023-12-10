@@ -7,34 +7,40 @@ import toykiwi._global.event.TranslatingSubtitleCompleted;
 import toykiwi._global.event.UploadingVideoCompleted;
 import toykiwi._global.event.VideoUploadRequested;
 import toykiwi._global.event.VideoUrlUploaded;
+import toykiwi._global.externalSystemProxy.ExternalSystemProxyService;
+import toykiwi._global.externalSystemProxy.reqDtos.UploadYoutubeVideoReqDto;
+import toykiwi._global.externalSystemProxy.resDtos.UploadYoutubeVideoResDto;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
 
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
 public class ExternalSystemProxy {
+    private final ExternalSystemProxyService externalSystemProxyService;
+    
     // 비디오 업로드 요청관련 이벤트 발생시 비디오를 업로드하고, 관련 정보를 이벤트로 전달하기 위해서
-    public static void requestUploadingVideo(VideoUploadRequested videoUploadRequested) {
+    public void requestUploadingVideo(VideoUploadRequested videoUploadRequested) throws Exception {
         
-        if(videoUploadRequested.getId() == 1)
-        {
-            CustomLogger.debug(CustomLoggerType.EFFECT, "MOCK: Get URL and title from ExternalSystem", String.format("{videoUploadRequested: %s}", videoUploadRequested.toString()));
+        UploadYoutubeVideoReqDto uploadYoutubeVideoReqDto = new UploadYoutubeVideoReqDto(
+            videoUploadRequested.getYoutubeUrl(), videoUploadRequested.getCuttedStartSecond(), videoUploadRequested.getCuttedEndSecond());
 
-            UploadingVideoCompleted uploadingVideoCompleted = new UploadingVideoCompleted();
-            uploadingVideoCompleted.setVideoId(1L);
-            uploadingVideoCompleted.setVideoTitle("Test Video Title");
-            uploadingVideoCompleted.setUploadedUrl("https://s3.testurl.mp4");
-            uploadingVideoCompleted.setThumbnailUrl("https://test.thumbnailUrl.jpg");
-            uploadingVideoCompleted.publishAfterCommit();
-            return;
-        }
-
+        UploadYoutubeVideoResDto uploadYoutubeVideoResDto = this.externalSystemProxyService.uploadYoutubeVideo(uploadYoutubeVideoReqDto);
 
         UploadingVideoCompleted uploadingVideoCompleted = new UploadingVideoCompleted();
+        uploadingVideoCompleted.setVideoId(videoUploadRequested.getId());
+        uploadingVideoCompleted.setVideoTitle(uploadYoutubeVideoResDto.getVideoTitle());
+        uploadingVideoCompleted.setUploadedUrl(uploadYoutubeVideoResDto.getUploadedUrl());
+        uploadingVideoCompleted.setThumbnailUrl(uploadYoutubeVideoResDto.getThumbnailUrl());
         uploadingVideoCompleted.publishAfterCommit();
-    
+        
     }
 
     // 비디오 URL 업데이트 완료시, 해당 URL에 접속해서 자막을 추출하고, 관련 정보를 이벤트로 전달하기 위해서
-    public static void requestGeneratingSubtitle(VideoUrlUploaded videoUrlUploaded) {
+    public void requestGeneratingSubtitle(VideoUrlUploaded videoUrlUploaded) {
 
         if(videoUrlUploaded.getId() == 1)
         {
@@ -67,7 +73,7 @@ public class ExternalSystemProxy {
     }
 
     // 비디오 자막 업데이트시, 해당 자막에 대한 번역문을 생성하고, 관련 정보를 이벤트로 전달하기 위해서
-    public static void requestTranslatingSubtitle(GeneratedSubtitleUploaded generatingSubtitleUploaded) {
+    public void requestTranslatingSubtitle(GeneratedSubtitleUploaded generatingSubtitleUploaded) {
 
         if(generatingSubtitleUploaded.getId() == 1)
         {

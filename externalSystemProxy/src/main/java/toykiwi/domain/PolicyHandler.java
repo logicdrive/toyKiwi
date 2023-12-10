@@ -1,11 +1,5 @@
 package toykiwi.domain;
 
-import javax.transaction.Transactional;
-
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.stereotype.Service;
-
 import toykiwi._global.config.kafka.KafkaProcessor;
 import toykiwi._global.event.GeneratedSubtitleUploaded;
 import toykiwi._global.event.VideoUploadRequested;
@@ -13,9 +7,20 @@ import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
 
+import javax.transaction.Transactional;
+
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class PolicyHandler {
+    private final ExternalSystemProxy externalSystemProxy;
+
     @StreamListener(KafkaProcessor.INPUT)
     public void whatever(@Payload String eventString) {}
 
@@ -31,7 +36,7 @@ public class PolicyHandler {
         {
 
             CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{videoUploadRequested: %s}", videoUploadRequested.toString()));
-            ExternalSystemProxy.requestUploadingVideo(videoUploadRequested);
+            this.externalSystemProxy.requestUploadingVideo(videoUploadRequested);
             CustomLogger.debug(CustomLoggerType.EXIT);
 
         } catch(Exception e) {
@@ -51,7 +56,7 @@ public class PolicyHandler {
         {
 
             CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{videoUrlUploaded: %s}", videoUrlUploaded.toString()));
-            ExternalSystemProxy.requestGeneratingSubtitle(videoUrlUploaded);
+            this.externalSystemProxy.requestGeneratingSubtitle(videoUrlUploaded);
             CustomLogger.debug(CustomLoggerType.EXIT);
 
         } catch(Exception e) {
@@ -71,7 +76,7 @@ public class PolicyHandler {
         {
 
             CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{generatingSubtitleUploaded: %s}", generatingSubtitleUploaded.toString()));
-            ExternalSystemProxy.requestTranslatingSubtitle(generatingSubtitleUploaded);
+            this.externalSystemProxy.requestTranslatingSubtitle(generatingSubtitleUploaded);
             CustomLogger.debug(CustomLoggerType.EXIT);
 
         } catch(Exception e) {
