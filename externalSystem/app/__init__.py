@@ -6,6 +6,7 @@ from ._global.logger import LoggingConfig
 from .sanityCheck import SanityCheckController
 from .s3 import S3Controller
 from .openai import OpenaiController
+from .deepl import DeeplController
 
 
 dirPathsToCreate = ["./logs", "./workDirs"]
@@ -22,5 +23,6 @@ def create_app():
     app.register_blueprint(SanityCheckController.bp)
     app.register_blueprint(S3Controller.bp)
     app.register_blueprint(OpenaiController.bp)
+    app.register_blueprint(DeeplController.bp)
 
     return app
