@@ -8,6 +8,7 @@ from . import S3Service
 from .reqDtos.UploadYoutubeVideoReqDto import UploadYoutubeVideoReqDto
 from .resDtos.UploadYoutubeVideoResDto import UploadYoutubeVideoResDto
 from .reqDtos.RemoveFileVideoReqDto import RemoveFileVideoReqDto
+from .resDtos.RemoveFileVideoResDto import RemoveFileVideoResDto
 
 
 bp = Blueprint("s3", __name__, url_prefix="/s3")
@@ -36,16 +37,16 @@ def uploadYoutubeVideo() -> UploadYoutubeVideoResDto :
 
 # 주어진 경로에 있는 파일을 삭제시키기 위해서
 @bp.route("/removeFile", methods=("PUT",))
-def removeFile() -> None :
+def removeFile() -> RemoveFileVideoResDto :
     try :
 
         removeFileVideoReqDto:RemoveFileVideoReqDto = RemoveFileVideoReqDto(request)
         CustomLogger.debug(CustomLoggerType.ENTER, "", "<removeFileVideoReqDto: {}>".format(removeFileVideoReqDto))
 
-        S3Service.removeFile(removeFileVideoReqDto)
-
-        CustomLogger.debug(CustomLoggerType.EXIT)
-        return ("", HTTPStatus.OK)
+        removeFileVideoResDto:RemoveFileVideoResDto = S3Service.removeFile(removeFileVideoReqDto)
+        
+        CustomLogger.debug(CustomLoggerType.EXIT, "", "<removeFileVideoResDto: {}>".format(removeFileVideoResDto))
+        return (removeFileVideoResDto.json(), HTTPStatus.OK)
 
     except Exception as e :
         jsonData = request.get_json()

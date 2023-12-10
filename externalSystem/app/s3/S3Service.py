@@ -3,6 +3,7 @@ from .._global.workdir.WorkDirManager import WorkDirManager
 from .reqDtos.UploadYoutubeVideoReqDto import UploadYoutubeVideoReqDto
 from .resDtos.UploadYoutubeVideoResDto import UploadYoutubeVideoResDto
 from .reqDtos.RemoveFileVideoReqDto import RemoveFileVideoReqDto
+from .resDtos.RemoveFileVideoResDto import RemoveFileVideoResDto
 
 from .services.YoutubeVideoDownloadService import VideoMetadataDto, downloadCuttedYoutubeVideo
 from .services.S3ProxyService import uploadToPublicS3, deleteToPublic3
@@ -24,5 +25,6 @@ def uploadYoutubeVideo(uploadedYoutubVideoReqDto:UploadYoutubeVideoReqDto) -> Up
     return uploadYoutubeVideoResDto
 
 # 주어진 경로에 있는 파일을 삭제시키기 위해서
-def removeFile(removeFileVideoReqDto:RemoveFileVideoReqDto) -> None :
+def removeFile(removeFileVideoReqDto:RemoveFileVideoReqDto) -> RemoveFileVideoResDto :
     deleteToPublic3(removeFileVideoReqDto.fileUrl.split("/")[-1])
+    return RemoveFileVideoResDto(removeFileVideoReqDto.fileUrl)
