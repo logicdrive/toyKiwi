@@ -7,6 +7,7 @@ from .._global.logger import CustomLoggerType
 from . import S3Service
 from .reqDtos.UploadYoutubeVideoReqDto import UploadYoutubeVideoReqDto
 from .resDtos.UploadYoutubeVideoResDto import UploadYoutubeVideoResDto
+from .reqDtos.RemoveFileVideoReqDto import RemoveFileVideoReqDto
 
 
 bp = Blueprint("s3", __name__, url_prefix="/s3")
@@ -31,4 +32,23 @@ def uploadYoutubeVideo() -> UploadYoutubeVideoResDto :
         cuttedEndSecond = jsonData["cuttedEndSecond"] or 0
         CustomLogger.error(e, "", "<genereateSubtitleReqDto: {}, cuttedStartSecond: {}, cuttedEndSecond: {}>"
                                     .format(youtubeUrl, cuttedStartSecond, cuttedEndSecond))
+        return ("", HTTPStatus.BAD_REQUEST)
+
+# 주어진 경로에 있는 파일을 삭제시키기 위해서
+@bp.route("/removeFile", methods=("PUT",))
+def removeFile() -> None :
+    try :
+
+        removeFileVideoReqDto:RemoveFileVideoReqDto = RemoveFileVideoReqDto(request)
+        CustomLogger.debug(CustomLoggerType.ENTER, "", "<removeFileVideoReqDto: {}>".format(removeFileVideoReqDto))
+
+        S3Service.removeFile(removeFileVideoReqDto)
+
+        CustomLogger.debug(CustomLoggerType.EXIT)
+        return ("", HTTPStatus.OK)
+
+    except Exception as e :
+        jsonData = request.get_json()
+        fileUrl = jsonData["fileUrl"] or ""
+        CustomLogger.error(e, "", "<fileUrl: {}>".format(fileUrl))
         return ("", HTTPStatus.BAD_REQUEST)

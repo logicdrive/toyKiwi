@@ -2,6 +2,7 @@ from .._global.workdir.WorkDirManager import WorkDirManager
 
 from .reqDtos.UploadYoutubeVideoReqDto import UploadYoutubeVideoReqDto
 from .resDtos.UploadYoutubeVideoResDto import UploadYoutubeVideoResDto
+from .reqDtos.RemoveFileVideoReqDto import RemoveFileVideoReqDto
 
 from .services.YoutubeVideoDownloadService import VideoMetadataDto, downloadCuttedYoutubeVideo
 from .services.S3ProxyService import uploadToPublicS3
@@ -21,3 +22,6 @@ def uploadYoutubeVideo(uploadedYoutubVideoReqDto:UploadYoutubeVideoReqDto) -> Up
         uploadYoutubeVideoResDto.thumbnailUrl = uploadToPublicS3(videoMetadataDto.outputThumbnailPath)
     
     return uploadYoutubeVideoResDto
+
+def removeFile(removeFileVideoReqDto:RemoveFileVideoReqDto) -> None :
+    return
