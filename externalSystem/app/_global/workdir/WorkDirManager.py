@@ -12,7 +12,7 @@ class WorkDirManager:
     def __enter__(self):
         CustomLogger.debug(CustomLoggerType.EFFECT, "Try to make workdir", "<workDirPath: {}>".format(self.workDirPath))
         os.makedirs(self.workDirPath)
-        return self.workDirPath
+        return lambda subPath="" : self.workDirPath + subPath
       
     def __exit__(self, exc_type, exc_value, exc_traceback):
         CustomLogger.debug(CustomLoggerType.EFFECT, "Try to remove workdir", "<workDirPath: {}>".format(self.workDirPath))
