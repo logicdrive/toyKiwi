@@ -17,7 +17,7 @@ class UploadYoutubeVideoReqDto:
         return self.__youtubeUrl
     
     @property
-    def cuttedEndSecond(self) -> str :
+    def cuttedStartSecond(self) -> str :
         return self.__cuttedStartSecond
     
     @property
