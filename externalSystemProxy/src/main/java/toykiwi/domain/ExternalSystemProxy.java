@@ -5,12 +5,14 @@ import toykiwi._global.event.GeneratingSubtitleCompleted;
 import toykiwi._global.event.GeneratingSubtitleStarted;
 import toykiwi._global.event.TranslatingSubtitleCompleted;
 import toykiwi._global.event.UploadingVideoCompleted;
+import toykiwi._global.event.VideoRemoveRequested;
 import toykiwi._global.event.VideoUploadRequested;
 import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.externalSystemProxy.ExternalSystemProxyService;
 import toykiwi._global.externalSystemProxy.reqDtos.UploadYoutubeVideoReqDto;
 import toykiwi._global.externalSystemProxy.resDtos.UploadYoutubeVideoResDto;
 import toykiwi._global.externalSystemProxy.reqDtos.GenerateSubtitleReqDto;
+import toykiwi._global.externalSystemProxy.reqDtos.RemoveFileReqDto;
 import toykiwi._global.externalSystemProxy.reqDtos.TranslateSubtitleReqDto;
 import toykiwi._global.externalSystemProxy.resDtos.GenerateSubtitleResDto;
 import toykiwi._global.externalSystemProxy.resDtos.SubtitleResDto;
@@ -80,5 +82,16 @@ public class ExternalSystemProxy {
         translatingSubtitleCompleted.setTranslatedSubtitle(translateSubtitleResDto.getTranslatedSubtitle());
         translatingSubtitleCompleted.publishAfterCommit();
     
+    }
+
+    // 비디오 삭제 요청시 S3에 업로드된 관련된 비디오 및 썸네일을 삭제시키기 위해서
+    public void requestRemovingVideo(VideoRemoveRequested videoRemoveRequested) throws Exception {
+        this.externalSystemProxyService.removeFile(
+            new RemoveFileReqDto(videoRemoveRequested.getUploadedUrl())
+        );
+
+        this.externalSystemProxyService.removeFile(
+            new RemoveFileReqDto(videoRemoveRequested.getThumbnailUrl())
+        );
     }
 }

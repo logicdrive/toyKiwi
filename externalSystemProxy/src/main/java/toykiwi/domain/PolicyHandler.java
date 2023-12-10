@@ -2,6 +2,7 @@ package toykiwi.domain;
 
 import toykiwi._global.config.kafka.KafkaProcessor;
 import toykiwi._global.event.GeneratedSubtitleUploaded;
+import toykiwi._global.event.VideoRemoveRequested;
 import toykiwi._global.event.VideoUploadRequested;
 import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.logger.CustomLogger;
@@ -81,6 +82,26 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{generatingSubtitleUploaded: %s}", generatingSubtitleUploaded.toString()));
+        }
+    }
+
+    // 비디오 삭제 요청시 S3에 업로드된 관련된 비디오 및 썸네일을 삭제시키기 위해서
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='VideoRemoveRequested'"
+    )
+    public void wheneverVideoRemoveRequested_RequestRemovingVideo(
+        @Payload VideoRemoveRequested videoRemoveRequested
+    ) {
+        try
+        {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{videoRemoveRequested: %s}", videoRemoveRequested.toString()));
+            this.externalSystemProxy.requestRemovingVideo(videoRemoveRequested);
+            CustomLogger.debug(CustomLoggerType.EXIT);
+
+        } catch(Exception e) {
+            CustomLogger.error(e, "", String.format("{videoRemoveRequested: %s}", videoRemoveRequested.toString()));
         }
     }
 }

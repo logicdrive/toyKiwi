@@ -11,11 +11,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import toykiwi._global.externalSystemProxy.reqDtos.EchoWithJsonReqDto;
 import toykiwi._global.externalSystemProxy.reqDtos.ExternalSystemProxyReqDto;
 import toykiwi._global.externalSystemProxy.reqDtos.GenerateSubtitleReqDto;
+import toykiwi._global.externalSystemProxy.reqDtos.RemoveFileReqDto;
 import toykiwi._global.externalSystemProxy.reqDtos.TranslateSubtitleReqDto;
 import toykiwi._global.externalSystemProxy.reqDtos.UploadYoutubeVideoReqDto;
 import toykiwi._global.externalSystemProxy.resDtos.EchoWithJsonResDto;
 import toykiwi._global.externalSystemProxy.resDtos.ExternalSystemProxyResDto;
 import toykiwi._global.externalSystemProxy.resDtos.GenerateSubtitleResDto;
+import toykiwi._global.externalSystemProxy.resDtos.RemoveFileResDto;
 import toykiwi._global.externalSystemProxy.resDtos.TranslateSubtitleResDto;
 import toykiwi._global.externalSystemProxy.resDtos.UploadYoutubeVideoResDto;
 import toykiwi._global.logger.CustomLogger;
@@ -49,6 +51,11 @@ public class ExternalSystemProxyService {
     // 주어진 자막에 대한 한글 번역문을 반환시키기 위해서
     public TranslateSubtitleResDto translateSubtitle(TranslateSubtitleReqDto translateSubtitleReqDto) throws Exception {
         return this.jsonCommunication("/deepl/translateSubtitle", translateSubtitleReqDto, TranslateSubtitleResDto.class);
+    }
+
+    // 주어진 자막에 대한 한글 번역문을 반환시키기 위해서
+    public RemoveFileResDto removeFile(RemoveFileReqDto removeFileReqDto) throws Exception {
+        return this.jsonCommunication("/s3/removeFile", removeFileReqDto, RemoveFileResDto.class);
     }
 
 
