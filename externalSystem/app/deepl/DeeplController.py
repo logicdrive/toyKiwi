@@ -13,7 +13,7 @@ bp = Blueprint("deepl", __name__, url_prefix="/deepl")
 
 # 주어진 자막에 대한 한글 번역문을 반환시키기 위해서
 @bp.route("/translateSubtitle", methods=("PUT",))
-def genereateSubtitle() -> TranslateSubtitleResDto :
+def translateSubtitle() -> TranslateSubtitleResDto :
     try :
 
         translateSubtitleReqDto:TranslateSubtitleReqDto = TranslateSubtitleReqDto(request)
