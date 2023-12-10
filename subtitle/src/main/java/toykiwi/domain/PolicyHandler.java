@@ -3,6 +3,7 @@ package toykiwi.domain;
 import toykiwi._global.config.kafka.KafkaProcessor;
 import toykiwi._global.event.GeneratingSubtitleCompleted;
 import toykiwi._global.event.TranslatingSubtitleCompleted;
+import toykiwi._global.event.VideoRemoveRequested;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
 
@@ -55,6 +56,26 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{translatingSubtitleCompleted: %s}", translatingSubtitleCompleted.toString()));
+        }
+    }
+
+    // 비디오 삭제 요청이 있을 경우, 관련된 자막들을 전부 삭제시키기 위해서
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='VideoRemoveRequested'"
+    )
+    public void wheneverVideoRemoveRequestedd_removeSubtitles(
+        @Payload VideoRemoveRequested videoRemoveRequested
+    ) {
+        try
+        {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{videoRemoveRequested: %s}", videoRemoveRequested.toString()));
+            Subtitle.removeSubtitles(videoRemoveRequested);
+            CustomLogger.debug(CustomLoggerType.EXIT);
+
+        } catch(Exception e) {
+            CustomLogger.error(e, "", String.format("{videoRemoveRequested: %s}", videoRemoveRequested.toString()));
         }
     }
 }

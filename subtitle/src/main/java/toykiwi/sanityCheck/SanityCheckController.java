@@ -5,8 +5,9 @@ import toykiwi._global.logger.CustomLoggerType;
 
 import toykiwi.sanityCheck.reqDtos.LogsReqDto;
 import toykiwi.sanityCheck.reqDtos.MockGeneratingSubtitleCompletedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockTranslatingSubtitleCompletedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockVideoRemoveRequestedReqDto;
 import toykiwi.sanityCheck.resDtos.LogsResDto;
-import toykiwi.sanityCheck.resDtos.MockTranslatingSubtitleCompletedReqDto;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,6 +77,14 @@ public class SanityCheckController {
     public void mockTranslatingSubtitleCompleted(@RequestBody MockTranslatingSubtitleCompletedReqDto mockData) {
         CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
         this.sanityCheckService.mockTranslatingSubtitleCompleted(mockData);
+        CustomLogger.debug(CustomLoggerType.EXIT);
+    }
+
+    // Policy 테스트용으로 VideoRemoveRequested 이벤트를 강제로 발생시키기 위해서
+    @PostMapping("/mock/VideoRemoveRequested")
+    public void mockVideoRemoveRequested(@RequestBody MockVideoRemoveRequestedReqDto mockData) {
+        CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
+        this.sanityCheckService.mockVideoRemoveRequested(mockData);
         CustomLogger.debug(CustomLoggerType.EXIT);
     }
 }

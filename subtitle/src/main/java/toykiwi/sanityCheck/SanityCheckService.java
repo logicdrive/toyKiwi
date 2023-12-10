@@ -2,13 +2,15 @@ package toykiwi.sanityCheck;
 
 import toykiwi._global.event.GeneratingSubtitleCompleted;
 import toykiwi._global.event.TranslatingSubtitleCompleted;
+import toykiwi._global.event.VideoRemoveRequested;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
 
 import toykiwi.sanityCheck.reqDtos.LogsReqDto;
 import toykiwi.sanityCheck.reqDtos.MockGeneratingSubtitleCompletedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockTranslatingSubtitleCompletedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockVideoRemoveRequestedReqDto;
 import toykiwi.sanityCheck.resDtos.LogsResDto;
-import toykiwi.sanityCheck.resDtos.MockTranslatingSubtitleCompletedReqDto;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,5 +60,10 @@ public class SanityCheckService {
     // Policy 테스트용으로 GeneratingSubtitleCompleted 이벤트를 강제로 발생시키기 위해서
     public void mockTranslatingSubtitleCompleted(MockTranslatingSubtitleCompletedReqDto mockData) {
         (new TranslatingSubtitleCompleted(mockData)).publish();
+    }
+
+    // Policy 테스트용으로 VideoRemoveRequested 이벤트를 강제로 발생시키기 위해서
+    public void mockVideoRemoveRequested(MockVideoRemoveRequestedReqDto mockData) {
+        (new VideoRemoveRequested(mockData)).publish();
     }
 }

@@ -5,8 +5,11 @@ import toykiwi._global.event.GeneratedSubtitleUploaded;
 import toykiwi._global.event.GeneratingSubtitleCompleted;
 import toykiwi._global.event.TranlatedSubtitleUploaded;
 import toykiwi._global.event.TranslatingSubtitleCompleted;
+import toykiwi._global.event.VideoRemoveRequested;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
+
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,8 +17,10 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.PostPersist;
+import javax.persistence.PostRemove;
 import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
 import lombok.Data;
@@ -70,6 +75,17 @@ public class Subtitle {
     }
 
 
+    @PreRemove
+    public void onPreRemove() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to delete subtitle by using JPA", String.format("{subtitle: %s}", this.toString()));
+    }
+
+    @PostRemove
+    public void onPostRemove() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Subtitle is deleted video by using JPA", String.format("{subtitle: %s}", this.toString()));
+    }
+
+
     // 자막이 생성되었을 경우, 생성된 자막 관련 정보를 새로 추가시키기 위해서
     public static void uploadGeneratedSubtitle(
         GeneratingSubtitleCompleted generatingSubtitleCompleted
@@ -91,6 +107,7 @@ public class Subtitle {
     public static void uploadTranslatedSubtitle(
         TranslatingSubtitleCompleted translatingSubtitleCompleted
     ) {
+
         CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search Subtitle by using JPA", String.format("{translatingSubtitleCompleted: %s}", translatingSubtitleCompleted.toString()));
         repository().findById(translatingSubtitleCompleted.getSubtitleId()).ifPresent(subtitle->{
             
@@ -105,5 +122,15 @@ public class Subtitle {
 
          });
 
+    }
+
+    // 비디오 삭제 요청이 있을 경우, 관련된 자막들을 전부 삭제시키기 위해서
+    public static void removeSubtitles(
+        VideoRemoveRequested videoRemoveRequested
+    ) {
+        List<Subtitle> subtitles = repository().findAllByVideoId(videoRemoveRequested.getId());
+        for(Subtitle subtitle : subtitles) {
+            repository().delete(subtitle);
+        }
     }
 }
