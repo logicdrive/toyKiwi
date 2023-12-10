@@ -82,7 +82,7 @@ public class Subtitle {
 
     @PostRemove
     public void onPostRemove() {
-        CustomLogger.debug(CustomLoggerType.EFFECT, "Subtitle is deleted video by using JPA", String.format("{subtitle: %s}", this.toString()));
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Subtitle is deleted by using JPA", String.format("{subtitle: %s}", this.toString()));
     }
 
 

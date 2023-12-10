@@ -4,6 +4,7 @@ import toykiwi._global.config.kafka.KafkaProcessor;
 import toykiwi._global.event.GeneratedSubtitleUploaded;
 import toykiwi._global.event.SubtitleMetadataUploaded;
 import toykiwi._global.event.TranlatedSubtitleUploaded;
+import toykiwi._global.event.VideoRemoveRequested;
 import toykiwi._global.event.VideoUploadRequested;
 import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.exceptions.InvalidSubtitleIdException;
@@ -205,6 +206,40 @@ public class CollectedDataViewHandler {
 
         } catch (Exception e) {
             CustomLogger.error(e, "", String.format("{tranlatedSubtitleUploaded: %s}", tranlatedSubtitleUploaded.toString()));
+        }
+    }
+
+
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='VideoRemoveRequested'"
+    )
+    public void whenVideoRemoveRequested_then_DELETE_1(
+        @Payload VideoRemoveRequested videoRemoveRequested
+    ) {
+        try {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{videoRemoveRequested: %s}", videoRemoveRequested.toString()));
+            if (!videoRemoveRequested.validate()) return;
+
+            List<Video> videos = this.videoRepository.findAllByVideoId(videoRemoveRequested.getId());
+            if(videos.size() != 1)
+                throw new InvalidVideoIdException();
+            Video subtitleVideo = videos.get(0);
+
+
+            // 해당 비디오에 대한 자막들을 전부 삭제시키기 위해서
+            List<Subtitle> subtitles = this.subtitleRepository.findAllByVideo(subtitleVideo);
+            for(Subtitle subtitle : subtitles) {
+                this.subtitleRepository.delete(subtitle);
+            }
+            this.videoRepository.delete(subtitleVideo);
+
+
+            CustomLogger.debug(CustomLoggerType.EXIT);
+
+        } catch (Exception e) {
+            CustomLogger.error(e, "", String.format("{videoRemoveRequested: %s}", videoRemoveRequested.toString()));
         }
     }
 }

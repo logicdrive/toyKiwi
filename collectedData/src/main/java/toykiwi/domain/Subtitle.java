@@ -9,8 +9,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.PostPersist;
+import javax.persistence.PostRemove;
 import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -56,5 +58,16 @@ public class Subtitle {
     @PostUpdate
     public void onPostUpdate() {
         CustomLogger.debug(CustomLoggerType.EFFECT, "Subtitle is updated by using JPA", String.format("{subtitle: %s}", this.toString()));
-    }    
+    }
+
+
+    @PreRemove
+    public void onPreRemove() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to delete subtitle by using JPA", String.format("{subtitle: %s}", this.toString()));
+    }
+
+    @PostRemove
+    public void onPostRemove() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Subtitle is deleted by using JPA", String.format("{subtitle: %s}", this.toString()));
+    }
 }

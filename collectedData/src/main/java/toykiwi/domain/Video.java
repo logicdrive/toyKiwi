@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.PostPersist;
+import javax.persistence.PostRemove;
 import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -54,5 +56,16 @@ public class Video {
     @PostUpdate
     public void onPostUpdate() {
         CustomLogger.debug(CustomLoggerType.EFFECT, "Video is updated by using JPA", String.format("{video: %s}", this.toString()));
+    }
+
+
+    @PreRemove
+    public void onPreRemove() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to delete video by using JPA", String.format("{video: %s}", this.toString()));
+    }
+
+    @PostRemove
+    public void onPostRemove() {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Video is deleted by using JPA", String.format("{video: %s}", this.toString()));
     }
 }

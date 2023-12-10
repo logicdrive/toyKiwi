@@ -7,6 +7,7 @@ import toykiwi.sanityCheck.reqDtos.LogsReqDto;
 import toykiwi.sanityCheck.reqDtos.MockGeneratedSubtitleUploadedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockSubtitleMetadataUploadedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockTranlatedSubtitleUploadedReqDto;
+import toykiwi.sanityCheck.reqDtos.MockVideoRemoveRequestedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockVideoUploadRequestedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockVideoUrlUploadedReqDto;
 import toykiwi.sanityCheck.resDtos.LogsResDto;
@@ -103,6 +104,14 @@ public class SanityCheckController {
     public void mockTranlatedSubtitleUploaded(@RequestBody MockTranlatedSubtitleUploadedReqDto mockData) {
         CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
         this.sanityCheckService.mockTranlatedSubtitleUploaded(mockData);
+        CustomLogger.debug(CustomLoggerType.EXIT);
+    }
+
+    // Policy 테스트용으로 VideoRemoveRequested 이벤트를 강제로 발생시키기 위해서
+    @PostMapping("/mock/VideoRemoveRequested")
+    public void mockVideoRemoveRequested(@RequestBody MockVideoRemoveRequestedReqDto mockData) {
+        CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
+        this.sanityCheckService.mockVideoRemoveRequested(mockData);
         CustomLogger.debug(CustomLoggerType.EXIT);
     }
 }
