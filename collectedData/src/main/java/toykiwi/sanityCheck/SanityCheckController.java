@@ -2,8 +2,9 @@ package toykiwi.sanityCheck;
 
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
-
+import toykiwi.domain.Subtitle;
 import toykiwi.sanityCheck.reqDtos.LogsReqDto;
+import toykiwi.sanityCheck.reqDtos.MakeSubtitleSampleReqDto;
 import toykiwi.sanityCheck.reqDtos.MockGeneratedSubtitleUploadedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockSubtitleMetadataUploadedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockTranlatedSubtitleUploadedReqDto;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import lombok.RequiredArgsConstructor;
@@ -64,6 +66,24 @@ public class SanityCheckController {
             CustomLogger.error(e, "Div By Zero Check Message", String.format("{returnNum: %s}", "Undefined"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }    
+    }
+
+    // 신속한 프론트엔드 테스트를 위해서 자막 관련 샘플을 만들어줌
+    @PutMapping("/makeSubtitleSample")
+    public ResponseEntity<Subtitle> makeSubtitleSample(@RequestBody MakeSubtitleSampleReqDto makeSubtitleSampleReqDto) {
+        try {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{makeSubtitleSampleReqDto: %s}", makeSubtitleSampleReqDto.toString()));
+
+            Subtitle createdSubtitle = this.sanityCheckService.makeSamples(makeSubtitleSampleReqDto);
+
+            CustomLogger.debug(CustomLoggerType.EXIT);
+            return ResponseEntity.ok(createdSubtitle);
+
+        } catch(Exception e) {
+            CustomLogger.error(e, "", String.format("{makeSubtitleSampleReqDto: %s}", makeSubtitleSampleReqDto.toString()));
+            throw e;
+        }
     }
 
     
