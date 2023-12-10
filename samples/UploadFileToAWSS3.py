@@ -19,6 +19,11 @@ class AWSProxy :
         obj = s3.Object(bucketName, objectKey)
         obj.Acl().put(ACL="public-read")
         return f"https://{bucketName}.s3.{regionCode}.amazonaws.com/{objectKey}"
+    
+    def deleteToPublicS3(self, bucketName:str, objectKey:str) -> None :
+        s3 = self.__CLIENT.resource("s3")
+        s3.Object(bucketName, objectKey).delete()
 
 awsProxy = AWSProxy()
 print(awsProxy.uploadToPublicS3("./tempCutted.mp4", "sinsung6722-toywiki"))
+awsProxy.deleteToPublicS3("sinsung6722-toywiki", "dcce7cfb-d7fc-4a4a-a3eb-aa71291aaf57.mp4")
