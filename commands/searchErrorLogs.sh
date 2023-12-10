@@ -1,0 +1,5 @@
+grep -n ./video/logs/logback.log -e "ERROR"
+grep -n ./subtitle/logs/logback.log -e "ERROR"
+grep -n ./externalSystemProxy/logs/logback.log -e "ERROR"
+grep -n ./collectedData/logs/logback.log -e "ERROR"
+grep -n ./externalSystem/logs/logback.log -e "ERROR"
