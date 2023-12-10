@@ -10,6 +10,6 @@ from .services.YoutubeVideoDownloadService import VideoMetadataDto, downloadYout
 
 def uploadYoutubeVideo(uploadedYoutubVideoReqDto:UploadYoutubeVideoReqDto) -> UploadYoutubeVideoResDto :
     with WorkDirManager(isAfterClear=False) as path:
-        videoMetadataDto:VideoMetadataDto = downloadYoutubeVideo(uploadedYoutubVideoReqDto.youtubeUrl, path(), "video.mp4")
+        videoMetadataDto:VideoMetadataDto = downloadYoutubeVideo(uploadedYoutubVideoReqDto.youtubeUrl, path(), "video.mp4", "thumbnail.jpg")
     
     return UploadYoutubeVideoResDto(videoMetadataDto.title, "Test upload url", "Test thumbnail Url")
