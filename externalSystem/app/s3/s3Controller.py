@@ -4,7 +4,7 @@ from http import HTTPStatus
 from .._global.logger import CustomLogger
 from .._global.logger import CustomLoggerType
 
-from . import s3Service
+from . import S3Service
 from .reqDtos.UploadYoutubeVideoReqDto import UploadYoutubeVideoReqDto
 from .resDtos.UploadYoutubeVideoResDto import UploadYoutubeVideoResDto
 
@@ -19,7 +19,7 @@ def uploadYoutubeVideo() -> UploadYoutubeVideoResDto :
         uploadedYoutubVideoReqDto:UploadYoutubeVideoReqDto = UploadYoutubeVideoReqDto(request)
         CustomLogger.debug(CustomLoggerType.ENTER, "", "<uploadedYoutubVideoReqDto: {}>".format(uploadedYoutubVideoReqDto))
 
-        uploadedYoutubVideoResDto:UploadYoutubeVideoResDto = s3Service.uploadYoutubeVideo(uploadedYoutubVideoReqDto)
+        uploadedYoutubVideoResDto:UploadYoutubeVideoResDto = S3Service.uploadYoutubeVideo(uploadedYoutubVideoReqDto)
 
         CustomLogger.debug(CustomLoggerType.EXIT, "", "<uploadedYoutubVideoResDto: {}>".format(uploadedYoutubVideoResDto))
         return (uploadedYoutubVideoResDto.json(), HTTPStatus.OK)

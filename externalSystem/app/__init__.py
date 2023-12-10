@@ -4,7 +4,7 @@ from flask import Flask
 from ._global.logger import LoggingConfig
 
 from .sanityCheck import SanityCheckController
-from .s3 import s3Controller
+from .s3 import S3Controller
 
 
 dirPathsToCreate = ["./logs", "./workDirs"]
@@ -19,6 +19,6 @@ def create_app():
     LoggingConfig.setupLoggingConfig()
 
     app.register_blueprint(SanityCheckController.bp)
-    app.register_blueprint(s3Controller.bp)
+    app.register_blueprint(S3Controller.bp)
 
     return app
