@@ -25,5 +25,10 @@ def uploadYoutubeVideo() -> UploadYoutubeVideoResDto :
         return (uploadedYoutubVideoResDto.json(), HTTPStatus.OK)
 
     except Exception as e :
-        CustomLogger.error(e, "", "<uploadedYoutubVideoReqDto: {}>".format(uploadedYoutubVideoReqDto))
+        jsonData = request.get_json()
+        youtubeUrl = jsonData["youtubeUrl"] or ""
+        cuttedStartSecond = jsonData["cuttedStartSecond"] or 0
+        cuttedEndSecond = jsonData["cuttedEndSecond"] or 0
+        CustomLogger.error(e, "", "<genereateSubtitleReqDto: {}, cuttedStartSecond: {}, cuttedEndSecond: {}>"
+                                    .format(youtubeUrl, cuttedStartSecond, cuttedEndSecond))
         return ("", HTTPStatus.BAD_REQUEST)
