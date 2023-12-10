@@ -10,10 +10,13 @@ from .resDtos.GenerateSubtitleResDto import GenerateSubtitleResDto
 from .resDtos.SubtitleResDto import SubtitleResDto
 
 from .services.AudioSplitService import ChunkDto, ChunkDtos, splitAudiosBaseOnSlience
+from .services.OpenAIProxyService import generateAudioText
 
 # 주어진 동영상들을 분석해서 자막들을 추출해서 관련 정보들을 반환시키기 위해서
 def generateSubtitle(generateSubtitleReqDto:GenerateSubtitleReqDto) -> GenerateSubtitleResDto :
-    with WorkDirManager(isAfterClear=False) as path:
+    subtitles:list = []
+
+    with WorkDirManager() as path:
         CustomLogger.debug(CustomLoggerType.EFFECT, "Try to download video", "<downloadUrl: {}>".format(generateSubtitleReqDto.uploadedUrl))
         wget.download(generateSubtitleReqDto.uploadedUrl, path("video.mp4"))
 
@@ -23,11 +26,7 @@ def generateSubtitle(generateSubtitleReqDto:GenerateSubtitleReqDto) -> GenerateS
 
         for chunckDto in chunkDtos.chunkDtos:
             chunckDto:ChunkDto = chunckDto
-            print(chunckDto)
+            audioText:str = generateAudioText(chunckDto.filePath)
+            subtitles.append(SubtitleResDto(audioText, chunckDto.startSecond, chunckDto.endSecond))
     
-    subtitles:list = []
-    subtitles.append(SubtitleResDto("Test Subtitle No.1", 0, 5))
-    subtitles.append(SubtitleResDto("Test Subtitle No.2", 5, 10))
-
-    generateSubtitleResDto:GenerateSubtitleResDto = GenerateSubtitleResDto(subtitles)
-    return generateSubtitleResDto
+    return GenerateSubtitleResDto(subtitles)
