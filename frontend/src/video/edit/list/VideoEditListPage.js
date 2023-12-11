@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import AppBar from '@mui/material/AppBar';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Container, Toolbar, Link, Button, Typography, TextField,
     Dialog, DialogTitle, DialogContent, DialogActions, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
@@ -13,6 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
+    const navigate = useNavigate();
 
 
     const [uploadVideos, setUploadVideos] = useState([]);
@@ -160,35 +161,39 @@ const VideoEditListPage = () => {
                         return (
                             <Grid item xs={6} key={index}>
                                 <Card variant="outlined" sx={{height: 225}}>
-                                    <CardContent>
+                                    <CardContent onClick={() => {navigate(`/video/quiz/try?videoId=${uploadVideo.videoId}`)}} sx={{cursor: "pointer"}}>
                                         <CardMedia
                                             component="img"
-                                            height="100"
+                                            height="145"
                                             image={uploadVideo.thumbnailUrl}
+                                            sx={{cursor: "pointer"}}
                                         />
 
-                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1.4, float: "left"}}>
+                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1.4}}>
                                             {uploadVideo.videoTitle.length <= 25 ? uploadVideo.videoTitle: (uploadVideo.videoTitle.substr(0, 25) + "...")}
                                         </Typography>
-                                        <IconButton aria-label="settings" sx={{float: "right"}} onClick={(e) => {setAnchorEl(e.currentTarget);setUploadVideoMenuOpened(index, true)}}>
-                                            <MoreVertIcon />
-                                        </IconButton>
-                
-                                        <Menu
-                                            open={isUploadVideoMenuOpeneds[index]}
-                                            onClose={() => {setAnchorEl(null);setUploadVideoMenuOpened(index, false)}}
-                                            anchorEl={anchorEl}
-                                        >
-                                            <MenuItem onClick={() => {onDeleteUploadVideoButtonClicked(index)}}>
-                                                <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", fontSize: 4}}>
-                                                    <DeleteIcon/>
-                                                </Typography>
-                                                <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginLeft: 1}}>
-                                                    삭제
-                                                </Typography>
-                                            </MenuItem>
-                                        </Menu>
+                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
+                                            총 문제수: {uploadVideo.subtitleCount}
+                                        </Typography>
                                     </CardContent>
+                                    
+                                    <IconButton aria-label="settings" sx={{float: "right", position: "relative", bottom: 67}} onClick={(e) => {setAnchorEl(e.currentTarget);setUploadVideoMenuOpened(index, true)}}>
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                    <Menu
+                                        open={isUploadVideoMenuOpeneds[index]}
+                                        onClose={() => {setAnchorEl(null);setUploadVideoMenuOpened(index, false)}}
+                                        anchorEl={anchorEl}
+                                    >
+                                        <MenuItem onClick={() => {onDeleteUploadVideoButtonClicked(index)}}>
+                                            <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", fontSize: 4}}>
+                                                <DeleteIcon/>
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginLeft: 1}}>
+                                                삭제
+                                            </Typography>
+                                        </MenuItem>
+                                    </Menu>
                                 </Card>
                             </Grid>
                         )
@@ -197,7 +202,7 @@ const VideoEditListPage = () => {
                     {
                         return (
                             <Grid item xs={6} key={index}>
-                                <Card variant="outlined" sx={{height: 225}}>
+                                <Card variant="outlined" sx={{height: 225, cursor: "pointer"}}>
                                     <CardContent sx={{textAlign: "center", marginTop:2}}>
                                         <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
                                             <HourglassEmptyIcon sx={{fontSize: 50}}/>
