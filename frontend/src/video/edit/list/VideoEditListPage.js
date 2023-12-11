@@ -3,24 +3,43 @@ import axios from 'axios';
 import AppBar from '@mui/material/AppBar';
 import { Link as RouterLink } from 'react-router-dom';
 import { Container, Toolbar, Link, Button, Typography, TextField,
-    Dialog, DialogTitle, DialogContent, DialogActions, Card, CardContent, Grid, CardMedia } from '@mui/material';
+    Dialog, DialogTitle, DialogContent, DialogActions, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { AlertPopupContext } from "../../../_global/alertPopUp/AlertPopUpContext"
 import APIConfig from '../../../APIConfig';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
 
 
-    const [uploadVideos, setUploadVideos] = useState([])
+    const [uploadVideos, setUploadVideos] = useState([]);
+    const [isUploadVideoMenuOpeneds, setIsUploadVideoMenuOpeneds] = useState([]);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    
+    const setUploadVideoMenuOpened = (index, value) => {
+        setIsUploadVideoMenuOpeneds((isUploadVideoMenuOpeneds) => {
+            let copiedValue = [...isUploadVideoMenuOpeneds]
+            copiedValue[index] = value
+            return copiedValue
+        })
+    }
+
+    const onDeleteUploadVideoButtonClicked = (index) => {
+        setUploadVideoMenuOpened(index, false)
+        console.log("DELETE :", index);
+    }
 
     useEffect(() => {
         (async () => {
             try {
                 const response = await axios.get(`${APIConfig.collectedDataUrl}/videos`);
-                console.log(response.data._embedded.videos)
+                const videos = response.data._embedded.videos;
+
+                console.log(videos)
+                setIsUploadVideoMenuOpeneds(new Array(videos.length).fill(false))
                 setUploadVideos(response.data._embedded.videos.map((video) => {
                     return {
                         videoId: video.videoId,
@@ -28,8 +47,7 @@ const VideoEditListPage = () => {
                         youtubeUrl: video.youtubeUrl,
                         thumbnailUrl: video.thumbnailUrl,
                         subtitleCount: video.subtitleCount,
-                        status: video.status,
-                        isMenuOpened: false
+                        status: video.status
                     }
                 }));
             } catch (error) {
@@ -149,21 +167,27 @@ const VideoEditListPage = () => {
                                             image={uploadVideo.thumbnailUrl}
                                         />
 
-                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1}}>
-                                            {uploadVideo.videoTitle.length <= 18 ? uploadVideo.videoTitle: (uploadVideo.videoTitle.substr(0, 18) + "...")}
+                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1.4, float: "left"}}>
+                                            {uploadVideo.videoTitle.length <= 25 ? uploadVideo.videoTitle: (uploadVideo.videoTitle.substr(0, 25) + "...")}
                                         </Typography>
+                                        <IconButton aria-label="settings" sx={{float: "right"}} onClick={(e) => {setAnchorEl(e.currentTarget);setUploadVideoMenuOpened(index, true)}}>
+                                            <MoreVertIcon />
+                                        </IconButton>
                 
-                                        {/* <Menu
-                                            open={open}
-                                            onClose={handleClose}
-                                            MenuListProps={{
-                                            'aria-labelledby': 'basic-button',
-                                            }}
+                                        <Menu
+                                            open={isUploadVideoMenuOpeneds[index]}
+                                            onClose={() => {setAnchorEl(null);setUploadVideoMenuOpened(index, false)}}
+                                            anchorEl={anchorEl}
                                         >
-                                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                            <MenuItem onClick={handleClose}>My account</MenuItem>
-                                            <MenuItem onClick={handleClose}>Logout</MenuItem>
-                                        </Menu> */}
+                                            <MenuItem onClick={() => {onDeleteUploadVideoButtonClicked(index)}}>
+                                                <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", fontSize: 4}}>
+                                                    <DeleteIcon/>
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginLeft: 1}}>
+                                                    삭제
+                                                </Typography>
+                                            </MenuItem>
+                                        </Menu>
                                     </CardContent>
                                 </Card>
                             </Grid>
