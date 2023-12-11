@@ -1,14 +1,29 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import axios from 'axios';
 import AppBar from '@mui/material/AppBar';
 import { Link as RouterLink } from 'react-router-dom';
 import { Container, Toolbar, Link, Button, Typography, TextField,
     Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { AlertPopupContext } from "../../../_global/alertPopUp/AlertPopUpContext"
+import APIConfig from '../../../APIConfig';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
+    const [uploadVideos, setUploadVideos] = useState([])
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await axios.get(`${APIConfig.collectedDataUrl}/videos`);
+                setUploadVideos(response.data._embedded.videos);
+            } catch (error) {
+                console.error("업로된 동영상 목록을 가져오는 과정에서 오류 발생", error);
+            }
+        })()
+    }, [])
     
+
     const [isVideoUploadDialogOpend, setIsVideoUploadDialogOpend] = useState(false)
     const [videoUploadInfo, setVideoUploadInfo] = useState({
         youtubeUrl: "", cuttedStartSecond: 0, cuttedEndSecond: 0
