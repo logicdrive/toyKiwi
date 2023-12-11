@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import { Link as RouterLink } from 'react-router-dom';
 import { Container, Toolbar, Link, Button, Typography, TextField,
     Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { AlertPopupContext } from "../../../_global/alertPopUp/AlertPopUpContext"
 
 const VideoEditListPage = () => {
+    const { addAlertPopUp } = useContext(AlertPopupContext);
+    
     const [isVideoUploadDialogOpend, setIsVideoUploadDialogOpend] = useState(false)
     const [videoUploadInfo, setVideoUploadInfo] = useState({
         youtubeUrl: "", cuttedStartSecond: 0, cuttedEndSecond: 0
@@ -17,14 +20,15 @@ const VideoEditListPage = () => {
             [name]: value,
         }));
     }
-    const handleVideoUploadInfoSubmit = () => {
-        console.log(videoUploadInfo)
-    }
     const onVideoUploadButtonClicked = () => {
         setVideoUploadInfo({
             youtubeUrl: "", cuttedStartSecond: 0, cuttedEndSecond: 0
         })
         setIsVideoUploadDialogOpend(true)
+    }
+    const handleVideoUploadInfoSubmit = () => {
+        addAlertPopUp("비디오 업로드 요청이 정상적으로 완료되었습니다.", "success");
+        console.log(videoUploadInfo)
     }
 
 
