@@ -66,6 +66,7 @@ const VideoEditListPage = () => {
                 }));
 
             } catch (error) {
+                addAlertPopUp("업로된 동영상 목록을 가져오는 과정에서 오류가 발생했습니다!", "error");
                 console.error("업로된 동영상 목록을 가져오는 과정에서 오류가 발생했습니다!", error);
             }
         })()
