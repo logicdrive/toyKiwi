@@ -3,25 +3,47 @@ import axios from 'axios';
 import AppBar from '@mui/material/AppBar';
 import { Link as RouterLink } from 'react-router-dom';
 import { Container, Toolbar, Link, Button, Typography, TextField,
-    Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+    Dialog, DialogTitle, DialogContent, DialogActions, Card, CardContent, Grid, CardMedia } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { AlertPopupContext } from "../../../_global/alertPopUp/AlertPopUpContext"
 import APIConfig from '../../../APIConfig';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
+
+
     const [uploadVideos, setUploadVideos] = useState([])
 
     useEffect(() => {
         (async () => {
             try {
                 const response = await axios.get(`${APIConfig.collectedDataUrl}/videos`);
-                setUploadVideos(response.data._embedded.videos);
+                console.log(response.data._embedded.videos)
+                setUploadVideos(response.data._embedded.videos.map((video) => {
+                    return {
+                        videoId: video.videoId,
+                        videoTitle: video.videoTitle,
+                        youtubeUrl: video.youtubeUrl,
+                        thumbnailUrl: video.thumbnailUrl,
+                        subtitleCount: video.subtitleCount,
+                        status: video.status,
+                        isMenuOpened: false
+                    }
+                }));
             } catch (error) {
                 console.error("업로된 동영상 목록을 가져오는 과정에서 오류 발생", error);
             }
         })()
     }, [])
+
+    const videoStatusMap = {
+        "VideoUploadRequested": "비디오 업로드중...[1/5]",
+        "VideoUrlUploaded": "자막 생성중...[2/5]",
+        "SubtitleMetadataUploaded": "자막 생성중...[3/5]",
+        "GeneratedSubtitleUploaded": "자막 번역중...[4/5]"
+    }
     
 
     const [isVideoUploadDialogOpend, setIsVideoUploadDialogOpend] = useState(false)
@@ -45,7 +67,7 @@ const VideoEditListPage = () => {
         addAlertPopUp("비디오 업로드 요청이 정상적으로 완료되었습니다.", "success");
         console.log(videoUploadInfo)
     }
-
+    
 
     return (
         <>
@@ -111,6 +133,67 @@ const VideoEditListPage = () => {
                 }} sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont"}}>추가</Button>
             </DialogActions>
         </Dialog>
+
+        <Grid container spacing={2} sx={{marginTop: 0.5}}>
+            {
+                uploadVideos.map((uploadVideo, index) => {
+                    if(uploadVideo.status === "TranlatedSubtitleUploaded")
+                    {
+                        return (
+                            <Grid item xs={6} key={index}>
+                                <Card variant="outlined" sx={{height: 225}}>
+                                    <CardContent>
+                                        <CardMedia
+                                            component="img"
+                                            height="100"
+                                            image={uploadVideo.thumbnailUrl}
+                                        />
+
+                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1}}>
+                                            {uploadVideo.videoTitle.length <= 18 ? uploadVideo.videoTitle: (uploadVideo.videoTitle.substr(0, 18) + "...")}
+                                        </Typography>
+                
+                                        {/* <Menu
+                                            open={open}
+                                            onClose={handleClose}
+                                            MenuListProps={{
+                                            'aria-labelledby': 'basic-button',
+                                            }}
+                                        >
+                                            <MenuItem onClick={handleClose}>Profile</MenuItem>
+                                            <MenuItem onClick={handleClose}>My account</MenuItem>
+                                            <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                        </Menu> */}
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        )
+                    }
+                    else
+                    {
+                        return (
+                            <Grid item xs={6} key={index}>
+                                <Card variant="outlined" sx={{height: 225}}>
+                                    <CardContent sx={{textAlign: "center", marginTop:2}}>
+                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
+                                            <HourglassEmptyIcon sx={{fontSize: 50}}/>
+                                        </Typography>
+                                        <br/>
+                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
+                                            {videoStatusMap[uploadVideo.status]}
+                                        </Typography>
+                                        <br/>
+                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", fontSize:10}}>
+                                            {uploadVideo.youtubeUrl}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        )
+                    }
+                })
+            }
+        </Grid>
         </>
     );
 }
