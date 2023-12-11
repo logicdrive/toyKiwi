@@ -78,7 +78,7 @@ public class CollectedDataViewHandler {
             videoToUpdate.setVideoTitle(videoUrlUploaded.getTitle());
             videoToUpdate.setUploadedUrl(videoUrlUploaded.getUploadedUrl());
             videoToUpdate.setThumbnailUrl(videoUrlUploaded.getThumbnailUrl());
-            videoToUpdate.setStatus("videoUrlUploaded");
+            videoToUpdate.setStatus("VideoUrlUploaded");
             this.videoRepository.save(videoToUpdate);
 
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{videoToUpdate: %s}", videoToUpdate.toString()));
@@ -107,7 +107,7 @@ public class CollectedDataViewHandler {
             
             Video videoToUpdate = videos.get(0);
             videoToUpdate.setSubtitleCount(subtitleMetadataUploaded.getSubtitleCount());
-            videoToUpdate.setStatus("subtitleMetadataUploaded");
+            videoToUpdate.setStatus("SubtitleMetadataUploaded");
             this.videoRepository.save(videoToUpdate);
 
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{videoToUpdate: %s}", videoToUpdate.toString()));
@@ -197,7 +197,7 @@ public class CollectedDataViewHandler {
 
             if(translatedSubtitleCount == subtitleVideo.getSubtitleCount())
             {
-                subtitleVideo.setStatus("tranlatedSubtitleUploaded");
+                subtitleVideo.setStatus("TranlatedSubtitleUploaded");
                 this.videoRepository.save(subtitleVideo);
             }
 
