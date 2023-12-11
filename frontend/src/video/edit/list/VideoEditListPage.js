@@ -28,14 +28,27 @@ const VideoEditListPage = () => {
         })
     }
 
-    const onDeleteUploadVideoButtonClicked = (index) => {
+    const onDeleteUploadVideoButtonClicked = async (index) => {
         setUploadVideoMenuOpened(index, false)
-        console.log("DELETE :", index);
+
+        try {
+            
+            const videoIdToDelete = uploadVideos[index].videoId
+            console.log("Delete video Id :", videoIdToDelete);
+            await axios.delete(`${APIConfig.videoUrl}/videos/${videoIdToDelete}`);
+
+            addAlertPopUp("비디오 삭제 요청이 정상적으로 완료되었습니다.", "success");
+
+        } catch (error) {
+            addAlertPopUp("비디오 삭제 요청 과정에서 오류가 발생했습니다!", "error");
+            console.error("비디오 삭제 요청 과정에서 오류가 발생했습니다!", error);
+        }
     }
 
     useEffect(() => {
         (async () => {
             try {
+
                 const response = await axios.get(`${APIConfig.collectedDataUrl}/videos`);
                 const videos = response.data._embedded.videos;
 
@@ -51,8 +64,9 @@ const VideoEditListPage = () => {
                         status: video.status
                     }
                 }));
+
             } catch (error) {
-                console.error("업로된 동영상 목록을 가져오는 과정에서 오류 발생", error);
+                console.error("업로된 동영상 목록을 가져오는 과정에서 오류가 발생했습니다!", error);
             }
         })()
     }, [])
@@ -82,9 +96,23 @@ const VideoEditListPage = () => {
         })
         setIsVideoUploadDialogOpend(true)
     }
-    const handleVideoUploadInfoSubmit = () => {
-        addAlertPopUp("비디오 업로드 요청이 정상적으로 완료되었습니다.", "success");
-        console.log(videoUploadInfo)
+    const handleVideoUploadInfoSubmit = async () => {
+        try {
+            
+            const reqDto = {
+                "youtubeUrl": videoUploadInfo.youtubeUrl,
+                "cuttedStartSecond": Number(videoUploadInfo.cuttedStartSecond),
+                "cuttedEndSecond": Number(videoUploadInfo.cuttedEndSecond)
+            }
+            console.log(reqDto)
+            await axios.post(`${APIConfig.videoUrl}/videos`, reqDto);
+
+            addAlertPopUp("비디오 업로드 요청이 정상적으로 완료되었습니다.", "success");
+
+        } catch (error) {
+            addAlertPopUp("비디오 업로드 요청 과정에서 오류가 발생했습니다!", "error");
+            console.error("비디오 업로드 요청 과정에서 오류가 발생했습니다!", error);
+        }
     }
     
 
