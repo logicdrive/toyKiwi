@@ -7,33 +7,26 @@ spring:
   profiles: default
   cloud:
     gateway:
-#<<< API Gateway / Routes
       routes:
         - id: video
           uri: http://localhost:8082
           predicates:
-            - Path=/videos/**, 
-        - id: subtitle
-          uri: http://localhost:8083
-          predicates:
-            - Path=/subtitles/**, 
+            - Path=/api/video/**
+          filters:
+            - RewritePath=/api/video/(?<segment>.*), /${segment}
+
         - id: collectedData
           uri: http://localhost:8084
           predicates:
-            - Path=, 
-        - id: externalSystem
-          uri: http://localhost:8085
-          predicates:
-            - Path=, 
-        - id: externalSystemProxy
-          uri: http://localhost:8086
-          predicates:
-            - Path=, 
+            - Path=/api/collectedData/**
+          filters:
+            - RewritePath=/api/collectedData/(?<segment>.*), /${segment}
+
         - id: frontend
-          uri: http://localhost:8080
+          uri: http://localhost:3000
           predicates:
             - Path=/**
-#>>> API Gateway / Routes
+
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -45,6 +38,9 @@ spring:
               - "*"
             allowCredentials: true
 
+logging:
+  level:
+    root: WARN
 
 ---
 
@@ -90,3 +86,7 @@ spring:
 
 server:
   port: 8080
+
+logging:
+  level:
+    root: WARN
