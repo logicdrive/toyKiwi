@@ -1,11 +1,20 @@
-// SelectQuiz 컴포넌트를 활용해보는 샘플
-
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import VideoEditListPage from "./video/edit/list/VideoEditListPage";
+import VideoQuizTryPage from "./video/quiz/try/VideoQuizTryPage";
+import VideoQuizResultPage from "./video/quiz/result/VideoQuizResultPage";
 
 function App() {
   return (
     <>
-      <h1>Hello, World !</h1>
+      <Router>
+        <Routes>
+              <Route path="/" element={<VideoEditListPage/>} />
+              <Route path="/video/edit/list" element={<VideoEditListPage/>} />
+              <Route path="/video/quiz/try" element={<VideoQuizTryPage/>} />
+              <Route path="/video/quiz/result" element={<VideoQuizResultPage/>} />
+          </Routes>
+      </Router>
     </>
   )
 }
