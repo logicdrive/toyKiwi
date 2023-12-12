@@ -1,14 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Container, Toolbar, Link, Button, Typography, TextField, Dialog, DialogTitle, DialogContent, 
-         DialogActions, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem, AppBar } from '@mui/material';
+import { Container, Toolbar, Link, Typography, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem, AppBar } from '@mui/material';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
+import VideoUploadButton from './VideoUploadButton';
+import Text from '../../../_global/Text/Text';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
@@ -51,7 +51,6 @@ const VideoEditListPage = () => {
                 const response = await axios.get(`${APIConfig.collectedDataUrl}/videos`);
                 const videos = response.data._embedded.videos;
 
-                console.log(videos)
                 setIsUploadVideoMenuOpeneds(new Array(videos.length).fill(false))
                 setUploadVideos(response.data._embedded.videos.map((video) => {
                     return {
@@ -77,42 +76,16 @@ const VideoEditListPage = () => {
         "SubtitleMetadataUploaded": "자막 생성중...[3/5]",
         "GeneratedSubtitleUploaded": "자막 번역중...[4/5]"
     }
-    
 
-    const [isVideoUploadDialogOpend, setIsVideoUploadDialogOpend] = useState(false)
-    const [videoUploadInfo, setVideoUploadInfo] = useState({
-        youtubeUrl: "", cuttedStartSecond: 0, cuttedEndSecond: 0
-    })
-    const handleVideoUploadInfoChange = (event) => {
-        const { name, value } = event.target;
-        setVideoUploadInfo((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    }
-    const onVideoUploadButtonClicked = () => {
-        setVideoUploadInfo({
-            youtubeUrl: "", cuttedStartSecond: 0, cuttedEndSecond: 0
-        })
-        setIsVideoUploadDialogOpend(true)
-    }
-    const handleVideoUploadInfoSubmit = async () => {
-        try {
-            
-            const reqDto = {
-                "youtubeUrl": videoUploadInfo.youtubeUrl,
-                "cuttedStartSecond": Number(videoUploadInfo.cuttedStartSecond),
-                "cuttedEndSecond": Number(videoUploadInfo.cuttedEndSecond)
-            }
-            console.log(reqDto)
-            await axios.post(`${APIConfig.videoUrl}/videos`, reqDto);
+    const onInputCompleted = async (userInputs) => {
+        console.log("[EFFECT] 동영상 업로드 요청이 수행됨:", userInputs);
 
-            addAlertPopUp("비디오 업로드 요청이 정상적으로 완료되었습니다.", "success");
-
-        } catch (error) {
-            addAlertPopUp("비디오 업로드 요청 과정에서 오류가 발생했습니다!", "error");
-            console.error("비디오 업로드 요청 과정에서 오류가 발생했습니다!", error);
+        const reqDto = {
+            youtubeUrl: userInputs.youtubeUrl,
+            cuttedStartSecond: userInputs.cuttedStartSecond,
+            cuttedEndSecond: userInputs.cuttedEndSecond
         }
+        await axios.post(`${APIConfig.videoUrl}/videos`, reqDto);
     }
     
 
@@ -125,61 +98,10 @@ const VideoEditListPage = () => {
                         학습 동영상 목록
                     </Link>
 
-                    <Link sx={{backgroundColor: "red", margin: 1, position: "relative", left: 4}}>
-                        <Button onClick={onVideoUploadButtonClicked}>
-                            <Typography sx={{color: "white", fontWeight: "bolder", fontFamily: "BMDfont", position: "relative", top: 3}}>
-                                <FileUploadIcon sx={{fontSize: 40}}/>
-                            </Typography>
-                        </Button>
-                    </Link>
+                    <VideoUploadButton onInputCompleted={onInputCompleted} />
                 </Toolbar>
             </Container>
         </AppBar>
-        <Dialog open={isVideoUploadDialogOpend} onClose={()=>{setIsVideoUploadDialogOpend(false);}}>
-            <DialogTitle sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont"}}>유튜브 비디오 업로드</DialogTitle>
-            <DialogContent>
-                <TextField
-                    label="유튜브 URL"
-                    name="youtubeUrl"
-
-                    value={videoUploadInfo.youtubeUrl}
-                    onChange={handleVideoUploadInfoChange}
-
-                    margin="normal"
-                    fullWidth
-                />
-                <TextField
-                    label="시작 시간(초)"
-                    name="cuttedStartSecond"
-
-                    value={videoUploadInfo.cuttedStartSecond}
-                    onChange={handleVideoUploadInfoChange}
-
-                    margin="normal"
-                    fullWidth
-                    required
-                    type="number"
-                />
-                <TextField
-                    label="종료 시간(초)"
-                    name="cuttedEndSecond"
-
-                    value={videoUploadInfo.cuttedEndSecond}
-                    onChange={handleVideoUploadInfoChange}
-
-                    margin="normal"
-                    fullWidth
-                    required
-                    type="number"
-                />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => {
-                    handleVideoUploadInfoSubmit();
-                    setIsVideoUploadDialogOpend(false);
-                }} sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont"}}>추가</Button>
-            </DialogActions>
-        </Dialog>
 
         <Grid container spacing={2} sx={{marginTop: 0.5}}>
             {
@@ -197,9 +119,9 @@ const VideoEditListPage = () => {
                                             sx={{cursor: "pointer"}}
                                         />
 
-                                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1.4}}>
+                                        <Text sx={{marginTop: 1.4}}>
                                             {uploadVideo.videoTitle.length <= 25 ? uploadVideo.videoTitle: (uploadVideo.videoTitle.substr(0, 25) + "...")}
-                                        </Typography>
+                                        </Text>
                                         <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
                                             총 문제수: {uploadVideo.subtitleCount}
                                         </Typography>
