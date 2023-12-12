@@ -8,7 +8,7 @@ import VideoInfoCard from './card/VideoInfoCard';
 import VideoInfoLoadingCard from './card/VideoInfoLoadingCard';
 
 const VideoEditListPage = () => {
-    const { addAlertPopUp } = useContext(AlertPopupContext);
+    const {addAlertPopUp} = useContext(AlertPopupContext);
 
 
     const [uploadVideos, setUploadVideos] = useState([]);

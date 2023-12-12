@@ -10,7 +10,7 @@ import ResultVideoInfo from './ResultVideoInfo';
 
 // 예시 URL: http://localhost:3000/video/quiz/result?videoId=1&correctedWordCount=27&inCorrectedWordCount=5
 const VideoQuizResultPage = () => {
-    const { addAlertPopUp } = useContext(AlertPopupContext);
+    const {addAlertPopUp} = useContext(AlertPopupContext);
     const [queryParameters] = useSearchParams()
 
     const [uploadVideoInfo, setUploadVideoInfo] = useState({});

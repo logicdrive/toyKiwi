@@ -7,7 +7,7 @@ import { AlertPopupContext } from '../../../../_global/alertPopUp/AlertPopUpCont
 import NavButton from '../../../../_global/button/NavButton';
 
 const VideoUploadButton = ({onInputCompleted, sx, ...props}) => {
-    const { addAlertPopUp } = useContext(AlertPopupContext);
+    const {addAlertPopUp} = useContext(AlertPopupContext);
 
 
     const [isVideoUploadDialogOpend, setIsVideoUploadDialogOpend] = useState(false)

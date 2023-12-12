@@ -8,7 +8,7 @@ import { AlertPopupContext } from '../../../../_global/alertPopUp/AlertPopUpCont
 import BoldText from '../../../../_global/text/BoldText';
 
 const VideoIconButton = ({index, isOpened, onClick, onClose, onDeleteUploadVideoButtonClicked, sx}) => {
-    const { addAlertPopUp } = useContext(AlertPopupContext);
+    const {addAlertPopUp} = useContext(AlertPopupContext);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleOnDeleteUploadVideoButtonClicked = async (index) => {

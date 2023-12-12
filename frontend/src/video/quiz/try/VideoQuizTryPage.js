@@ -13,7 +13,7 @@ import CuttedVideoPlayer from './CuttedVideoPlayer';
 import SelectQuiz from './SelectQuiz';
 
 const VideoQuizTryPage = () => {
-    const { addAlertPopUp } = useContext(AlertPopupContext);
+    const {addAlertPopUp} = useContext(AlertPopupContext);
     const [queryParameters] = useSearchParams()
     const navigate = useNavigate();
 
