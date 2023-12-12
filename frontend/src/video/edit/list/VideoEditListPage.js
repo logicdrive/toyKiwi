@@ -1,15 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import AppBar from '@mui/material/AppBar';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Container, Toolbar, Link, Button, Typography, TextField,
-    Dialog, DialogTitle, DialogContent, DialogActions, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem } from '@mui/material';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { AlertPopupContext } from "../../../_global/alertPopUp/AlertPopUpContext"
+    Dialog, DialogTitle, DialogContent, DialogActions, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem, AppBar } from '@mui/material';
+import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
 import APIConfig from '../../../APIConfig';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
@@ -70,7 +69,7 @@ const VideoEditListPage = () => {
                 console.error("업로된 동영상 목록을 가져오는 과정에서 오류가 발생했습니다!", error);
             }
         })()
-    }, [])
+    }, [addAlertPopUp])
 
     const videoStatusMap = {
         "VideoUploadRequested": "비디오 업로드중...[1/5]",
@@ -122,11 +121,11 @@ const VideoEditListPage = () => {
         <AppBar position="static" style={{backgroundColor:"crimson"}}>
             <Container maxWidth="lg">
                 <Toolbar disableGutters>
-                    <Link component={RouterLink} to="/" variant="h5" underline="none" sx={{color: "white", fontWeight: "bolder", fontFamily: "BMDfont", flexGrow: 1}}>
+                    <Link variant="h5" underline="none" sx={{color: "white", fontWeight: "bolder", fontFamily: "BMDfont", flexGrow: 1, cursor: "default"}}>
                         학습 동영상 목록
                     </Link>
 
-                    <Link component={RouterLink} sx={{backgroundColor: "red", margin: 1, position: "relative", left: 4}}>
+                    <Link sx={{backgroundColor: "red", margin: 1, position: "relative", left: 4}}>
                         <Button onClick={onVideoUploadButtonClicked}>
                             <Typography sx={{color: "white", fontWeight: "bolder", fontFamily: "BMDfont", position: "relative", top: 3}}>
                                 <FileUploadIcon sx={{fontSize: 40}}/>
