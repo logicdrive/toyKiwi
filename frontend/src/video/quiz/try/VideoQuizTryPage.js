@@ -62,6 +62,7 @@ const VideoQuizTryPage = () => {
         setVideoPlayerProps({
             url: uploadVideoInfo.uploadedUrl,
             currentTimeIndex: 0,
+            limitedTimeIndex: 0,
             timeRanges: subtitleInfos.map((subtitleInfo) => {
                 return {
                     startTimeSec: subtitleInfo.startSecond,
@@ -85,32 +86,53 @@ const VideoQuizTryPage = () => {
       }
     
       const onClickNextButton = () => {
+        if(videoPlayerProps.currentTimeIndex >= videoPlayerProps.limitedTimeIndex) return
         if(videoPlayerProps.currentTimeIndex === videoPlayerProps.timeRanges.length-1) {
-          return
+            navigate(`/video/quiz/result?correctedWordCount=${quizResultInfo.correctedWordCount}&inCorrectedWordCount=${quizResultInfo.inCorrectedWordCount}`)
+            return
         }
     
         setVideoPlayerProps((videoPlayerProps) => {
-          return {
+            return {
             ...videoPlayerProps,
             currentTimeIndex: videoPlayerProps.currentTimeIndex+1
-          }
+            }
         })
     }
     
 
     const [quizInfo, setQuizInfo] = useState()
+    const [quizResultInfo, setQuizResultInfo] = useState({
+        correctedWordCount: 0,
+        inCorrectedWordCount: 0
+    })
     const [isShowtranslation, setIsShowTranslation] = useState(true)
 
     useEffect(() => {
-        if(subtitleInfos && subtitleInfos.length > 0)
-        setQuizInfo({
-            words: subtitleInfos[0].subtitle.split(" "),
-            translatedSubtitle: subtitleInfos[0].translatedSubtitle
-        })
-    }, [subtitleInfos])
+        if(!(subtitleInfos && subtitleInfos.length > 0)) return
 
-    const onAllCorrect = (correctedWordCount, inCorrectedWordCount) => {
-        console.log("RESULT: ", correctedWordCount, inCorrectedWordCount)
+        setQuizInfo({
+            words: subtitleInfos[videoPlayerProps.currentTimeIndex].subtitle.split(" "),
+            translatedSubtitle: subtitleInfos[videoPlayerProps.currentTimeIndex].translatedSubtitle
+        })
+        
+    }, [subtitleInfos, videoPlayerProps.currentTimeIndex])
+
+    const onAllCorrect = (currentCorrectedWordCount, currentInCorrectedWordCount) => {
+        setVideoPlayerProps((videoPlayerProps) => {
+            return {
+              ...videoPlayerProps,
+              limitedTimeIndex: videoPlayerProps.limitedTimeIndex+1
+            }
+          })
+        
+        setQuizResultInfo((quizResultInfo) => {
+            return {
+                correctedWordCount: quizResultInfo.correctedWordCount + currentCorrectedWordCount,
+                inCorrectedWordCount: quizResultInfo.inCorrectedWordCount + currentInCorrectedWordCount
+            }
+        })
+        console.log("CURRENT RESULT: ", quizResultInfo)
     }
 
     return (
@@ -149,9 +171,18 @@ const VideoQuizTryPage = () => {
                                 <Button onClick={onClickPrevButton} sx={{float:"left", color: "black"}}>
                                     <SkipPreviousIcon/>
                                 </Button>
-                                <Button onClick={onClickNextButton} sx={{float: "right", color: "black"}}>
-                                    <SkipNextIcon/>
-                                </Button>
+                                {
+                                    (videoPlayerProps.currentTimeIndex >= videoPlayerProps.limitedTimeIndex) ? (
+                                        <Button onClick={onClickNextButton} sx={{float: "right", color: "black"}} disabled>
+                                            <SkipNextIcon/>
+                                        </Button>
+                                    ) : (
+                                        <Button onClick={onClickNextButton} sx={{float: "right", color: "black"}}>
+                                            <SkipNextIcon/>
+                                        </Button>
+                                    )
+
+                                }
                             </Card>
 
                             <Card variant="outlined" sx={{padding: 1}}>
@@ -164,7 +195,41 @@ const VideoQuizTryPage = () => {
                                     </ToggleButton>
                                 </CardContent>
                                 <CardContent>
-                                <SelectQuiz words={quizInfo.words} translatedSubtitle={quizInfo.translatedSubtitle} onAllCorrect={onAllCorrect} isShowtranslation={isShowtranslation}/>
+                            {
+                                (videoPlayerProps.currentTimeIndex === videoPlayerProps.limitedTimeIndex) ? (
+                                    <SelectQuiz words={quizInfo.words} translatedSubtitle={quizInfo.translatedSubtitle} onAllCorrect={onAllCorrect} isShowtranslation={isShowtranslation}/>
+                                ) : (
+                                    <>
+                                    <Stack>
+                                        <CardContent>
+                                            {
+                                                quizInfo.words.map((placedWord, index) => {
+                                                    return (
+                                                        <Typography key={index} sx={{color: "black", fontWeight: "bolder", fontFamily: "Ubuntufont", float: "left", padding: 0.5}}>
+                                                            {placedWord.toUpperCase()}
+                                                        </Typography>
+                                                    )
+                                                })
+                                            }
+                                        </CardContent>
+                                        {
+                                            (() => {
+                                                if(isShowtranslation)
+                                                {
+                                                    return (
+                                                        <CardContent>
+                                                            <Typography sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left", fontSize: 12}}>
+                                                                {quizInfo.translatedSubtitle}
+                                                            </Typography>
+                                                        </CardContent>
+                                                    )
+                                                }
+                                            })()
+                                        }
+                                    </Stack>
+                                </>
+                                )
+                            }
                                 </CardContent>
                             </Card>
                         </Stack>
