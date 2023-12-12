@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Container, Toolbar, Link, Button, Typography, ToggleButton, Card, CardContent, AppBar } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Button, Typography, ToggleButton, Card, CardContent } from '@mui/material';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Stack from '@mui/material/Stack';
@@ -11,7 +10,9 @@ import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
 import CuttedVideoPlayer from './CuttedVideoPlayer';
 import SelectQuiz from './SelectQuiz';
+import VideoQuizTryAppBar from './VideoQuizTryAppBar';
 
+// 예시 URL: http://localhost:3000/video/quiz/try?videoId=1
 const VideoQuizTryPage = () => {
     const {addAlertPopUp} = useContext(AlertPopupContext);
     const [queryParameters] = useSearchParams()
@@ -135,25 +136,8 @@ const VideoQuizTryPage = () => {
 
     return (
         <>
-        <AppBar position="static" style={{backgroundColor:"crimson"}}>
-            <Container maxWidth="lg">
-                <Toolbar disableGutters>
-                    <Link variant="h5" underline="none" sx={{color: "white", fontWeight: "bolder", fontFamily: "BMDfont", flexGrow: 1, cursor: "default"}}>
-                        퀴즈
-                    </Link>
+        <VideoQuizTryAppBar/>
 
-                    <Link sx={{backgroundColor: "red", margin: 1, position: "relative", left: 4}}>
-                        <Button onClick={() => {
-                            navigate("/video/edit/list")
-                        }}>
-                            <Typography sx={{color: "white", fontWeight: "bolder", fontFamily: "BMDfont", position: "relative", top: 3}}>
-                                <ArrowBackIcon sx={{fontSize: 40}}/>
-                            </Typography>
-                        </Button>
-                    </Link>
-                </Toolbar>
-            </Container>
-        </AppBar>
         {
             (() => {
                 if (videoPlayerProps.url && videoPlayerProps.timeRanges && 
