@@ -75,7 +75,7 @@ function CuttedVideoPlayer(props) {
     <>
       <ReactPlayer 
         url={reactPlayerProps.url} playing={reactPlayerProps.playing} controls={reactPlayerProps.controls} 
-        onPlay={onPlay} ref={reactPlayerRef} width="100%"
+        onPlay={onPlay} ref={reactPlayerRef} width="100%" height="310px"
       />
     </>
   )

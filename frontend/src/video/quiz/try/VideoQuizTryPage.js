@@ -8,6 +8,9 @@ import APIConfig from '../../../APIConfig';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CuttedVideoPlayer from './CuttedVideoPlayer';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import Stack from '@mui/material/Stack';
 
 const VideoQuizTryPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
@@ -119,10 +122,19 @@ const VideoQuizTryPage = () => {
                 if (videoPlayerProps.url && videoPlayerProps.timeRanges && (videoPlayerProps.timeRanges.length > 0))
                     return (
                         <>
-                        <CuttedVideoPlayer url={videoPlayerProps.url} currentTimeIndex={videoPlayerProps.currentTimeIndex} timeRanges={videoPlayerProps.timeRanges}/>
-                    
-                        <Button onClick={onClickPrevButton}>PREV</Button>
-                        <Button onClick={onClickNextButton}>NEXT</Button>
+                        <Stack spacing={0.5} sx={{marginTop: 1}}>
+                            <Card variant="outlined">
+                                <CuttedVideoPlayer url={videoPlayerProps.url} currentTimeIndex={videoPlayerProps.currentTimeIndex} timeRanges={videoPlayerProps.timeRanges}/>
+                            </Card>
+                            <Card variant="outlined">
+                                <Button onClick={onClickPrevButton} sx={{float:"left", color: "black"}}>
+                                    <SkipPreviousIcon/>
+                                </Button>
+                                <Button onClick={onClickNextButton} sx={{float: "right", color: "black"}}>
+                                    <SkipNextIcon/>
+                                </Button>
+                            </Card>
+                        </Stack>
                         </>
                     )
             })()
