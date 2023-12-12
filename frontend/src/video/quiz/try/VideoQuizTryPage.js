@@ -5,10 +5,10 @@ import { Card } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
-import CuttedVideoPlayer from './CuttedVideoPlayer';
+import CuttedVideoPlayer from './videoPlayer/CuttedVideoPlayer';
+import VideoPlayerControllerCard from './videoPlayer/VideoPlayerControllerCard';
+import VideoQuizCard from './videoQuiz/VideoQuizCard';
 import VideoQuizTryAppBar from './VideoQuizTryAppBar';
-import VideoQuizCard from './VideoQuizCard';
-import VideoPlayerControllerCard from './VideoPlayerControllerCard';
 
 // 예시 URL: http://localhost:3000/video/quiz/try?videoId=1
 const VideoQuizTryPage = () => {
@@ -54,7 +54,6 @@ const VideoQuizTryPage = () => {
             }
         })()
     }, [addAlertPopUp, queryParameters])
-
     useEffect(() => {
         setVideoPlayerProps({
             url: uploadVideoInfo.uploadedUrl,
@@ -68,6 +67,41 @@ const VideoQuizTryPage = () => {
             })
         })
     }, [uploadVideoInfo, subtitleInfos])
+    
+
+    const [quizInfo, setQuizInfo] = useState()
+    useEffect(() => {
+        if(!(subtitleInfos && subtitleInfos.length > 0)) return
+
+        setQuizInfo({
+            words: subtitleInfos[videoPlayerProps.currentTimeIndex].subtitle.split(" "),
+            translatedSubtitle: subtitleInfos[videoPlayerProps.currentTimeIndex].translatedSubtitle
+        })
+        
+    }, [subtitleInfos, videoPlayerProps.currentTimeIndex])
+
+
+    const [quizResultInfo, setQuizResultInfo] = useState({
+        correctedWordCount: 0,
+        inCorrectedWordCount: 0
+    })
+    const onAllCorrect = (currentCorrectedWordCount, currentInCorrectedWordCount) => {
+        setVideoPlayerProps((videoPlayerProps) => {
+            return {
+              ...videoPlayerProps,
+              limitedTimeIndex: videoPlayerProps.limitedTimeIndex+1
+            }
+        })
+        
+        setQuizResultInfo((quizResultInfo) => {
+            return {
+                correctedWordCount: quizResultInfo.correctedWordCount + currentCorrectedWordCount,
+                inCorrectedWordCount: quizResultInfo.inCorrectedWordCount + currentInCorrectedWordCount
+            }
+        })
+        console.log("CURRENT RESULT: ", quizResultInfo)
+    }
+
 
     const onClickPrevButton = () => {
         if(videoPlayerProps.currentTimeIndex === 0) {
@@ -81,8 +115,7 @@ const VideoQuizTryPage = () => {
           }
         })
       }
-    
-      const onClickNextButton = () => {
+    const onClickNextButton = () => {
         if(videoPlayerProps.currentTimeIndex >= videoPlayerProps.limitedTimeIndex) return
         if(videoPlayerProps.currentTimeIndex === videoPlayerProps.timeRanges.length-1) {
             navigate(`/video/quiz/result?videoId=${queryParameters.get("videoId")}&correctedWordCount=${quizResultInfo.correctedWordCount}&inCorrectedWordCount=${quizResultInfo.inCorrectedWordCount}`)
@@ -96,40 +129,7 @@ const VideoQuizTryPage = () => {
             }
         })
     }
-    
 
-    const [quizInfo, setQuizInfo] = useState()
-    const [quizResultInfo, setQuizResultInfo] = useState({
-        correctedWordCount: 0,
-        inCorrectedWordCount: 0
-    })
-
-    useEffect(() => {
-        if(!(subtitleInfos && subtitleInfos.length > 0)) return
-
-        setQuizInfo({
-            words: subtitleInfos[videoPlayerProps.currentTimeIndex].subtitle.split(" "),
-            translatedSubtitle: subtitleInfos[videoPlayerProps.currentTimeIndex].translatedSubtitle
-        })
-        
-    }, [subtitleInfos, videoPlayerProps.currentTimeIndex])
-
-    const onAllCorrect = (currentCorrectedWordCount, currentInCorrectedWordCount) => {
-        setVideoPlayerProps((videoPlayerProps) => {
-            return {
-              ...videoPlayerProps,
-              limitedTimeIndex: videoPlayerProps.limitedTimeIndex+1
-            }
-          })
-        
-        setQuizResultInfo((quizResultInfo) => {
-            return {
-                correctedWordCount: quizResultInfo.correctedWordCount + currentCorrectedWordCount,
-                inCorrectedWordCount: quizResultInfo.inCorrectedWordCount + currentInCorrectedWordCount
-            }
-        })
-        console.log("CURRENT RESULT: ", quizResultInfo)
-    }
 
     return (
         <>

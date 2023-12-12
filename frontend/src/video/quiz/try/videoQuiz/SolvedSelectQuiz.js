@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, CardContent, Stack } from '@mui/material';
-import BoldText from '../../../_global/text/BoldText';
+import BoldText from '../../../../_global/text/BoldText';
 
 const SolvedSelectQuiz = ({quizInfo, isShowtranslation}) => {
     return (

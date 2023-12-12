@@ -11,7 +11,6 @@ function SelectQuiz(props) {
         translatedSubtitle: props.translatedSubtitle,
         isCorrectedWords: new Array(props.words.length).fill(true)
     });
-
     useEffect(() => {
         console.log(props.words)
         const shuffledSelectableWords = [...props.words].sort(() => Math.random() - 0.5)

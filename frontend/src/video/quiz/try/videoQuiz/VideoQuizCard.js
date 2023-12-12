@@ -3,7 +3,7 @@ import { ToggleButton, Card, CardContent } from '@mui/material';
 import TranslateIcon from '@mui/icons-material/Translate';
 import SelectQuiz from './SelectQuiz';
 import SolvedSelectQuiz from './SolvedSelectQuiz';
-import BoldText from '../../../_global/text/BoldText';
+import BoldText from '../../../../_global/text/BoldText';
 
 const VideoQuizCard = ({videoPlayerProps, subtitleInfos, quizInfo, onAllCorrect}) => {
     const [isShowtranslation, setIsShowTranslation] = useState(true)
