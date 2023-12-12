@@ -197,10 +197,10 @@ const VideoEditListPage = () => {
                                             sx={{cursor: "pointer"}}
                                         />
 
-                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1.4}}>
+                                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1.4}}>
                                             {uploadVideo.videoTitle.length <= 25 ? uploadVideo.videoTitle: (uploadVideo.videoTitle.substr(0, 25) + "...")}
                                         </Typography>
-                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
+                                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
                                             총 문제수: {uploadVideo.subtitleCount}
                                         </Typography>
                                     </CardContent>
@@ -214,10 +214,10 @@ const VideoEditListPage = () => {
                                         anchorEl={anchorEl}
                                     >
                                         <MenuItem onClick={() => {onDeleteUploadVideoButtonClicked(index)}}>
-                                            <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", fontSize: 4}}>
+                                            <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", fontSize: 4}}>
                                                 <DeleteIcon/>
                                             </Typography>
-                                            <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginLeft: 1}}>
+                                            <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginLeft: 1}}>
                                                 삭제
                                             </Typography>
                                         </MenuItem>
@@ -232,15 +232,15 @@ const VideoEditListPage = () => {
                             <Grid item xs={6} key={index}>
                                 <Card variant="outlined" sx={{height: 225, cursor: "pointer"}}>
                                     <CardContent sx={{textAlign: "center", marginTop:2}}>
-                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
+                                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
                                             <HourglassEmptyIcon sx={{fontSize: 50}}/>
                                         </Typography>
                                         <br/>
-                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
+                                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
                                             {videoStatusMap[uploadVideo.status]}
                                         </Typography>
                                         <br/>
-                                        <Typography variant="body2" color="text.secondary" sx={{fontWeight: "bolder", fontFamily: "BMDfont", fontSize:10}}>
+                                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", fontSize:10}}>
                                             {uploadVideo.youtubeUrl}
                                         </Typography>
                                     </CardContent>
