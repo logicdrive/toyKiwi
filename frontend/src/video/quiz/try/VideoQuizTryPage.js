@@ -50,7 +50,6 @@ const VideoQuizTryPage = () => {
                         endSecond: subtitle.endSecond
                     }
                 }))
-                console.log(response)
 
             } catch (error) {
                 addAlertPopUp("업로된 동영상 자막 정보를 가져오는 과정에서 오류가 발생했습니다!", "error");
@@ -104,7 +103,8 @@ const VideoQuizTryPage = () => {
     useEffect(() => {
         if(subtitleInfos && subtitleInfos.length > 0)
         setQuizInfo({
-            words: subtitleInfos[0].subtitle.split(" ")
+            words: subtitleInfos[0].subtitle.split(" "),
+            translatedSubtitle: subtitleInfos[0].translatedSubtitle
         })
     }, [subtitleInfos])
 
@@ -163,7 +163,7 @@ const VideoQuizTryPage = () => {
                                     </ToggleButton>
                                 </CardContent>
                                 <CardContent>
-                                <SelectQuiz words={quizInfo.words} onAllCorrect={onAllCorrect}/>
+                                <SelectQuiz words={quizInfo.words} translatedSubtitle={quizInfo.translatedSubtitle} onAllCorrect={onAllCorrect}/>
                                 </CardContent>
                             </Card>
                         </Stack>

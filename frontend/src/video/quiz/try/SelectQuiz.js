@@ -12,7 +12,8 @@ function SelectQuiz(props) {
         answerWords: [...props.words],
         currentCheckIndex: 0,
         selectableWords: [...shuffledSelectableWords],
-        initialSelectableWords: [...shuffledSelectableWords]
+        initialSelectableWords: [...shuffledSelectableWords],
+        translatedSubtitle: props.translatedSubtitle
     });
 
     useEffect(() => {
@@ -21,7 +22,8 @@ function SelectQuiz(props) {
             answerWords: [...props.words],
             currentCheckIndex: 0,
             selectableWords: [...shuffledSelectableWords],  
-            initialSelectableWords: [...shuffledSelectableWords] 
+            initialSelectableWords: [...shuffledSelectableWords],
+            translatedSubtitle: props.translatedSubtitle
         })
     }, [props.words])
 
@@ -74,9 +76,13 @@ function SelectQuiz(props) {
                 }
             </CardContent>
             <CardContent>
+                <Typography sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left", fontSize: 12}}>
+                    {wordProps.translatedSubtitle}
+                </Typography>
+            </CardContent>
+            <CardContent>
                 {
                     wordProps.selectableWords.map((selectableWord, index) => {
-                        console.log(index)
                         if(selectableWord[0] != "*")
                             return (
                                 <Button key={index} index={index} onClick={onClickSeletableWord}>
