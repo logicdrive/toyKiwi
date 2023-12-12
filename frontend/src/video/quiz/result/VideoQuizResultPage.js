@@ -1,18 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { Button, Typography, Stack, Card, CardMedia } from '@mui/material';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Typography, Stack, Card, CardMedia } from '@mui/material';
+import { useSearchParams } from 'react-router-dom';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
 import VideoQuizResultAppBar from './VideoQuizResultAppBar';
 import APIConfig from '../../../APIConfig';
+import BoldText from '../../../_global/text/BoldText';
+import ToHomeButton from './ToHomeButton';
 
 // http://localhost:3000/video/quiz/result?videoId=1&correctedWordCount=27&inCorrectedWordCount=5
 const VideoQuizResultPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
     const [queryParameters] = useSearchParams()
-    const navigate = useNavigate();
 
     const [uploadVideoInfo, setUploadVideoInfo] = useState({});
     useEffect(() => {
@@ -50,39 +51,33 @@ const VideoQuizResultPage = () => {
                             component="img"
                             height="200"
                             image={uploadVideoInfo.thumbnailUrl}
-                        />
-                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1.4}}>
-                            {uploadVideoInfo.videoTitle.length <= 50 ? uploadVideoInfo.videoTitle: (uploadVideoInfo.videoTitle.substr(0, 50) + "...")}
-                        </Typography>
-    
-                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1.4}}>
-                            {
-                                (new Array(starCount).fill(null)).map((_, index) => {
-                                    return (
-                                        <StarIcon key={index}/>
-                                    )
-                                })
-                            }
-                            {
-                                (new Array(3-starCount).fill(null)).map((_, index) => {
-                                    return (
-                                        <StarBorderIcon key={index}/>
-                                    )
-                                })
-                            }
-                        </Typography>
+                    />
+                    <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1.4}}>
+                        {uploadVideoInfo.videoTitle.length <= 50 ? uploadVideoInfo.videoTitle: (uploadVideoInfo.videoTitle.substr(0, 50) + "...")}
+                    </Typography>
 
-                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
-                            {`${correctPct}%`}
-                        </Typography>
+                    <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginTop: 1.4}}>
+                        {
+                            (new Array(starCount).fill(null)).map((_, index) => {
+                                return (
+                                    <StarIcon key={index}/>
+                                )
+                            })
+                        }
+                        {
+                            (new Array(3-starCount).fill(null)).map((_, index) => {
+                                return (
+                                    <StarBorderIcon key={index}/>
+                                )
+                            })
+                        }
+                    </Typography>
+                    
+                    <BoldText>
+                        {`${correctPct}%`}
+                    </BoldText>
 
-                        <Button onClick={() => {
-                            navigate("/video/edit/list")
-                        }} variant="contained" color="error" sx={{backgroundColor: "crimson", marginTop: 5}}>
-                            <Typography sx={{color: "white", fontWeight: "bolder", fontFamily: "BMDfont", outlineColor: "red"}}>
-                                돌아가기
-                            </Typography>
-                        </Button>
+                    <ToHomeButton sx={{backgroundColor: "crimson", marginTop: 5}}/>
                 </Stack>
             </Card>
             ) : false
