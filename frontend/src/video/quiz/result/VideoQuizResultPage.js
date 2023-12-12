@@ -1,14 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Toolbar, Link, Button, Typography, TextField, ToggleButton, Stack,
-    Dialog, DialogTitle, DialogContent, DialogActions, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem, AppBar } from '@mui/material';
+import { Container, Toolbar, Link, Button, Typography, Stack, Card, CardMedia, AppBar } from '@mui/material';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useSearchParams } from 'react-router-dom';
-import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
-import APIConfig from '../../../APIConfig';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
+import APIConfig from '../../../APIConfig';
 
 // http://localhost:3000/video/quiz/result?videoId=1&correctedWordCount=27&inCorrectedWordCount=5
 const VideoQuizResultPage = () => {

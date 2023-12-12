@@ -1,5 +1,3 @@
-// 특정 길이의 비디오를 일정 간격으로 이동하면서 재생시키는 샘플
-
 import React, { useState, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player'
 

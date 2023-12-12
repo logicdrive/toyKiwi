@@ -1,10 +1,5 @@
-// 단어들이 속성들로 주어지면, 그 단어들을 섞어서 선택하게 만드는 퀴즈를 제공해주는 샘플
-// 전부 성공시에는 onAllCorrect() 콜백함수로 이러한 사실을 알려줌
-// useEffect를 이용해서 전부 성공시에 props.words를 바꿔서 다음 스탭으로 나아갈 수 있도록 구현함
-
 import React, { useState, useEffect } from 'react';
-import { Container, Toolbar, Link, Button, Typography, TextField, ToggleButton, Stack,
-    Dialog, DialogTitle, DialogContent, DialogActions, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem, AppBar } from '@mui/material';
+import { Button, Typography, Stack, CardContent } from '@mui/material';
 
 function SelectQuiz(props) {
     const shuffledSelectableWords = [...props.words].sort(() => Math.random() - 0.5)
@@ -28,7 +23,7 @@ function SelectQuiz(props) {
             translatedSubtitle: props.translatedSubtitle,
             isCorrectedWords: new Array(props.words.length).fill(true)
         })
-    }, [props.words])
+    }, [props.words, props.translatedSubtitle])
 
 
     const onClickSeletableWord = (e) => {
@@ -112,7 +107,7 @@ function SelectQuiz(props) {
             <CardContent>
                 {
                     wordProps.selectableWords.map((selectableWord, index) => {
-                        if(selectableWord[0] != "*")
+                        if(selectableWord[0] !== "*")
                             return (
                                 <Button key={index} index={index} onClick={onClickSeletableWord}>
                                     <Typography index={index} sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left", padding: 0.5, fontSize: 10}}>

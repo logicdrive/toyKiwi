@@ -1,18 +1,16 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { useSearchParams } from 'react-router-dom';
-import { Container, Toolbar, Link, Button, Typography, TextField, ToggleButton,
-    Dialog, DialogTitle, DialogContent, DialogActions, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem, AppBar } from '@mui/material';
-import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
-import APIConfig from '../../../APIConfig';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Container, Toolbar, Link, Button, Typography, ToggleButton, Card, CardContent, AppBar } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CuttedVideoPlayer from './CuttedVideoPlayer';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Stack from '@mui/material/Stack';
-import SelectQuiz from './SelectQuiz';
 import TranslateIcon from '@mui/icons-material/Translate';
+import APIConfig from '../../../APIConfig';
+import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
+import CuttedVideoPlayer from './CuttedVideoPlayer';
+import SelectQuiz from './SelectQuiz';
 
 const VideoQuizTryPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
