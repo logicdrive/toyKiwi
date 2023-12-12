@@ -1,17 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Button, Typography, ToggleButton, Card, CardContent } from '@mui/material';
+import { Button, Card } from '@mui/material';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Stack from '@mui/material/Stack';
-import TranslateIcon from '@mui/icons-material/Translate';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
 import CuttedVideoPlayer from './CuttedVideoPlayer';
-import SelectQuiz from './SelectQuiz';
 import VideoQuizTryAppBar from './VideoQuizTryAppBar';
-import SolvedSelectQuiz from './SolvedSelectQuiz';
+import VideoQuizCard from './VideoQuizCard';
 
 // 예시 URL: http://localhost:3000/video/quiz/try?videoId=1
 const VideoQuizTryPage = () => {
@@ -106,7 +104,6 @@ const VideoQuizTryPage = () => {
         correctedWordCount: 0,
         inCorrectedWordCount: 0
     })
-    const [isShowtranslation, setIsShowTranslation] = useState(true)
 
     useEffect(() => {
         if(!(subtitleInfos && subtitleInfos.length > 0)) return
@@ -168,25 +165,8 @@ const VideoQuizTryPage = () => {
                                 }
                             </Card>
 
-                            <Card variant="outlined" sx={{padding: 1}}>
-                                <CardContent sx={{height: 20, padding: 0}}>
-                                    <Typography sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left"}}>
-                                        {`Q.${videoPlayerProps.currentTimeIndex+1}/${subtitleInfos.length}`}
-                                    </Typography>
-                                    <ToggleButton value="bold" aria-label="bold" sx={{float: "right"}} selected={isShowtranslation} onChange={() => {setIsShowTranslation(!isShowtranslation)}}>
-                                        <TranslateIcon sx={{fontSize: 15}} />
-                                    </ToggleButton>
-                                </CardContent>
-                                <CardContent>
-                                    {
-                                        (videoPlayerProps.currentTimeIndex === videoPlayerProps.limitedTimeIndex) ? (
-                                            <SelectQuiz words={quizInfo.words} translatedSubtitle={quizInfo.translatedSubtitle} onAllCorrect={onAllCorrect} isShowtranslation={isShowtranslation}/>
-                                        ) : (
-                                            <SolvedSelectQuiz quizInfo={quizInfo} isShowtranslation={isShowtranslation}/>
-                                        )
-                                    }
-                                </CardContent>
-                            </Card>
+                            <VideoQuizCard videoPlayerProps={videoPlayerProps} subtitleInfos={subtitleInfos}
+                                           quizInfo={quizInfo} onAllCorrect={onAllCorrect}/>
                         </Stack>
                         </>
                     )
