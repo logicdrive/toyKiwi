@@ -1,14 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Container, Toolbar, Link, Typography, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem, AppBar } from '@mui/material';
+import { Typography, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem } from '@mui/material';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
-import VideoUploadButton from './VideoUploadButton';
 import BoldText from '../../../_global/text/BoldText';
+import VideoEditListAppBar from './VideoEditListAppBar';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
@@ -91,17 +91,7 @@ const VideoEditListPage = () => {
 
     return (
         <>
-        <AppBar position="static" style={{backgroundColor:"crimson"}}>
-            <Container maxWidth="lg">
-                <Toolbar disableGutters>
-                    <Link variant="h5" underline="none" sx={{color: "white", fontWeight: "bolder", fontFamily: "BMDfont", flexGrow: 1, cursor: "default"}}>
-                        학습 동영상 목록
-                    </Link>
-
-                    <VideoUploadButton onInputCompleted={onInputCompleted} sx={{position: "relative", left: 4}}/>
-                </Toolbar>
-            </Container>
-        </AppBar>
+        <VideoEditListAppBar onInputCompleted={onInputCompleted}/>
 
         <Grid container spacing={2} sx={{marginTop: 0.5}}>
             {
