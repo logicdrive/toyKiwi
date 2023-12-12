@@ -1,15 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Button, Card } from '@mui/material';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
+import { Card } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
 import CuttedVideoPlayer from './CuttedVideoPlayer';
 import VideoQuizTryAppBar from './VideoQuizTryAppBar';
 import VideoQuizCard from './VideoQuizCard';
+import VideoPlayerControllerCard from './VideoPlayerControllerCard';
 
 // 예시 URL: http://localhost:3000/video/quiz/try?videoId=1
 const VideoQuizTryPage = () => {
@@ -146,24 +145,8 @@ const VideoQuizTryPage = () => {
                             <Card variant="outlined">
                                 <CuttedVideoPlayer url={videoPlayerProps.url} currentTimeIndex={videoPlayerProps.currentTimeIndex} timeRanges={videoPlayerProps.timeRanges}/>
                             </Card>
-                            
-                            <Card variant="outlined">
-                                <Button onClick={onClickPrevButton} sx={{float:"left", color: "black"}}>
-                                    <SkipPreviousIcon/>
-                                </Button>
-                                {
-                                    (videoPlayerProps.currentTimeIndex >= videoPlayerProps.limitedTimeIndex) ? (
-                                        <Button onClick={onClickNextButton} sx={{float: "right", color: "black"}} disabled>
-                                            <SkipNextIcon/>
-                                        </Button>
-                                    ) : (
-                                        <Button onClick={onClickNextButton} sx={{float: "right", color: "black"}}>
-                                            <SkipNextIcon/>
-                                        </Button>
-                                    )
-
-                                }
-                            </Card>
+                            <VideoPlayerControllerCard videoPlayerProps={videoPlayerProps} 
+                                        onClickPrevButton={onClickPrevButton} onClickNextButton={onClickNextButton}/>
 
                             <VideoQuizCard videoPlayerProps={videoPlayerProps} subtitleInfos={subtitleInfos}
                                            quizInfo={quizInfo} onAllCorrect={onAllCorrect}/>
