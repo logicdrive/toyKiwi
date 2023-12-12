@@ -7,14 +7,17 @@ import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext
 import APIConfig from '../../../APIConfig';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CuttedVideoPlayer from './CuttedVideoPlayer';
 
 const VideoQuizTryPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
     const [queryParameters] = useSearchParams()
     const navigate = useNavigate();
 
+
     const [uploadVideoInfo, setUploadVideoInfo] = useState({});
     const [subtitleInfos, setSubtitleInfos] = useState([])
+    const [videoPlayerProps, setVideoPlayerProps] = useState({})
     useEffect(() => {
         (async () => {
             try {
@@ -42,6 +45,7 @@ const VideoQuizTryPage = () => {
                         endSecond: subtitle.endSecond
                     }
                 }))
+                console.log(response)
 
             } catch (error) {
                 addAlertPopUp("업로된 동영상 자막 정보를 가져오는 과정에서 오류가 발생했습니다!", "error");
@@ -49,6 +53,45 @@ const VideoQuizTryPage = () => {
             }
         })()
     }, [addAlertPopUp])
+
+    useEffect(() => {
+        setVideoPlayerProps({
+            url: uploadVideoInfo.uploadedUrl,
+            currentTimeIndex: 0,
+            timeRanges: subtitleInfos.map((subtitleInfo) => {
+                return {
+                    startTimeSec: subtitleInfo.startSecond,
+                    endTimeSec: subtitleInfo.endSecond
+                }
+            })
+        })
+    }, [uploadVideoInfo, subtitleInfos])
+
+    const onClickPrevButton = () => {
+        if(videoPlayerProps.currentTimeIndex === 0) {
+          return
+        }
+    
+        setVideoPlayerProps((videoPlayerProps) => {
+          return {
+            ...videoPlayerProps,
+            currentTimeIndex: videoPlayerProps.currentTimeIndex-1
+          }
+        })
+      }
+    
+      const onClickNextButton = () => {
+        if(videoPlayerProps.currentTimeIndex === videoPlayerProps.timeRanges.length-1) {
+          return
+        }
+    
+        setVideoPlayerProps((videoPlayerProps) => {
+          return {
+            ...videoPlayerProps,
+            currentTimeIndex: videoPlayerProps.currentTimeIndex+1
+          }
+        })
+      }
 
     return (
         <>
@@ -71,6 +114,19 @@ const VideoQuizTryPage = () => {
                 </Toolbar>
             </Container>
         </AppBar>
+        {
+            (() => {
+                if (videoPlayerProps.url && videoPlayerProps.timeRanges && (videoPlayerProps.timeRanges.length > 0))
+                    return (
+                        <>
+                        <CuttedVideoPlayer url={videoPlayerProps.url} currentTimeIndex={videoPlayerProps.currentTimeIndex} timeRanges={videoPlayerProps.timeRanges}/>
+                    
+                        <Button onClick={onClickPrevButton}>PREV</Button>
+                        <Button onClick={onClickNextButton}>NEXT</Button>
+                        </>
+                    )
+            })()
+        }
         </>
     );
 }
