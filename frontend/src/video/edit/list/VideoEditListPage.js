@@ -1,17 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Typography, Card, CardContent, Grid, CardMedia } from '@mui/material';
+import { Typography, Card, CardContent, Grid } from '@mui/material';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
-import BoldText from '../../../_global/text/BoldText';
 import VideoEditListAppBar from './VideoEditListAppBar';
-import VideoIconButton from './VideoIconButton';
+import VideoInfoCard from './VideoInfoCard';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
-    const navigate = useNavigate();
 
 
     const [uploadVideos, setUploadVideos] = useState([]);
@@ -98,26 +95,9 @@ const VideoEditListPage = () => {
                     {
                         return (
                             <Grid item xs={6} key={index}>
-                                <Card variant="outlined" sx={{height: 225}}>
-                                    <CardContent onClick={() => {navigate(`/video/quiz/try?videoId=${uploadVideo.videoId}`)}} sx={{cursor: "pointer"}}>
-                                        <CardMedia
-                                            component="img"
-                                            height="145"
-                                            image={uploadVideo.thumbnailUrl}
-                                            sx={{cursor: "pointer"}}
-                                        />
-
-                                        <BoldText sx={{marginTop: 1.4}}>
-                                            {uploadVideo.videoTitle.length <= 25 ? uploadVideo.videoTitle: (uploadVideo.videoTitle.substr(0, 25) + "...")}
-                                        </BoldText>
-                                        <BoldText>
-                                            총 문제수: {uploadVideo.subtitleCount}
-                                        </BoldText>
-                                    </CardContent>
-                                    <VideoIconButton index={index} isOpened={isUploadVideoMenuOpeneds[index]} sx={{float: "right", position: "relative", bottom: 67}}
-                                                     onClick={() => {setUploadVideoMenuOpened(index, true)}} onClose={() => {setUploadVideoMenuOpened(index, false)}}
-                                                     onDeleteUploadVideoButtonClicked={onDeleteUploadVideoButtonClicked}/>
-                                </Card>
+                                <VideoInfoCard index={index} uploadVideo={uploadVideo} isIconOpend={isUploadVideoMenuOpeneds[index]}
+                                               onClickIcon={() => {setUploadVideoMenuOpened(index, true)}} onClickCloseIcon={() => {setUploadVideoMenuOpened(index, false)}}
+                                               onDeleteUploadVideoButtonClicked={onDeleteUploadVideoButtonClicked}/>
                             </Grid>
                         )
                     }
