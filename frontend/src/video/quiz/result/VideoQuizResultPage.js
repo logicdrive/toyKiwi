@@ -37,7 +37,6 @@ const VideoQuizResultPage = () => {
     const inCorrectedWordCount = Number(queryParameters.get("inCorrectedWordCount"))
     const correctPct = Math.floor((correctedWordCount/(correctedWordCount + inCorrectedWordCount)) * 100)
     const starCount = Math.floor(correctPct/33)
-    console.log(starCount)
 
     return (
         <>

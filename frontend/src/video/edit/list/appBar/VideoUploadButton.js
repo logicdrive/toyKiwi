@@ -30,6 +30,7 @@ const VideoUploadButton = ({onInputCompleted, sx, ...props}) => {
     }
     const handleVideoUploadInfoSubmit = async () => {
         try {
+
             await onInputCompleted({
                 youtubeUrl: videoUploadInfo.youtubeUrl,
                 cuttedStartSecond: Number(videoUploadInfo.cuttedStartSecond),

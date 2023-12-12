@@ -58,18 +58,9 @@ const VideoEditListPage = () => {
     const onDeleteUploadVideoButtonClicked = async (index) => {
         setUploadVideoMenuOpened(index, false)
 
-        try {
-            
-            const videoIdToDelete = uploadVideos[index].videoId
-            console.log("[Effect] Try to delete video :", videoIdToDelete);
-            await axios.delete(`${APIConfig.videoUrl}/videos/${videoIdToDelete}`);
-
-            addAlertPopUp("비디오 삭제 요청이 정상적으로 완료되었습니다.", "success");
-
-        } catch (error) {
-            addAlertPopUp("비디오 삭제 요청 과정에서 오류가 발생했습니다!", "error");
-            console.error("비디오 삭제 요청 과정에서 오류가 발생했습니다!", error);
-        }
+        const videoIdToDelete = uploadVideos[index].videoId
+        console.log("[Effect] Try to delete video :", videoIdToDelete);
+        await axios.delete(`${APIConfig.videoUrl}/videos/${videoIdToDelete}`);
     }
 
 
