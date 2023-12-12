@@ -11,6 +11,7 @@ import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext
 import CuttedVideoPlayer from './CuttedVideoPlayer';
 import SelectQuiz from './SelectQuiz';
 import VideoQuizTryAppBar from './VideoQuizTryAppBar';
+import SolvedSelectQuiz from './SolvedSelectQuiz';
 
 // 예시 URL: http://localhost:3000/video/quiz/try?videoId=1
 const VideoQuizTryPage = () => {
@@ -177,41 +178,13 @@ const VideoQuizTryPage = () => {
                                     </ToggleButton>
                                 </CardContent>
                                 <CardContent>
-                            {
-                                (videoPlayerProps.currentTimeIndex === videoPlayerProps.limitedTimeIndex) ? (
-                                    <SelectQuiz words={quizInfo.words} translatedSubtitle={quizInfo.translatedSubtitle} onAllCorrect={onAllCorrect} isShowtranslation={isShowtranslation}/>
-                                ) : (
-                                    <>
-                                    <Stack>
-                                        <CardContent>
-                                            {
-                                                quizInfo.words.map((placedWord, index) => {
-                                                    return (
-                                                        <Typography key={index} sx={{color: "black", fontWeight: "bolder", fontFamily: "Ubuntufont", float: "left", padding: 0.5}}>
-                                                            {placedWord.toUpperCase()}
-                                                        </Typography>
-                                                    )
-                                                })
-                                            }
-                                        </CardContent>
-                                        {
-                                            (() => {
-                                                if(isShowtranslation)
-                                                {
-                                                    return (
-                                                        <CardContent>
-                                                            <Typography sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left", fontSize: 12}}>
-                                                                {quizInfo.translatedSubtitle}
-                                                            </Typography>
-                                                        </CardContent>
-                                                    )
-                                                }
-                                            })()
-                                        }
-                                    </Stack>
-                                </>
-                                )
-                            }
+                                    {
+                                        (videoPlayerProps.currentTimeIndex === videoPlayerProps.limitedTimeIndex) ? (
+                                            <SelectQuiz words={quizInfo.words} translatedSubtitle={quizInfo.translatedSubtitle} onAllCorrect={onAllCorrect} isShowtranslation={isShowtranslation}/>
+                                        ) : (
+                                            <SolvedSelectQuiz quizInfo={quizInfo} isShowtranslation={isShowtranslation}/>
+                                        )
+                                    }
                                 </CardContent>
                             </Card>
                         </Stack>
