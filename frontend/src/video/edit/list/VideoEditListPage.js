@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { Typography, Card, CardContent, Grid } from '@mui/material';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import { Grid } from '@mui/material';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
 import VideoEditListAppBar from './VideoEditListAppBar';
 import VideoInfoCard from './VideoInfoCard';
+import VideoInfoLoadingCard from './VideoInfoLoadingCard';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
@@ -65,13 +65,6 @@ const VideoEditListPage = () => {
         })()
     }, [addAlertPopUp])
 
-    const videoStatusMap = {
-        "VideoUploadRequested": "비디오 업로드중...[1/5]",
-        "VideoUrlUploaded": "자막 생성중...[2/5]",
-        "SubtitleMetadataUploaded": "자막 생성중...[3/5]",
-        "GeneratedSubtitleUploaded": "자막 번역중...[4/5]"
-    }
-
     const onInputCompleted = async (userInputs) => {
         console.log("[EFFECT] 동영상 업로드 요청이 수행됨:", userInputs);
 
@@ -91,38 +84,19 @@ const VideoEditListPage = () => {
         <Grid container spacing={2} sx={{marginTop: 0.5}}>
             {
                 uploadVideos.map((uploadVideo, index) => {
-                    if(uploadVideo.status === "TranlatedSubtitleUploaded")
-                    {
-                        return (
-                            <Grid item xs={6} key={index}>
+                    return (
+                        <Grid item xs={6} key={index}>
+                        {
+                            (uploadVideo.status === "TranlatedSubtitleUploaded") ? (
+
                                 <VideoInfoCard index={index} uploadVideo={uploadVideo} isIconOpend={isUploadVideoMenuOpeneds[index]}
-                                               onClickIcon={() => {setUploadVideoMenuOpened(index, true)}} onClickCloseIcon={() => {setUploadVideoMenuOpened(index, false)}}
-                                               onDeleteUploadVideoButtonClicked={onDeleteUploadVideoButtonClicked}/>
-                            </Grid>
-                        )
-                    }
-                    else
-                    {
-                        return (
-                            <Grid item xs={6} key={index}>
-                                <Card variant="outlined" sx={{height: 225, cursor: "pointer"}}>
-                                    <CardContent sx={{textAlign: "center", marginTop:2}}>
-                                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
-                                            <HourglassEmptyIcon sx={{fontSize: 50}}/>
-                                        </Typography>
-                                        <br/>
-                                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
-                                            {videoStatusMap[uploadVideo.status]}
-                                        </Typography>
-                                        <br/>
-                                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", fontSize:10}}>
-                                            {uploadVideo.youtubeUrl}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        )
-                    }
+                                onClickIcon={() => {setUploadVideoMenuOpened(index, true)}} onClickCloseIcon={() => {setUploadVideoMenuOpened(index, false)}}
+                                onDeleteUploadVideoButtonClicked={onDeleteUploadVideoButtonClicked}/>
+                            
+                            ) : ( <VideoInfoLoadingCard uploadVideo={uploadVideo}/> )
+                        }
+                        </Grid>
+                    )
                 })
             }
         </Grid>
