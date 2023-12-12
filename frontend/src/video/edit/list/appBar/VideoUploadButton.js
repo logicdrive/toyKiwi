@@ -3,8 +3,8 @@
 import React, { useState, useContext } from 'react';
 import { Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
-import NavButton from '../../../_global/button/NavButton';
+import { AlertPopupContext } from '../../../../_global/alertPopUp/AlertPopUpContext'
+import NavButton from '../../../../_global/button/NavButton';
 
 const VideoUploadButton = ({onInputCompleted, sx, ...props}) => {
     const { addAlertPopUp } = useContext(AlertPopupContext);

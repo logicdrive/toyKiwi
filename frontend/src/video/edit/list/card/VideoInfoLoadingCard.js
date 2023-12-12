@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent } from '@mui/material';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import BoldText from '../../../_global/text/BoldText';
+import BoldText from '../../../../_global/text/BoldText';
 
 const VideoInfoLoadingCard = ({uploadVideo}) => {
     const videoStatusMap = {

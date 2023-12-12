@@ -3,9 +3,9 @@ import axios from 'axios';
 import { Grid } from '@mui/material';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
-import VideoEditListAppBar from './VideoEditListAppBar';
-import VideoInfoCard from './VideoInfoCard';
-import VideoInfoLoadingCard from './VideoInfoLoadingCard';
+import VideoEditListAppBar from './appBar/VideoEditListAppBar';
+import VideoInfoCard from './card/VideoInfoCard';
+import VideoInfoLoadingCard from './card/VideoInfoLoadingCard';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);

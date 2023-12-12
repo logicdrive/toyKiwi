@@ -4,7 +4,7 @@ import React from 'react';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
-import BoldText from '../../../_global/text/BoldText';
+import BoldText from '../../../../_global/text/BoldText';
 
 const VideoIconButton = ({index, isOpened, onClick, onClose, onDeleteUploadVideoButtonClicked, sx}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);

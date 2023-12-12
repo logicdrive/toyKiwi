@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardMedia } from '@mui/material';
-import BoldText from '../../../_global/text/BoldText';
+import BoldText from '../../../../_global/text/BoldText';
 import VideoIconButton from './VideoIconButton';
 
 const VideoInfoCard = ({uploadVideo, isIconOpend, onClickIcon, onClickCloseIcon, onDeleteUploadVideoButtonClicked, index}) => {
