@@ -99,6 +99,7 @@ const VideoQuizTryPage = () => {
     
 
     const [quizInfo, setQuizInfo] = useState()
+    const [isShowtranslation, setIsShowTranslation] = useState(true)
 
     useEffect(() => {
         if(subtitleInfos && subtitleInfos.length > 0)
@@ -158,12 +159,12 @@ const VideoQuizTryPage = () => {
                                     <Typography sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left"}}>
                                         {`Q.${videoPlayerProps.currentTimeIndex+1}/${subtitleInfos.length}`}
                                     </Typography>
-                                    <ToggleButton value="bold" aria-label="bold" sx={{float: "right"}}>
+                                    <ToggleButton value="bold" aria-label="bold" sx={{float: "right"}} selected={isShowtranslation} onChange={() => {setIsShowTranslation(!isShowtranslation)}}>
                                         <TranslateIcon sx={{fontSize: 15}} />
                                     </ToggleButton>
                                 </CardContent>
                                 <CardContent>
-                                <SelectQuiz words={quizInfo.words} translatedSubtitle={quizInfo.translatedSubtitle} onAllCorrect={onAllCorrect}/>
+                                <SelectQuiz words={quizInfo.words} translatedSubtitle={quizInfo.translatedSubtitle} onAllCorrect={onAllCorrect} isShowtranslation={isShowtranslation}/>
                                 </CardContent>
                             </Card>
                         </Stack>

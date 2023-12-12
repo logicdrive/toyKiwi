@@ -75,11 +75,20 @@ function SelectQuiz(props) {
                     })
                 }
             </CardContent>
-            <CardContent>
-                <Typography sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left", fontSize: 12}}>
-                    {wordProps.translatedSubtitle}
-                </Typography>
-            </CardContent>
+            {
+                (() => {
+                    if(props.isShowtranslation)
+                    {
+                        return (
+                            <CardContent>
+                                <Typography sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left", fontSize: 12}}>
+                                    {wordProps.translatedSubtitle}
+                                </Typography>
+                            </CardContent>
+                        )
+                    }
+                })()
+            }
             <CardContent>
                 {
                     wordProps.selectableWords.map((selectableWord, index) => {
