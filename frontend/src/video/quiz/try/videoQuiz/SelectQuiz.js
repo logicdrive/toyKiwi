@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Typography, Stack, CardContent } from '@mui/material';
+import BoldText from '../../../../_global/text/BoldText';
 
 function SelectQuiz(props) {
     const shuffledSelectableWords = [...props.words].sort(() => Math.random() - 0.5)
@@ -90,18 +91,13 @@ function SelectQuiz(props) {
                 }
             </CardContent>
             {
-                (() => {
-                    if(props.isShowtranslation)
-                    {
-                        return (
-                            <CardContent>
-                                <Typography sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left", fontSize: 12}}>
-                                    {wordProps.translatedSubtitle}
-                                </Typography>
-                            </CardContent>
-                        )
-                    }
-                })()
+                (props.isShowtranslation) ? (
+                    <CardContent>
+                        <BoldText sx={{float: "left", fontSize: 12}}>
+                            {wordProps.translatedSubtitle}
+                        </BoldText>
+                    </CardContent>
+                ) : false
             }
             <CardContent>
                 {
@@ -109,17 +105,17 @@ function SelectQuiz(props) {
                         if(selectableWord[0] !== "*")
                             return (
                                 <Button key={index} index={index} onClick={onClickSeletableWord}>
-                                    <Typography index={index} sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left", padding: 0.5, fontSize: 10}}>
+                                    <BoldText index={index} sx={{float: "left", padding: 0.5, fontSize: 10}}>
                                         {selectableWord}
-                                    </Typography>
+                                    </BoldText>
                                 </Button>
                             )
                         else
                             return (
                                 <Button key={index} disabled>
-                                    <Typography sx={{opacity:0.1, color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left", padding: 0.5, fontSize: 10}}>
+                                    <BoldText sx={{opacity:0.1, float: "left", padding: 0.5, fontSize: 10}}>
                                         {selectableWord.slice(1)}
-                                    </Typography>
+                                    </BoldText>
                                 </Button>
                             )
                     })
