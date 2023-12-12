@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
 import VideoUploadButton from './VideoUploadButton';
-import Text from '../../../_global/Text/Text';
+import BoldText from '../../../_global/text/BoldText';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
@@ -98,7 +98,7 @@ const VideoEditListPage = () => {
                         학습 동영상 목록
                     </Link>
 
-                    <VideoUploadButton onInputCompleted={onInputCompleted} />
+                    <VideoUploadButton onInputCompleted={onInputCompleted} sx={{position: "relative", left: 4}}/>
                 </Toolbar>
             </Container>
         </AppBar>
@@ -119,9 +119,9 @@ const VideoEditListPage = () => {
                                             sx={{cursor: "pointer"}}
                                         />
 
-                                        <Text sx={{marginTop: 1.4}}>
+                                        <BoldText sx={{marginTop: 1.4}}>
                                             {uploadVideo.videoTitle.length <= 25 ? uploadVideo.videoTitle: (uploadVideo.videoTitle.substr(0, 25) + "...")}
-                                        </Text>
+                                        </BoldText>
                                         <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
                                             총 문제수: {uploadVideo.subtitleCount}
                                         </Typography>

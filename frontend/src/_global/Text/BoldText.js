@@ -3,7 +3,7 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-const Text = ({children, sx, ...props}) => {
+const BoldText = ({children, sx, ...props}) => {
     return (
         <Typography variant="body2" sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", ...sx}} {...props}>
             {children}
@@ -11,4 +11,4 @@ const Text = ({children, sx, ...props}) => {
     );
 }
 
-export default Text;
+export default BoldText;

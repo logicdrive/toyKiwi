@@ -1,12 +1,12 @@
 // 유저로부터 유튜브 URL을 입력받고, 해당 URL을 기반으로 동영상을 S3에 업로드하기 위해서
 
 import React, { useState, useContext } from 'react';
-import { Link, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
-import NavText from '../../../_global/Text/NavText';
+import NavButton from '../../../_global/button/NavButton';
 
-const VideoUploadButton = (props) => {
+const VideoUploadButton = ({onInputCompleted, sx, ...props}) => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
 
 
@@ -30,7 +30,7 @@ const VideoUploadButton = (props) => {
     }
     const handleVideoUploadInfoSubmit = async () => {
         try {
-            await props.onInputCompleted({
+            await onInputCompleted({
                 youtubeUrl: videoUploadInfo.youtubeUrl,
                 cuttedStartSecond: Number(videoUploadInfo.cuttedStartSecond),
                 cuttedEndSecond: Number(videoUploadInfo.cuttedEndSecond)
@@ -47,13 +47,9 @@ const VideoUploadButton = (props) => {
 
     return (
         <>
-        <Link sx={{backgroundColor: "red", margin: 1, position: "relative", left: 4}}>
-            <Button onClick={onVideoUploadButtonClicked}>
-                <NavText sx={{position: "relative", top: 3}}>
-                    <FileUploadIcon sx={{fontSize: 40}}/>
-                </NavText>
-            </Button>
-        </Link>
+        <NavButton onClick={onVideoUploadButtonClicked} sx={{...sx}} {...props}>
+            <FileUploadIcon sx={{fontSize: 40}}/>
+        </NavButton>
 
         <Dialog open={isVideoUploadDialogOpend} onClose={()=>{setIsVideoUploadDialogOpend(false);}}>
             <DialogTitle sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont"}}>유튜브 비디오 업로드</DialogTitle>
