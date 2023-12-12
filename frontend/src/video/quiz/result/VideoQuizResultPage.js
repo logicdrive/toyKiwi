@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Toolbar, Link, Button, Typography, Stack, Card, CardMedia, AppBar } from '@mui/material';
+import { Button, Typography, Stack, Card, CardMedia } from '@mui/material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
+import VideoQuizResultAppBar from './VideoQuizResultAppBar';
 import APIConfig from '../../../APIConfig';
 
 // http://localhost:3000/video/quiz/result?videoId=1&correctedWordCount=27&inCorrectedWordCount=5
@@ -40,25 +40,8 @@ const VideoQuizResultPage = () => {
 
     return (
         <>
-        <AppBar position="static" style={{backgroundColor:"crimson"}}>
-            <Container maxWidth="lg">
-                <Toolbar disableGutters>
-                    <Link variant="h5" underline="none" sx={{color: "white", fontWeight: "bolder", fontFamily: "BMDfont", flexGrow: 1, cursor: "default"}}>
-                        퀴즈 결과
-                    </Link>
-
-                    <Link sx={{backgroundColor: "red", margin: 1, position: "relative", left: 4}}>
-                        <Button onClick={() => {
-                            navigate("/video/edit/list")
-                        }}>
-                            <Typography sx={{color: "white", fontWeight: "bolder", fontFamily: "BMDfont", position: "relative", top: 3}}>
-                                <ArrowBackIcon sx={{fontSize: 40}}/>
-                            </Typography>
-                        </Button>
-                    </Link>
-                </Toolbar>
-            </Container>
-        </AppBar>
+        <VideoQuizResultAppBar />
+        
         {
             (uploadVideoInfo.videoId) ? (
                 <Card variant="outlined" sx={{marginTop: 1, padding: 5, textAlign: "center"}}>
