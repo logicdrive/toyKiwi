@@ -88,7 +88,7 @@ const VideoQuizTryPage = () => {
       const onClickNextButton = () => {
         if(videoPlayerProps.currentTimeIndex >= videoPlayerProps.limitedTimeIndex) return
         if(videoPlayerProps.currentTimeIndex === videoPlayerProps.timeRanges.length-1) {
-            navigate(`/video/quiz/result?correctedWordCount=${quizResultInfo.correctedWordCount}&inCorrectedWordCount=${quizResultInfo.inCorrectedWordCount}`)
+            navigate(`/video/quiz/result?videoId=${queryParameters.get("videoId")}&correctedWordCount=${quizResultInfo.correctedWordCount}&inCorrectedWordCount=${quizResultInfo.inCorrectedWordCount}`)
             return
         }
     
