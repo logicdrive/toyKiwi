@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
-import { Container, Toolbar, Link, Button, Typography, TextField,
+import { Container, Toolbar, Link, Button, Typography, TextField, ToggleButton,
     Dialog, DialogTitle, DialogContent, DialogActions, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem, AppBar } from '@mui/material';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
 import APIConfig from '../../../APIConfig';
@@ -11,6 +11,8 @@ import CuttedVideoPlayer from './CuttedVideoPlayer';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Stack from '@mui/material/Stack';
+import SelectQuiz from './SelectQuiz';
+import TranslateIcon from '@mui/icons-material/Translate';
 
 const VideoQuizTryPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
@@ -94,7 +96,21 @@ const VideoQuizTryPage = () => {
             currentTimeIndex: videoPlayerProps.currentTimeIndex+1
           }
         })
-      }
+    }
+    
+
+    const [quizInfo, setQuizInfo] = useState()
+
+    useEffect(() => {
+        if(subtitleInfos && subtitleInfos.length > 0)
+        setQuizInfo({
+            words: subtitleInfos[0].subtitle.split(" ")
+        })
+    }, [subtitleInfos])
+
+    const onAllCorrect = () => {
+        console.log("Correct !!!")
+    }
 
     return (
         <>
@@ -119,13 +135,15 @@ const VideoQuizTryPage = () => {
         </AppBar>
         {
             (() => {
-                if (videoPlayerProps.url && videoPlayerProps.timeRanges && (videoPlayerProps.timeRanges.length > 0))
+                if (videoPlayerProps.url && videoPlayerProps.timeRanges && 
+                   (videoPlayerProps.timeRanges.length > 0) && quizInfo) {
                     return (
                         <>
                         <Stack spacing={0.5} sx={{marginTop: 1}}>
                             <Card variant="outlined">
                                 <CuttedVideoPlayer url={videoPlayerProps.url} currentTimeIndex={videoPlayerProps.currentTimeIndex} timeRanges={videoPlayerProps.timeRanges}/>
                             </Card>
+                            
                             <Card variant="outlined">
                                 <Button onClick={onClickPrevButton} sx={{float:"left", color: "black"}}>
                                     <SkipPreviousIcon/>
@@ -134,9 +152,24 @@ const VideoQuizTryPage = () => {
                                     <SkipNextIcon/>
                                 </Button>
                             </Card>
+
+                            <Card variant="outlined" sx={{padding: 1}}>
+                                <CardContent sx={{height: 20, padding: 0}}>
+                                    <Typography sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont", float: "left"}}>
+                                        {`Q.${videoPlayerProps.currentTimeIndex+1}/${subtitleInfos.length}`}
+                                    </Typography>
+                                    <ToggleButton value="bold" aria-label="bold" sx={{float: "right"}}>
+                                        <TranslateIcon sx={{fontSize: 15}} />
+                                    </ToggleButton>
+                                </CardContent>
+                                <CardContent>
+                                <SelectQuiz words={quizInfo.words} onAllCorrect={onAllCorrect}/>
+                                </CardContent>
+                            </Card>
                         </Stack>
                         </>
                     )
+                }
             })()
         }
         </>

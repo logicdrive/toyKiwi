@@ -21,3 +21,8 @@ code {
   font-family: "BMHfont";
   src: url("./fonts/BMHANNAAir_ttf.ttf");
 }
+
+@font-face {
+  font-family: "Ubuntufont";
+  src: url("./fonts/UbuntuMono-B.ttf");
+}
