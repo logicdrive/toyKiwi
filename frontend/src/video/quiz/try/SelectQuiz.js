@@ -13,17 +13,20 @@ function SelectQuiz(props) {
         currentCheckIndex: 0,
         selectableWords: [...shuffledSelectableWords],
         initialSelectableWords: [...shuffledSelectableWords],
-        translatedSubtitle: props.translatedSubtitle
+        translatedSubtitle: props.translatedSubtitle,
+        isCorrectedWords: new Array(props.words.length).fill(true)
     });
 
     useEffect(() => {
+        console.log(props.words)
         const shuffledSelectableWords = [...props.words].sort(() => Math.random() - 0.5)
         setWordProps({
             answerWords: [...props.words],
             currentCheckIndex: 0,
             selectableWords: [...shuffledSelectableWords],  
             initialSelectableWords: [...shuffledSelectableWords],
-            translatedSubtitle: props.translatedSubtitle
+            translatedSubtitle: props.translatedSubtitle,
+            isCorrectedWords: new Array(props.words.length).fill(true)
         })
     }, [props.words])
 
@@ -33,18 +36,28 @@ function SelectQuiz(props) {
         const selectedWord = wordProps.selectableWords[selectedWordIndex];
 
         if(wordProps.answerWords[wordProps.currentCheckIndex] !== selectedWord) {
-            console.log("WRONG...");
+            setWordProps((wordProps) => {
+                let copiedIsCorrectedWords = [...wordProps.isCorrectedWords];
+                copiedIsCorrectedWords[wordProps.currentCheckIndex] = false;
+
+                return {
+                    ...wordProps,
+                    isCorrectedWords: copiedIsCorrectedWords
+                }
+            })
             return;
         }
 
         if(wordProps.currentCheckIndex === wordProps.answerWords.length-1) {
-            if(props.onAllCorrect) props.onAllCorrect();
+            if(props.onAllCorrect) props.onAllCorrect(
+                wordProps.isCorrectedWords.filter((isCorrectedWord) => isCorrectedWord===true).length,
+                wordProps.isCorrectedWords.filter((isCorrectedWord) => isCorrectedWord===false).length
+            );
         }
         setWordProps((wordProps) => {
             let copiedSelectableWords = [...wordProps.selectableWords];
             copiedSelectableWords[selectedWordIndex] = "*"+copiedSelectableWords[selectedWordIndex];
 
-            console.log("CORRECT !");
             return {
                 ...wordProps,
                 currentCheckIndex: wordProps.currentCheckIndex+1,
@@ -60,11 +73,18 @@ function SelectQuiz(props) {
                 {
                     wordProps.answerWords.map((placedWord, index) => {
                         if(index < wordProps.currentCheckIndex){
-                            return (
-                                <Typography key={index} sx={{color: "black", fontWeight: "bolder", fontFamily: "Ubuntufont", float: "left", padding: 0.5}}>
-                                    {placedWord.toUpperCase()}
-                                </Typography>
-                            )
+                            if (wordProps.isCorrectedWords[index])
+                                return (
+                                    <Typography key={index} sx={{color: "green", fontWeight: "bolder", fontFamily: "Ubuntufont", float: "left", padding: 0.5}}>
+                                        {placedWord.toUpperCase()}
+                                    </Typography>
+                                )
+                            else
+                                return (
+                                    <Typography key={index} sx={{color: "red", fontWeight: "bolder", fontFamily: "Ubuntufont", float: "left", padding: 0.5}}>
+                                        {placedWord.toUpperCase()}
+                                    </Typography>
+                                )
                         }
                         else
                             return (

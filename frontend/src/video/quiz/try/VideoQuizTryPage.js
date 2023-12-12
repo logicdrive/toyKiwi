@@ -56,7 +56,7 @@ const VideoQuizTryPage = () => {
                 console.error("업로된 동영상 자막 정보를 가져오는 과정에서 오류가 발생했습니다!", error);
             }
         })()
-    }, [addAlertPopUp])
+    }, [addAlertPopUp, queryParameters])
 
     useEffect(() => {
         setVideoPlayerProps({
@@ -109,8 +109,8 @@ const VideoQuizTryPage = () => {
         })
     }, [subtitleInfos])
 
-    const onAllCorrect = () => {
-        console.log("Correct !!!")
+    const onAllCorrect = (correctedWordCount, inCorrectedWordCount) => {
+        console.log("RESULT: ", correctedWordCount, inCorrectedWordCount)
     }
 
     return (
