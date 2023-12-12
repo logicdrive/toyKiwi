@@ -1,14 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Typography, Card, CardContent, Grid, CardMedia, IconButton, Menu, MenuItem } from '@mui/material';
+import { Typography, Card, CardContent, Grid, CardMedia } from '@mui/material';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DeleteIcon from '@mui/icons-material/Delete';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
 import BoldText from '../../../_global/text/BoldText';
 import VideoEditListAppBar from './VideoEditListAppBar';
+import VideoIconButton from './VideoIconButton';
 
 const VideoEditListPage = () => {
     const { addAlertPopUp } = useContext(AlertPopupContext);
@@ -17,8 +16,7 @@ const VideoEditListPage = () => {
 
     const [uploadVideos, setUploadVideos] = useState([]);
     const [isUploadVideoMenuOpeneds, setIsUploadVideoMenuOpeneds] = useState([]);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    
+
     const setUploadVideoMenuOpened = (index, value) => {
         setIsUploadVideoMenuOpeneds((isUploadVideoMenuOpeneds) => {
             let copiedValue = [...isUploadVideoMenuOpeneds]
@@ -33,7 +31,7 @@ const VideoEditListPage = () => {
         try {
             
             const videoIdToDelete = uploadVideos[index].videoId
-            console.log("Delete video Id :", videoIdToDelete);
+            console.log("[Effect] Try to delete video :", videoIdToDelete);
             await axios.delete(`${APIConfig.videoUrl}/videos/${videoIdToDelete}`);
 
             addAlertPopUp("비디오 삭제 요청이 정상적으로 완료되었습니다.", "success");
@@ -116,24 +114,9 @@ const VideoEditListPage = () => {
                                             총 문제수: {uploadVideo.subtitleCount}
                                         </BoldText>
                                     </CardContent>
-                                    
-                                    <IconButton aria-label="settings" sx={{float: "right", position: "relative", bottom: 67}} onClick={(e) => {setAnchorEl(e.currentTarget);setUploadVideoMenuOpened(index, true)}}>
-                                        <MoreVertIcon />
-                                    </IconButton>
-                                    <Menu
-                                        open={isUploadVideoMenuOpeneds[index]}
-                                        onClose={() => {setAnchorEl(null);setUploadVideoMenuOpened(index, false)}}
-                                        anchorEl={anchorEl}
-                                    >
-                                        <MenuItem onClick={() => {onDeleteUploadVideoButtonClicked(index)}}>
-                                            <BoldText sx={{fontSize: 4}}>
-                                                <DeleteIcon/>
-                                            </BoldText>
-                                            <BoldText sx={{marginLeft: 1}}>
-                                                삭제
-                                            </BoldText>
-                                        </MenuItem>
-                                    </Menu>
+                                    <VideoIconButton index={index} isOpened={isUploadVideoMenuOpeneds[index]} sx={{float: "right", position: "relative", bottom: 67}}
+                                                     onClick={() => {setUploadVideoMenuOpened(index, true)}} onClose={() => {setUploadVideoMenuOpened(index, false)}}
+                                                     onDeleteUploadVideoButtonClicked={onDeleteUploadVideoButtonClicked}/>
                                 </Card>
                             </Grid>
                         )
