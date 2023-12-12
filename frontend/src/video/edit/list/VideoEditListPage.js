@@ -122,9 +122,9 @@ const VideoEditListPage = () => {
                                         <BoldText sx={{marginTop: 1.4}}>
                                             {uploadVideo.videoTitle.length <= 25 ? uploadVideo.videoTitle: (uploadVideo.videoTitle.substr(0, 25) + "...")}
                                         </BoldText>
-                                        <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont"}}>
+                                        <BoldText>
                                             총 문제수: {uploadVideo.subtitleCount}
-                                        </Typography>
+                                        </BoldText>
                                     </CardContent>
                                     
                                     <IconButton aria-label="settings" sx={{float: "right", position: "relative", bottom: 67}} onClick={(e) => {setAnchorEl(e.currentTarget);setUploadVideoMenuOpened(index, true)}}>
@@ -136,12 +136,12 @@ const VideoEditListPage = () => {
                                         anchorEl={anchorEl}
                                     >
                                         <MenuItem onClick={() => {onDeleteUploadVideoButtonClicked(index)}}>
-                                            <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", fontSize: 4}}>
+                                            <BoldText sx={{fontSize: 4}}>
                                                 <DeleteIcon/>
-                                            </Typography>
-                                            <Typography variant="body2" color="black" sx={{fontWeight: "bolder", fontFamily: "BMDfont", marginLeft: 1}}>
+                                            </BoldText>
+                                            <BoldText sx={{marginLeft: 1}}>
                                                 삭제
-                                            </Typography>
+                                            </BoldText>
                                         </MenuItem>
                                     </Menu>
                                 </Card>
