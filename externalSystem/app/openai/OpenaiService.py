@@ -14,7 +14,7 @@ from .reqDtos.GetChatResponseReqDto import GetChatResponseReqDto
 from .resDtos.GetChatResponseResDto import GetChatResponseResDto
 
 from .services.AudioSplitService import ChunkDto, ChunkDtos, splitAudiosBaseOnSlience
-from .services.OpenAIProxyService import generateAudioText
+from .services.OpenAIProxyService import generateAudioText, getQnAForSentenceByUsingChatGPT
 
 # 주어진 동영상들을 분석해서 자막들을 추출해서 관련 정보들을 반환시키기 위해서
 def generateSubtitle(generateSubtitleReqDto:GenerateSubtitleReqDto) -> GenerateSubtitleResDto :
@@ -37,7 +37,8 @@ def generateSubtitle(generateSubtitleReqDto:GenerateSubtitleReqDto) -> GenerateS
 
 # 주어진 문장에 대한 질문 및 답변을 생성하기 위해서
 def getQnAForSentence(getQnAForSentenceReqDto:GetQnAForSentenceReqDto) -> GetQnAForSentenceResDto :
-    return GetQnAForSentenceResDto("getQnAForSentence Question", "getQnAForSentence Answer")
+    question, answer = getQnAForSentenceByUsingChatGPT(getQnAForSentenceReqDto.sentence)
+    return GetQnAForSentenceResDto(question, answer)
 
 # 주어진 채팅 내역에 대한 답변을 생성하기 위해서
 def getChatResponse(getChatResponseReqDto:GetChatResponseReqDto) -> GetChatResponseResDto :
