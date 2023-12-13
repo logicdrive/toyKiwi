@@ -5,6 +5,8 @@ import toykiwi._global.event.GeneratingSubtitleStarted;
 import toykiwi._global.event.SubtitleMetadataUploaded;
 import toykiwi._global.event.UploadingVideoCompleted;
 import toykiwi._global.event.VideoRemoveRequested;
+import toykiwi._global.event.VideoRemovedByFail;
+import toykiwi._global.event.VideoUploadFailed;
 import toykiwi._global.event.VideoUploadRequested;
 import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.logger.CustomLogger;
@@ -128,6 +130,18 @@ public class Video {
             SubtitleMetadataUploaded subtitleMetadataUploaded = new SubtitleMetadataUploaded(video);
             subtitleMetadataUploaded.publishAfterCommit();
 
+         });
+    }
+
+
+    // 비디오 업로드 실패시 관련 데이터를 삭제시키기 위해서
+    public static void removeVideoByFail(VideoUploadFailed videoUploadFailed) {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search Video by using JPA", String.format("{videoUploadFailed: %s}", videoUploadFailed.toString()));
+        repository().findById(videoUploadFailed.getVideoId()).ifPresent(video->{
+            repository().delete(video);
+
+            VideoRemovedByFail videoRemovedByFail = new VideoRemovedByFail(video);
+            videoRemovedByFail.publishAfterCommit();
          });
     }
 }

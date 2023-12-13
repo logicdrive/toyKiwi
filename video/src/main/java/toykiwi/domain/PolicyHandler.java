@@ -3,6 +3,7 @@ package toykiwi.domain;
 import toykiwi._global.config.kafka.KafkaProcessor;
 import toykiwi._global.event.GeneratingSubtitleStarted;
 import toykiwi._global.event.UploadingVideoCompleted;
+import toykiwi._global.event.VideoUploadFailed;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
 
@@ -35,6 +36,9 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{uploadingVideoCompleted: %s}", uploadingVideoCompleted.toString()));
+        
+            VideoUploadFailed videoUploadFailed = new VideoUploadFailed(uploadingVideoCompleted.getVideoId());
+            videoUploadFailed.publishAfterCommit();
         }
     }
 
@@ -55,6 +59,30 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{generatingSubtitleStarted: %s}", generatingSubtitleStarted.toString()));
+        
+            VideoUploadFailed videoUploadFailed = new VideoUploadFailed(generatingSubtitleStarted.getVideoId());
+            videoUploadFailed.publishAfterCommit();
+        }
+    }
+
+
+    // 비디오 업로드 실패시 관련 데이터를 삭제시키기 위해서
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='VideoUploadFailed'"
+    )
+    public void wheneverVideoUploadFailed_RemoveVideoByFail(
+        @Payload VideoUploadFailed videoUploadFailed
+    ) {
+        try
+        {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{videoUploadFailed: %s}", videoUploadFailed.toString()));
+            Video.removeVideoByFail(videoUploadFailed);
+            CustomLogger.debug(CustomLoggerType.EXIT);
+
+        } catch(Exception e) {
+            CustomLogger.error(e, "", String.format("{videoUploadFailed: %s}", videoUploadFailed.toString()));
         }
     }
 }
