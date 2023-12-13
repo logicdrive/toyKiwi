@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Card } from '@mui/material';
+import { Card, Button } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
@@ -9,6 +9,8 @@ import CuttedVideoPlayer from './videoPlayer/CuttedVideoPlayer';
 import VideoPlayerControllerCard from './videoPlayer/VideoPlayerControllerCard';
 import VideoQuizCard from './videoQuiz/VideoQuizCard';
 import VideoQuizTryAppBar from './VideoQuizTryAppBar';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import BoldText from '../../../_global/text/BoldText';
 
 // 예시 URL: http://localhost:3000/video/quiz/try?videoId=1
 const VideoQuizTryPage = () => {
@@ -147,7 +149,7 @@ const VideoQuizTryPage = () => {
                    (videoPlayerProps.timeRanges.length > 0) && quizInfo) {
                     return (
                         <>
-                        <Stack spacing={0.5} sx={{marginTop: 1}}>
+                        <Stack spacing={0.5} sx={{marginTop: 1, marginBottom: 1}}>
                             <Card variant="outlined">
                                 <CuttedVideoPlayer url={videoPlayerProps.url} currentTimeIndex={videoPlayerProps.currentTimeIndex} timeRanges={videoPlayerProps.timeRanges}/>
                             </Card>
@@ -156,6 +158,16 @@ const VideoQuizTryPage = () => {
 
                             <VideoQuizCard videoPlayerProps={videoPlayerProps} subtitleInfos={subtitleInfos}
                                            quizInfo={quizInfo} onAllCorrect={onAllCorrect}/>
+                            
+                            <Card variant="outlined" sx={{padding: 1}}>
+                                <BoldText sx={{fontSize: 12, float: "left", marginTop: 1}}>
+                                    {subtitleInfos[videoPlayerProps.currentTimeIndex].question.length <= 60 ? subtitleInfos[videoPlayerProps.currentTimeIndex].question :
+                                     (subtitleInfos[videoPlayerProps.currentTimeIndex].question.substr(0, 60) + "...")}
+                                </BoldText>
+                                <Button sx={{float: "right"}}>
+                                    <QuestionAnswerIcon sx={{color: "black", fontSize: 20}}/>
+                                </Button>
+                            </Card>
                         </Stack>
                         </>
                     )
