@@ -8,6 +8,7 @@ import toykiwi._global.event.TranlatedSubtitleUploaded;
 import toykiwi._global.event.TranslatingSubtitleCompleted;
 import toykiwi._global.event.UploadingVideoCompleted;
 import toykiwi._global.event.VideoRemoveRequested;
+import toykiwi._global.event.VideoRemovedByFail;
 import toykiwi._global.event.VideoUploadRequested;
 import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.externalSystemProxy.ExternalSystemProxyService;
@@ -89,17 +90,6 @@ public class ExternalSystemProxy {
     
     }
 
-    // 비디오 삭제 요청시 S3에 업로드된 관련된 비디오 및 썸네일을 삭제시키기 위해서
-    public void requestRemovingVideo(VideoRemoveRequested videoRemoveRequested) throws Exception {
-        this.externalSystemProxyService.removeFile(
-            new RemoveFileReqDto(videoRemoveRequested.getUploadedUrl())
-        );
-
-        this.externalSystemProxyService.removeFile(
-            new RemoveFileReqDto(videoRemoveRequested.getThumbnailUrl())
-        );
-    }
-
     // 번역문 업데이트시, 자막에 대한 질문 및 응답 생성 요청을 수행하기 위해서
     public void requestGeneratingQnA(TranlatedSubtitleUploaded tranlatedSubtitleUploaded) throws Exception {
 
@@ -117,5 +107,32 @@ public class ExternalSystemProxy {
         generatingQnACompleted.setAnswer(getQnAForSentenceResDto.getAnswer());
         generatingQnACompleted.publishAfterCommit();
     
+    }
+
+
+    // 비디오 삭제 요청시 S3에 업로드된 관련된 비디오 및 썸네일을 삭제시키기 위해서
+    public void requestRemovingVideo(VideoRemoveRequested videoRemoveRequested) throws Exception {
+        if((videoRemoveRequested.getUploadedUrl()!=null) && (!(videoRemoveRequested.getUploadedUrl().isEmpty())))  
+            this.externalSystemProxyService.removeFile(
+                new RemoveFileReqDto(videoRemoveRequested.getUploadedUrl())
+            );
+
+        if((videoRemoveRequested.getThumbnailUrl()!=null) && (!(videoRemoveRequested.getThumbnailUrl().isEmpty()))) 
+            this.externalSystemProxyService.removeFile(
+                new RemoveFileReqDto(videoRemoveRequested.getThumbnailUrl())
+            );
+    }
+
+    // 비디오 업로드 실패시 S3에 업로드된 관련된 비디오 및 썸네일을 삭제시키기 위해서
+    public void requestRemovingVideoByFail(VideoRemovedByFail videoRemovedByFail) throws Exception {
+        if((videoRemovedByFail.getUploadedUrl()!=null) && (!(videoRemovedByFail.getUploadedUrl().isEmpty()))) 
+            this.externalSystemProxyService.removeFile(
+                new RemoveFileReqDto(videoRemovedByFail.getUploadedUrl())
+            );
+
+        if((videoRemovedByFail.getThumbnailUrl()!=null) && (!(videoRemovedByFail.getThumbnailUrl().isEmpty()))) 
+            this.externalSystemProxyService.removeFile(
+                new RemoveFileReqDto(videoRemovedByFail.getThumbnailUrl())
+            );
     }
 }

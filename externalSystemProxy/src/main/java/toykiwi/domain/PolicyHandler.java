@@ -4,6 +4,8 @@ import toykiwi._global.config.kafka.KafkaProcessor;
 import toykiwi._global.event.GeneratedSubtitleUploaded;
 import toykiwi._global.event.TranlatedSubtitleUploaded;
 import toykiwi._global.event.VideoRemoveRequested;
+import toykiwi._global.event.VideoRemovedByFail;
+import toykiwi._global.event.VideoUploadFailed;
 import toykiwi._global.event.VideoUploadRequested;
 import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.logger.CustomLogger;
@@ -43,6 +45,9 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{videoUploadRequested: %s}", videoUploadRequested.toString()));
+        
+            VideoUploadFailed videoUploadFailed = new VideoUploadFailed(videoUploadRequested.getId());
+            videoUploadFailed.publishAfterCommit();
         }
     }
 
@@ -63,6 +68,9 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{videoUrlUploaded: %s}", videoUrlUploaded.toString()));
+        
+            VideoUploadFailed videoUploadFailed = new VideoUploadFailed(videoUrlUploaded.getId());
+            videoUploadFailed.publishAfterCommit();
         }
     }
 
@@ -83,8 +91,35 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{generatingSubtitleUploaded: %s}", generatingSubtitleUploaded.toString()));
+        
+            VideoUploadFailed videoUploadFailed = new VideoUploadFailed(generatingSubtitleUploaded.getVideoId());
+            videoUploadFailed.publishAfterCommit();
         }
     }
+
+   // 번역문 업데이트시, 자막에 대한 질문 및 응답 생성 요청을 수행하기 위해서
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='TranlatedSubtitleUploaded'"
+    )
+    public void wheneverTranlatedSubtitleUploaded_RequestGeneratingQnA(
+        @Payload TranlatedSubtitleUploaded tranlatedSubtitleUploaded
+    ) {
+        try
+        {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{tranlatedSubtitleUploaded: %s}", tranlatedSubtitleUploaded.toString()));
+            this.externalSystemProxy.requestGeneratingQnA(tranlatedSubtitleUploaded);
+            CustomLogger.debug(CustomLoggerType.EXIT);
+
+        } catch(Exception e) {
+            CustomLogger.error(e, "", String.format("{tranlatedSubtitleUploaded: %s}", tranlatedSubtitleUploaded.toString()));
+        
+            VideoUploadFailed videoUploadFailed = new VideoUploadFailed(tranlatedSubtitleUploaded.getVideoId());
+            videoUploadFailed.publishAfterCommit();
+        }
+    }
+
 
     // 비디오 삭제 요청시 S3에 업로드된 관련된 비디오 및 썸네일을 삭제시키기 위해서
     @StreamListener(
@@ -106,23 +141,23 @@ public class PolicyHandler {
         }
     }
 
-   // 번역문 업데이트시, 자막에 대한 질문 및 응답 생성 요청을 수행하기 위해서
+    // 비디오 업로드 실패시 S3에 업로드된 관련된 비디오 및 썸네일을 삭제시키기 위해서
     @StreamListener(
         value = KafkaProcessor.INPUT,
-        condition = "headers['type']=='TranlatedSubtitleUploaded'"
+        condition = "headers['type']=='VideoRemovedByFail'"
     )
-    public void wheneverTranlatedSubtitleUploaded_RequestGeneratingQnA(
-        @Payload TranlatedSubtitleUploaded tranlatedSubtitleUploaded
+    public void wheneverVideoRemovedByFail_RequestRemovingVideoByFail(
+        @Payload VideoRemovedByFail videoRemovedByFail
     ) {
         try
         {
 
-            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{tranlatedSubtitleUploaded: %s}", tranlatedSubtitleUploaded.toString()));
-            this.externalSystemProxy.requestGeneratingQnA(tranlatedSubtitleUploaded);
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{videoRemovedByFail: %s}", videoRemovedByFail.toString()));
+            this.externalSystemProxy.requestRemovingVideoByFail(videoRemovedByFail);
             CustomLogger.debug(CustomLoggerType.EXIT);
 
         } catch(Exception e) {
-            CustomLogger.error(e, "", String.format("{tranlatedSubtitleUploaded: %s}", tranlatedSubtitleUploaded.toString()));
+            CustomLogger.error(e, "", String.format("{videoRemovedByFail: %s}", videoRemovedByFail.toString()));
         }
     }
 }
