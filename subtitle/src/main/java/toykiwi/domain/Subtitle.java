@@ -8,6 +8,7 @@ import toykiwi._global.event.GeneratingSubtitleCompleted;
 import toykiwi._global.event.TranlatedSubtitleUploaded;
 import toykiwi._global.event.TranslatingSubtitleCompleted;
 import toykiwi._global.event.VideoRemoveRequested;
+import toykiwi._global.event.VideoUploadFailed;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
 
@@ -158,6 +159,16 @@ public class Subtitle {
         VideoRemoveRequested videoRemoveRequested
     ) {
         List<Subtitle> subtitles = repository().findAllByVideoId(videoRemoveRequested.getId());
+        for(Subtitle subtitle : subtitles) {
+            repository().delete(subtitle);
+        }
+    }
+
+    // 비디오 업로드 실패시, 관련된 자막들을 전부 삭제시키기 위해서
+    public static void removeSubtitlesByFail(
+        VideoUploadFailed videoUploadFailed
+    ) {
+        List<Subtitle> subtitles = repository().findAllByVideoId(videoUploadFailed.getVideoId());
         for(Subtitle subtitle : subtitles) {
             repository().delete(subtitle);
         }

@@ -11,11 +11,13 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(callSuper=false)
 public class TranslatingSubtitleCompleted extends AbstractEvent {
+    private Long videoId;
     private Long subtitleId;
     private String translatedSubtitle;
 
     public TranslatingSubtitleCompleted(MockTranslatingSubtitleCompletedReqDto mockData) {
         super();
+        this.videoId = mockData.getVideoId();
         this.subtitleId = mockData.getSubtitleId();
         this.translatedSubtitle = mockData.getTranslatedSubtitle();
     }

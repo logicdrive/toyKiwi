@@ -5,6 +5,7 @@ import toykiwi._global.event.GeneratingQnACompleted;
 import toykiwi._global.event.GeneratingSubtitleCompleted;
 import toykiwi._global.event.TranslatingSubtitleCompleted;
 import toykiwi._global.event.VideoRemoveRequested;
+import toykiwi._global.event.VideoUploadFailed;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
 
@@ -37,6 +38,9 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{generatingSubtitleCompleted: %s}", generatingSubtitleCompleted.toString()));
+        
+            VideoUploadFailed videoUploadFailed = new VideoUploadFailed(generatingSubtitleCompleted.getVideoId());
+            videoUploadFailed.publishAfterCommit();
         }
     }
 
@@ -57,6 +61,9 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{translatingSubtitleCompleted: %s}", translatingSubtitleCompleted.toString()));
+        
+            VideoUploadFailed videoUploadFailed = new VideoUploadFailed(translatingSubtitleCompleted.getVideoId());
+            videoUploadFailed.publishAfterCommit();
         }
     }
 
@@ -77,15 +84,19 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{generatingQnACompleted: %s}", generatingQnACompleted.toString()));
+        
+            VideoUploadFailed videoUploadFailed = new VideoUploadFailed(generatingQnACompleted.getVideoId());
+            videoUploadFailed.publishAfterCommit();
         }
     }
+
 
     // 비디오 삭제 요청이 있을 경우, 관련된 자막들을 전부 삭제시키기 위해서
     @StreamListener(
         value = KafkaProcessor.INPUT,
         condition = "headers['type']=='VideoRemoveRequested'"
     )
-    public void wheneverVideoRemoveRequestedd_removeSubtitles(
+    public void wheneverVideoRemoveRequested_removeSubtitles(
         @Payload VideoRemoveRequested videoRemoveRequested
     ) {
         try
@@ -97,6 +108,26 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{videoRemoveRequested: %s}", videoRemoveRequested.toString()));
+        }
+    }
+
+    // 비디오 업로드 실패시, 관련된 자막들을 전부 삭제시키기 위해서
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='VideoUploadFailed'"
+    )
+    public void wheneverVideoUploadFailed_removeSubtitlesByFail(
+        @Payload VideoUploadFailed videoUploadFailed
+    ) {
+        try
+        {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{videoUploadFailed: %s}", videoUploadFailed.toString()));
+            Subtitle.removeSubtitlesByFail(videoUploadFailed);
+            CustomLogger.debug(CustomLoggerType.EXIT);
+
+        } catch(Exception e) {
+            CustomLogger.error(e, "", String.format("{videoUploadFailed: %s}", videoUploadFailed.toString()));
         }
     }
 }
