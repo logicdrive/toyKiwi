@@ -54,3 +54,13 @@ And, please wrap with double quotes to the word you want to explain in your ques
 
     Q_INDEX, A_INDEX = ANSWER.find("Q:"), ANSWER.find("A:")
     return (ANSWER[Q_INDEX+3:A_INDEX-1], ANSWER[A_INDEX+3:])
+
+# ChatGPT로부터 채팅에 대한 응답을 얻기 위해서
+def getChatResponseByUsingChatGPT(messages:str) -> str :
+    chatHistory:list[dict] = []
+    for index, messages in enumerate(messages) :
+        chatHistory.append({
+            "role": ("user" if (index%2 == 0) else "assistant"),
+            "content": messages
+        })
+    return getChatGptAnswer(chatHistory)
