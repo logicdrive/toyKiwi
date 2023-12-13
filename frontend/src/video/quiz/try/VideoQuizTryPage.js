@@ -150,10 +150,12 @@ In the above sentence, ${subtitleInfos[videoPlayerProps.currentTimeIndex].questi
 
     //
     const [isChatDialogOpened, setIsChatDialogOpened] = useState(false)
+    const [isUserQuestionEnabled, setIsUserQuestionEnabled] = useState(true)
     const [chatHistory, setChatHistory] = useState([])
     const [userQuestion, setUserQuestion] = useState("")
 
     const handleChatHistorySubmit = async (e) => {
+        setIsUserQuestionEnabled(false)
         try {
 
             const reqDto = {
@@ -173,6 +175,7 @@ In the above sentence, ${subtitleInfos[videoPlayerProps.currentTimeIndex].questi
             addAlertPopUp("AI 채팅 응답을 가져오는 과정에서 오류가 발생했습니다!", "error");
             console.error("AI 채팅 응답을 가져오는 과정에서 오류가 발생했습니다!", error);
         }
+        setIsUserQuestionEnabled(true)
     }
     //
 
@@ -238,9 +241,10 @@ In the above sentence, ${subtitleInfos[videoPlayerProps.currentTimeIndex].questi
                                         
                                         fullWidth
                                         size="small"
+                                        disabled={!isUserQuestionEnabled} 
                                     />
                                     <Button onClick={handleChatHistorySubmit}
-                                     sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont"}}>보내기</Button>
+                                     sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont"}} disabled={!isUserQuestionEnabled}>보내기</Button>
                                 </DialogActions>
                             </Dialog>
                         </Stack>
