@@ -24,11 +24,13 @@ const VideoQuizTryPage = () => {
         (async () => {
             try {
 
+                console.log(`[EFFECT] Try to download video infos: <url:${`${APIConfig.collectedDataUrl}/videos/${queryParameters.get("videoId")}`}>`)
                 const response = await axios.get(`${APIConfig.collectedDataUrl}/videos/${queryParameters.get("videoId")}`);
                 setUploadVideoInfo({
                     videoId: response.data.videoId,
                     uploadedUrl: response.data.uploadedUrl
                 })
+                console.log("[EFFECT] Downloaded videos:", response)
 
             } catch (error) {
                 addAlertPopUp("업로된 동영상 정보를 가져오는 과정에서 오류가 발생했습니다!", "error");
@@ -37,6 +39,7 @@ const VideoQuizTryPage = () => {
 
             try {
 
+                console.log(`[EFFECT] Try to download subtitle infos: <url:${`${APIConfig.collectedDataUrl}/videos/${queryParameters.get("videoId")}/subtitles`}>`)
                 const response = await axios.get(`${APIConfig.collectedDataUrl}/videos/${queryParameters.get("videoId")}/subtitles`);
                 setSubtitleInfos(response.data.subtitles.map((subtitle) => {
                     return {
@@ -44,9 +47,12 @@ const VideoQuizTryPage = () => {
                         subtitle: subtitle.subtitle,
                         translatedSubtitle: subtitle.translatedSubtitle,
                         startSecond: subtitle.startSecond,
-                        endSecond: subtitle.endSecond
+                        endSecond: subtitle.endSecond,
+                        question: subtitle.question,
+                        answer: subtitle.answer
                     }
                 }))
+                console.log("[EFFECT] Downloaded subtitles:", response)
 
             } catch (error) {
                 addAlertPopUp("업로된 동영상 자막 정보를 가져오는 과정에서 오류가 발생했습니다!", "error");

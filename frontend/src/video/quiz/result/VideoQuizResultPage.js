@@ -18,12 +18,14 @@ const VideoQuizResultPage = () => {
         (async () => {
             try {
 
+                console.log(`[EFFECT] Try to download video infos: <url:${`${APIConfig.collectedDataUrl}/videos/${queryParameters.get("videoId")}`}>`)
                 const response = await axios.get(`${APIConfig.collectedDataUrl}/videos/${queryParameters.get("videoId")}`);
                 setUploadVideoInfo({
                     videoId: response.data.videoId,
                     videoTitle: response.data.videoTitle,
                     thumbnailUrl: response.data.thumbnailUrl
                 })
+                console.log("[EFFECT] Downloaded videos:", response)
 
             } catch (error) {
                 addAlertPopUp("업로된 동영상 정보를 가져오는 과정에서 오류가 발생했습니다!", "error");

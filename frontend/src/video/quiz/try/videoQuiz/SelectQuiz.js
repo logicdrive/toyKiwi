@@ -13,7 +13,7 @@ function SelectQuiz(props) {
         isCorrectedWords: new Array(props.words.length).fill(true)
     });
     useEffect(() => {
-        console.log(props.words)
+        console.log("Cheat: ", props.words)
         const shuffledSelectableWords = [...props.words].sort(() => Math.random() - 0.5)
         setWordProps({
             answerWords: [...props.words],
