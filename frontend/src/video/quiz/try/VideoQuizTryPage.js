@@ -88,8 +88,10 @@ const VideoQuizTryPage = () => {
             translatedSubtitle: subtitleInfos[videoPlayerProps.currentTimeIndex].translatedSubtitle
         })
 
-        setChatHistory([
-            subtitleInfos[videoPlayerProps.currentTimeIndex].question,
+        setChatHistory([`"""
+${subtitleInfos[videoPlayerProps.currentTimeIndex].subtitle}
+"""
+In the above sentence, ${subtitleInfos[videoPlayerProps.currentTimeIndex].question}`,
             subtitleInfos[videoPlayerProps.currentTimeIndex].answer
         ])
         
