@@ -22,6 +22,13 @@ spring:
           filters:
             - RewritePath=/api/collectedData/(?<segment>.*), /${segment}
 
+        - id: externalSystem
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/externalSystem/**
+          filters:
+            - RewritePath=/api/externalSystem/(?<segment>.*), /${segment}
+
         - id: frontend
           uri: http://localhost:3000
           predicates:
