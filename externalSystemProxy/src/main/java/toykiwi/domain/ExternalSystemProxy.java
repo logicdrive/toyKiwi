@@ -82,6 +82,7 @@ public class ExternalSystemProxy {
         TranslateSubtitleResDto translateSubtitleResDto = this.externalSystemProxyService.translateSubtitle(translateSubtitleReqDto);
 
         TranslatingSubtitleCompleted translatingSubtitleCompleted = new TranslatingSubtitleCompleted();
+        translatingSubtitleCompleted.setVideoId(generatingSubtitleUploaded.getVideoId());
         translatingSubtitleCompleted.setSubtitleId(generatingSubtitleUploaded.getId());
         translatingSubtitleCompleted.setTranslatedSubtitle(translateSubtitleResDto.getTranslatedSubtitle());
         translatingSubtitleCompleted.publishAfterCommit();
@@ -110,6 +111,7 @@ public class ExternalSystemProxy {
 
 
         GeneratingQnACompleted generatingQnACompleted = new GeneratingQnACompleted();
+        generatingQnACompleted.setVideoId(tranlatedSubtitleUploaded.getVideoId());
         generatingQnACompleted.setSubtitleId(tranlatedSubtitleUploaded.getId());
         generatingQnACompleted.setQuestion(getQnAForSentenceResDto.getQuestion());
         generatingQnACompleted.setAnswer(getQnAForSentenceResDto.getAnswer());

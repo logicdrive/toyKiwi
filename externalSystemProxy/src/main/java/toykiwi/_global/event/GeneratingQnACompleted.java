@@ -10,6 +10,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(callSuper=false)
 public class GeneratingQnACompleted extends AbstractEvent {
+    private Long videoId;
     private Long subtitleId;
     private String question;
     private String answer;
