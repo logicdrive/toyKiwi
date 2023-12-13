@@ -19,6 +19,8 @@ public class TranlatedSubtitleUploaded extends AbstractEvent {
     private String translatedSubtitle;
     private Integer startSecond;
     private Integer endSecond;
+    private String question;
+    private String answer;
 
     public TranlatedSubtitleUploaded(MockTranlatedSubtitleUploadedReqDto mockData) {
         super();
@@ -28,6 +30,8 @@ public class TranlatedSubtitleUploaded extends AbstractEvent {
         this.translatedSubtitle = mockData.getTranslatedSubtitle();
         this.startSecond = mockData.getStartSecond();
         this.endSecond = mockData.getEndSecond();
+        this.question = mockData.getQuestion();
+        this.answer = mockData.getAnswer();
     }
 
     public TranlatedSubtitleUploaded() {

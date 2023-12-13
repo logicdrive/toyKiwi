@@ -1,5 +1,6 @@
 package toykiwi.sanityCheck;
 
+import toykiwi._global.event.GeneratedQnAUploaded;
 import toykiwi._global.event.GeneratedSubtitleUploaded;
 import toykiwi._global.event.SubtitleMetadataUploaded;
 import toykiwi._global.event.TranlatedSubtitleUploaded;
@@ -15,6 +16,7 @@ import toykiwi.domain.Video;
 import toykiwi.domain.VideoRepository;
 import toykiwi.sanityCheck.reqDtos.LogsReqDto;
 import toykiwi.sanityCheck.reqDtos.MakeSubtitleSampleReqDto;
+import toykiwi.sanityCheck.reqDtos.MockGeneratedQnAUploadedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockGeneratedSubtitleUploadedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockSubtitleMetadataUploadedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockTranlatedSubtitleUploadedReqDto;
@@ -116,5 +118,10 @@ public class SanityCheckService {
     // Policy 테스트용으로 VideoRemoveRequested 이벤트를 강제로 발생시키기 위해서
     public void mockVideoRemoveRequested(MockVideoRemoveRequestedReqDto mockData) {
         (new VideoRemoveRequested(mockData)).publish();
+    }
+
+    // Policy 테스트용으로 GeneratedQnAUploaded 이벤트를 강제로 발생시키기 위해서
+    public void mockGeneratedQnAUploaded(MockGeneratedQnAUploadedReqDto mockData) {
+        (new GeneratedQnAUploaded(mockData)).publish();
     }
 }

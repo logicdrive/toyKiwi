@@ -1,6 +1,7 @@
 package toykiwi.domain;
 
 import toykiwi._global.config.kafka.KafkaProcessor;
+import toykiwi._global.event.GeneratedQnAUploaded;
 import toykiwi._global.event.GeneratedSubtitleUploaded;
 import toykiwi._global.event.SubtitleMetadataUploaded;
 import toykiwi._global.event.TranlatedSubtitleUploaded;
@@ -206,6 +207,55 @@ public class CollectedDataViewHandler {
 
         } catch (Exception e) {
             CustomLogger.error(e, "", String.format("{tranlatedSubtitleUploaded: %s}", tranlatedSubtitleUploaded.toString()));
+        }
+    }
+
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='GeneratedQnAUploaded'"
+    )
+    public void whenGeneratedQnAUploaded_then_UPDATE_5(
+        @Payload GeneratedQnAUploaded generatedQnAUploaded
+    ) {
+        try {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{generatedQnAUploaded: %s}", generatedQnAUploaded.toString()));
+            if (!generatedQnAUploaded.validate()) return;
+
+
+            // 해당하는 자막에 질문 및 응답을 업데이트시키기위해서
+            List<Subtitle> subtitles = this.subtitleRepository.findAllBySubtitleId(generatedQnAUploaded.getId());
+            if(subtitles.size() != 1)
+                throw new InvalidSubtitleIdException();
+            Subtitle subtitleToUpdate = subtitles.get(0);
+
+            subtitleToUpdate.setQuestion(generatedQnAUploaded.getQuestion());
+            subtitleToUpdate.setAnswer(generatedQnAUploaded.getAnswer());
+            this.subtitleRepository.save(subtitleToUpdate);
+
+
+            // 모든 자막에 질문 및 응답이 업데이트되었을 경우, 상태를 업데이트시키기 위해서
+            List<Video> videos = this.videoRepository.findAllByVideoId(generatedQnAUploaded.getVideoId());
+            if(videos.size() != 1)
+                throw new InvalidVideoIdException();
+            Video subtitleVideo = videos.get(0);
+
+            List<Subtitle> subtitlesToCheck = this.subtitleRepository.findAllByVideo(subtitleVideo);
+            int questionedSubtitleCount = subtitlesToCheck.stream().filter((subtitle) -> {
+                return !((subtitle.getQuestion()==null) || (subtitle.getQuestion().isEmpty()));
+            }).toArray().length;
+
+            if(questionedSubtitleCount == subtitleVideo.getSubtitleCount())
+            {
+                subtitleVideo.setStatus("GeneratedQnAUploaded");
+                this.videoRepository.save(subtitleVideo);
+            }
+
+
+            CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{subtitleToUpdate: %s, questionedSubtitleCount: %d}", subtitleToUpdate.toString(), questionedSubtitleCount));
+
+        } catch (Exception e) {
+            CustomLogger.error(e, "", String.format("{generatedQnAUploaded: %s}", generatedQnAUploaded.toString()));
         }
     }
 

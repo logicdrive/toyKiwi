@@ -12,4 +12,6 @@ public class MockTranlatedSubtitleUploadedReqDto {
     private String translatedSubtitle;
     private Integer startSecond;
     private Integer endSecond;
+    private String question;
+    private String answer;
 }
