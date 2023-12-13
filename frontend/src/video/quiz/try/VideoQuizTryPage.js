@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Card, Button } from '@mui/material';
+import { Card, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import APIConfig from '../../../APIConfig';
 import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext'
@@ -11,6 +11,8 @@ import VideoQuizCard from './videoQuiz/VideoQuizCard';
 import VideoQuizTryAppBar from './VideoQuizTryAppBar';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import BoldText from '../../../_global/text/BoldText';
+import PersonIcon from '@mui/icons-material/Person';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 
 // 예시 URL: http://localhost:3000/video/quiz/try?videoId=1
 const VideoQuizTryPage = () => {
@@ -85,6 +87,11 @@ const VideoQuizTryPage = () => {
             words: subtitleInfos[videoPlayerProps.currentTimeIndex].subtitle.split(" "),
             translatedSubtitle: subtitleInfos[videoPlayerProps.currentTimeIndex].translatedSubtitle
         })
+
+        setChatHistory([
+            subtitleInfos[videoPlayerProps.currentTimeIndex].question,
+            subtitleInfos[videoPlayerProps.currentTimeIndex].answer
+        ])
         
     }, [subtitleInfos, videoPlayerProps.currentTimeIndex])
 
@@ -139,6 +146,34 @@ const VideoQuizTryPage = () => {
     }
 
 
+    //
+    const [isChatDialogOpened, setIsChatDialogOpened] = useState(false)
+    const [chatHistory, setChatHistory] = useState([])
+    const [userQuestion, setUserQuestion] = useState("")
+
+    const handleChatHistorySubmit = async (e) => {
+        try {
+
+            const reqDto = {
+                "messages": chatHistory
+            }
+            
+            console.log(`[EFFECT] Try to get AI chat response: <url:${`${APIConfig.externalSystem}/openai/getChatResponse`} messages:[${chatHistory}]>`)
+            const response = await axios.put(`${APIConfig.externalSystem}/openai/getChatResponse`, reqDto);
+            console.log("[EFFECT] AI chat response:", response)
+
+            setChatHistory((chatHistory) => {
+                return [...chatHistory, userQuestion, response.data.chatResponse]
+            })
+            setUserQuestion("")
+
+        } catch (error) {
+            addAlertPopUp("AI 채팅 응답을 가져오는 과정에서 오류가 발생했습니다!", "error");
+            console.error("AI 채팅 응답을 가져오는 과정에서 오류가 발생했습니다!", error);
+        }
+    }
+    //
+
     return (
         <>
         <VideoQuizTryAppBar/>
@@ -146,7 +181,7 @@ const VideoQuizTryPage = () => {
         {
             (() => {
                 if (videoPlayerProps.url && videoPlayerProps.timeRanges && 
-                   (videoPlayerProps.timeRanges.length > 0) && quizInfo) {
+                   (videoPlayerProps.timeRanges.length > 0) && quizInfo && chatHistory.length > 0) {
                     return (
                         <>
                         <Stack spacing={0.5} sx={{marginTop: 1, marginBottom: 1}}>
@@ -164,10 +199,48 @@ const VideoQuizTryPage = () => {
                                     {subtitleInfos[videoPlayerProps.currentTimeIndex].question.length <= 60 ? subtitleInfos[videoPlayerProps.currentTimeIndex].question :
                                      (subtitleInfos[videoPlayerProps.currentTimeIndex].question.substr(0, 60) + "...")}
                                 </BoldText>
-                                <Button sx={{float: "right"}}>
+                                <Button sx={{float: "right"}} onClick={()=>{setUserQuestion("");setIsChatDialogOpened(true);}}>
                                     <QuestionAnswerIcon sx={{color: "black", fontSize: 20}}/>
                                 </Button>
                             </Card>
+
+                            <Dialog open={isChatDialogOpened} onClose={()=>{setIsChatDialogOpened(false);}}>
+                                <DialogTitle sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont"}}>AI 채팅</DialogTitle>
+                                <DialogContent>
+                                    <Stack spacing={0.5}>
+                                        {
+                                            chatHistory.map((chat, index) => {
+                                                return (
+                                                    <Card variant="outlined" sx={{padding: 1}} key={index}>
+                                                        <BoldText>
+                                                            {(index%2===0) ? <PersonIcon/> : <SmartToyIcon/>}
+                                                        </BoldText>
+                                                        <BoldText>
+                                                            {chat}
+                                                        </BoldText>
+                                                    </Card>
+                                                )
+                                            })
+                                        }
+                                    </Stack>
+                                </DialogContent>
+
+                                <DialogActions sx={{padding: 3}}>
+                                    <TextField
+                                        label="추가 질문"
+                                        name="userQuestion"
+
+                                        value={userQuestion}
+                                        onChange={(e) => {setUserQuestion(e.target.value)}}
+
+                                        
+                                        fullWidth
+                                        size="small"
+                                    />
+                                    <Button onClick={handleChatHistorySubmit}
+                                     sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont"}}>보내기</Button>
+                                </DialogActions>
+                            </Dialog>
                         </Stack>
                         </>
                     )
