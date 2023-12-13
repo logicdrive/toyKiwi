@@ -1,8 +1,10 @@
 package toykiwi.domain;
 
 import toykiwi._global.event.GeneratedSubtitleUploaded;
+import toykiwi._global.event.GeneratingQnACompleted;
 import toykiwi._global.event.GeneratingSubtitleCompleted;
 import toykiwi._global.event.GeneratingSubtitleStarted;
+import toykiwi._global.event.TranlatedSubtitleUploaded;
 import toykiwi._global.event.TranslatingSubtitleCompleted;
 import toykiwi._global.event.UploadingVideoCompleted;
 import toykiwi._global.event.VideoRemoveRequested;
@@ -12,9 +14,11 @@ import toykiwi._global.externalSystemProxy.ExternalSystemProxyService;
 import toykiwi._global.externalSystemProxy.reqDtos.UploadYoutubeVideoReqDto;
 import toykiwi._global.externalSystemProxy.resDtos.UploadYoutubeVideoResDto;
 import toykiwi._global.externalSystemProxy.reqDtos.GenerateSubtitleReqDto;
+import toykiwi._global.externalSystemProxy.reqDtos.GetQnAForSentenceReqDto;
 import toykiwi._global.externalSystemProxy.reqDtos.RemoveFileReqDto;
 import toykiwi._global.externalSystemProxy.reqDtos.TranslateSubtitleReqDto;
 import toykiwi._global.externalSystemProxy.resDtos.GenerateSubtitleResDto;
+import toykiwi._global.externalSystemProxy.resDtos.GetQnAForSentenceResDto;
 import toykiwi._global.externalSystemProxy.resDtos.SubtitleResDto;
 import toykiwi._global.externalSystemProxy.resDtos.TranslateSubtitleResDto;
 
@@ -93,5 +97,23 @@ public class ExternalSystemProxy {
         this.externalSystemProxyService.removeFile(
             new RemoveFileReqDto(videoRemoveRequested.getThumbnailUrl())
         );
+    }
+
+    // 번역문 업데이트시, 자막에 대한 질문 및 응답 생성 요청을 수행하기 위해서
+    public void requestGeneratingQnA(TranlatedSubtitleUploaded tranlatedSubtitleUploaded) throws Exception {
+
+        GetQnAForSentenceReqDto getQnAForSentenceReqDto = new GetQnAForSentenceReqDto(
+                tranlatedSubtitleUploaded.getSubtitle()
+        );
+
+        GetQnAForSentenceResDto getQnAForSentenceResDto = this.externalSystemProxyService.getQnAForSentence(getQnAForSentenceReqDto);
+
+
+        GeneratingQnACompleted generatingQnACompleted = new GeneratingQnACompleted();
+        generatingQnACompleted.setSubtitleId(tranlatedSubtitleUploaded.getId());
+        generatingQnACompleted.setQuestion(getQnAForSentenceResDto.getQuestion());
+        generatingQnACompleted.setAnswer(getQnAForSentenceResDto.getAnswer());
+        generatingQnACompleted.publishAfterCommit();
+    
     }
 }

@@ -2,6 +2,7 @@ package toykiwi.domain;
 
 import toykiwi._global.config.kafka.KafkaProcessor;
 import toykiwi._global.event.GeneratedSubtitleUploaded;
+import toykiwi._global.event.TranlatedSubtitleUploaded;
 import toykiwi._global.event.VideoRemoveRequested;
 import toykiwi._global.event.VideoUploadRequested;
 import toykiwi._global.event.VideoUrlUploaded;
@@ -102,6 +103,26 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{videoRemoveRequested: %s}", videoRemoveRequested.toString()));
+        }
+    }
+
+   // 번역문 업데이트시, 자막에 대한 질문 및 응답 생성 요청을 수행하기 위해서
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='TranlatedSubtitleUploaded'"
+    )
+    public void wheneverTranlatedSubtitleUploaded_RequestGeneratingQnA(
+        @Payload TranlatedSubtitleUploaded tranlatedSubtitleUploaded
+    ) {
+        try
+        {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{tranlatedSubtitleUploaded: %s}", tranlatedSubtitleUploaded.toString()));
+            this.externalSystemProxy.requestGeneratingQnA(tranlatedSubtitleUploaded);
+            CustomLogger.debug(CustomLoggerType.EXIT);
+
+        } catch(Exception e) {
+            CustomLogger.error(e, "", String.format("{tranlatedSubtitleUploaded: %s}", tranlatedSubtitleUploaded.toString()));
         }
     }
 }

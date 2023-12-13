@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class MockGeneratedSubtitleUploadedReqDto {
+public class MockTranlatedSubtitleUploadedReqDto {
     private Long id;
     private Long videoId;
     private String subtitle;
