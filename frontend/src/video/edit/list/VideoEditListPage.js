@@ -82,7 +82,7 @@ const VideoEditListPage = () => {
                     return (
                         <Grid item xs={6} key={index}>
                         {
-                            (uploadVideo.status === "TranlatedSubtitleUploaded") ? (
+                            (uploadVideo.status === "GeneratedQnAUploaded") ? (
 
                                 <VideoInfoCard index={index} uploadVideo={uploadVideo} isIconOpend={isUploadVideoMenuOpeneds[index]}
                                 onClickIcon={() => {setUploadVideoMenuOpened(index, true)}} onClickCloseIcon={() => {setUploadVideoMenuOpened(index, false)}}
