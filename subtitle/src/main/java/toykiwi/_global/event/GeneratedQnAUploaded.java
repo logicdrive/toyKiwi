@@ -8,11 +8,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-// 생성된 자막을 기반으로 Subtitle을 만들었을 경우 발생하는 이벤트
+// 생성된 자막에 대한 질문 및 답변이 업데이트되었을 경우 발생하는 이벤트
 @Data
 @ToString
 @EqualsAndHashCode(callSuper=false)
-public class GeneratedSubtitleUploaded extends AbstractEvent {
+public class GeneratedQnAUploaded extends AbstractEvent {
     private Long id;
     private Long videoId;
     private String subtitle;
@@ -22,11 +22,11 @@ public class GeneratedSubtitleUploaded extends AbstractEvent {
     private String question;
     private String answer;
 
-    public GeneratedSubtitleUploaded(Subtitle aggregate) {
+    public GeneratedQnAUploaded(Subtitle aggregate) {
         super(aggregate);
     }
 
-    public GeneratedSubtitleUploaded() {
+    public GeneratedQnAUploaded() {
         super();
     }
 }

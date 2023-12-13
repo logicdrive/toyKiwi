@@ -1,5 +1,6 @@
 package toykiwi.sanityCheck;
 
+import toykiwi._global.event.GeneratingQnACompleted;
 import toykiwi._global.event.GeneratingSubtitleCompleted;
 import toykiwi._global.event.TranslatingSubtitleCompleted;
 import toykiwi._global.event.VideoRemoveRequested;
@@ -7,6 +8,7 @@ import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
 
 import toykiwi.sanityCheck.reqDtos.LogsReqDto;
+import toykiwi.sanityCheck.reqDtos.MockGeneratingQnACompletedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockGeneratingSubtitleCompletedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockTranslatingSubtitleCompletedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockVideoRemoveRequestedReqDto;
@@ -65,5 +67,10 @@ public class SanityCheckService {
     // Policy 테스트용으로 VideoRemoveRequested 이벤트를 강제로 발생시키기 위해서
     public void mockVideoRemoveRequested(MockVideoRemoveRequestedReqDto mockData) {
         (new VideoRemoveRequested(mockData)).publish();
+    }
+
+    // Policy 테스트용으로 GeneratingQnACompleted 이벤트를 강제로 발생시키기 위해서
+    public void mockGeneratingQnACompleted(MockGeneratingQnACompletedReqDto mockData) {
+        (new GeneratingQnACompleted(mockData)).publish();
     }
 }

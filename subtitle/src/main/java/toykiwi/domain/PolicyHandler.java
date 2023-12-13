@@ -1,6 +1,7 @@
 package toykiwi.domain;
 
 import toykiwi._global.config.kafka.KafkaProcessor;
+import toykiwi._global.event.GeneratingQnACompleted;
 import toykiwi._global.event.GeneratingSubtitleCompleted;
 import toykiwi._global.event.TranslatingSubtitleCompleted;
 import toykiwi._global.event.VideoRemoveRequested;
@@ -56,6 +57,26 @@ public class PolicyHandler {
 
         } catch(Exception e) {
             CustomLogger.error(e, "", String.format("{translatingSubtitleCompleted: %s}", translatingSubtitleCompleted.toString()));
+        }
+    }
+
+    // 자막에 대한 질문 및 응답이 생성되었을 경우, 해당 내용을 업데이트시키기 위해서
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='GeneratingQnACompleted'"
+    )
+    public void wheneverGeneratingQnACompleted_uploadGeneratedQnA(
+        @Payload GeneratingQnACompleted generatingQnACompleted
+    ) {
+        try
+        {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{generatingQnACompleted: %s}", generatingQnACompleted.toString()));
+            Subtitle.uploadGeneratedQnA(generatingQnACompleted);
+            CustomLogger.debug(CustomLoggerType.EXIT);
+
+        } catch(Exception e) {
+            CustomLogger.error(e, "", String.format("{generatingQnACompleted: %s}", generatingQnACompleted.toString()));
         }
     }
 

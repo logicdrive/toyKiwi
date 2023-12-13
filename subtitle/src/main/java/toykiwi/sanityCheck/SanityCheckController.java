@@ -4,6 +4,7 @@ import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
 
 import toykiwi.sanityCheck.reqDtos.LogsReqDto;
+import toykiwi.sanityCheck.reqDtos.MockGeneratingQnACompletedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockGeneratingSubtitleCompletedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockTranslatingSubtitleCompletedReqDto;
 import toykiwi.sanityCheck.reqDtos.MockVideoRemoveRequestedReqDto;
@@ -85,6 +86,14 @@ public class SanityCheckController {
     public void mockVideoRemoveRequested(@RequestBody MockVideoRemoveRequestedReqDto mockData) {
         CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
         this.sanityCheckService.mockVideoRemoveRequested(mockData);
+        CustomLogger.debug(CustomLoggerType.EXIT);
+    }
+
+    // Policy 테스트용으로 GeneratingQnACompleted 이벤트를 강제로 발생시키기 위해서
+    @PostMapping("/mock/GeneratingQnACompleted")
+    public void mockGeneratingQnACompleted(@RequestBody MockGeneratingQnACompletedReqDto mockData) {
+        CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
+        this.sanityCheckService.mockGeneratingQnACompleted(mockData);
         CustomLogger.debug(CustomLoggerType.EXIT);
     }
 }

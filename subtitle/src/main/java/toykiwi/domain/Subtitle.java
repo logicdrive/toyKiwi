@@ -1,7 +1,9 @@
 package toykiwi.domain;
 
 import toykiwi.SubtitleApplication;
+import toykiwi._global.event.GeneratedQnAUploaded;
 import toykiwi._global.event.GeneratedSubtitleUploaded;
+import toykiwi._global.event.GeneratingQnACompleted;
 import toykiwi._global.event.GeneratingSubtitleCompleted;
 import toykiwi._global.event.TranlatedSubtitleUploaded;
 import toykiwi._global.event.TranslatingSubtitleCompleted;
@@ -43,6 +45,10 @@ public class Subtitle {
     private Integer startSecond;
 
     private Integer endSecond;
+
+    private String question;
+
+    private String answer;
 
     public static SubtitleRepository repository() {
         SubtitleRepository subtitleRepository = SubtitleApplication.applicationContext.getBean(
@@ -123,6 +129,29 @@ public class Subtitle {
          });
 
     }
+
+    // 자막에 대한 질문 및 응답이 생성되었을 경우, 해당 내용을 업데이트시키기 위해서
+    public static void uploadGeneratedQnA(
+        GeneratingQnACompleted generatingQnACompleted
+    ) {
+
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search Subtitle by using JPA", String.format("{generatingQnACompleted: %s}", generatingQnACompleted.toString()));
+        repository().findById(generatingQnACompleted.getSubtitleId()).ifPresent(subtitle->{
+            
+            CustomLogger.debug(CustomLoggerType.EFFECT, "Subtitle is searched by using JPA", String.format("{subtitle: %s}", subtitle.toString()));
+
+            subtitle.setQuestion(generatingQnACompleted.getQuestion());
+            subtitle.setAnswer(generatingQnACompleted.getAnswer());
+            repository().save(subtitle);
+
+
+            GeneratedQnAUploaded generatedQnAUploaded = new GeneratedQnAUploaded(subtitle);
+            generatedQnAUploaded.publishAfterCommit();
+
+         });
+
+    }
+
 
     // 비디오 삭제 요청이 있을 경우, 관련된 자막들을 전부 삭제시키기 위해서
     public static void removeSubtitles(
