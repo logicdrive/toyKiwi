@@ -15,6 +15,8 @@ public class SubtitleResDto {
     private final Integer startSecond;
     private final Integer endSecond;
     private final Long videoId;
+    private final String question;
+    private final String answer;
 
     public SubtitleResDto(Subtitle subtitle) {
         this.id = subtitle.getId();
@@ -24,5 +26,7 @@ public class SubtitleResDto {
         this.startSecond = subtitle.getStartSecond();
         this.endSecond = subtitle.getEndSecond();
         this.videoId = subtitle.getVideo().getVideoId();
+        this.question = subtitle.getQuestion();
+        this.answer = subtitle.getAnswer();
     }
 }

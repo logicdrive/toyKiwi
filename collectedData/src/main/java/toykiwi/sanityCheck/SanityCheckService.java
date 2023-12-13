@@ -83,6 +83,8 @@ public class SanityCheckService {
         subtitleToCreate.setTranslatedSubtitle(makeSubtitleSampleReqDto.getTranslatedSubtitle());
         subtitleToCreate.setStartSecond(makeSubtitleSampleReqDto.getStartSecond());
         subtitleToCreate.setEndSecond(makeSubtitleSampleReqDto.getEndSecond());
+        subtitleToCreate.setQuestion(makeSubtitleSampleReqDto.getQuestion());
+        subtitleToCreate.setAnswer(makeSubtitleSampleReqDto.getAnswer());
         subtitleToCreate.setVideo(subtitleVideo);
         this.subtitleRepository.save(subtitleToCreate);
 
