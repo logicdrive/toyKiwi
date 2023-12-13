@@ -6,6 +6,7 @@ import toykiwi._global.event.GeneratedSubtitleUploaded;
 import toykiwi._global.event.SubtitleMetadataUploaded;
 import toykiwi._global.event.TranlatedSubtitleUploaded;
 import toykiwi._global.event.VideoRemoveRequested;
+import toykiwi._global.event.VideoUploadFailed;
 import toykiwi._global.event.VideoUploadRequested;
 import toykiwi._global.event.VideoUrlUploaded;
 import toykiwi._global.exceptions.InvalidSubtitleIdException;
@@ -256,6 +257,34 @@ public class CollectedDataViewHandler {
 
         } catch (Exception e) {
             CustomLogger.error(e, "", String.format("{generatedQnAUploaded: %s}", generatedQnAUploaded.toString()));
+        }
+    }
+
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='VideoUploadFailed'"
+    )
+    public void whenVideoUploadFailed_then_UPDATE_6(
+        @Payload VideoUploadFailed videoUploadFailed
+    ) {
+        try {
+
+            CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{videoUploadFailed: %s}", videoUploadFailed.toString()));
+            if (!videoUploadFailed.validate()) return;
+
+            CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search video", String.format("{videoId: %s}", videoUploadFailed.getVideoId()));
+            List<Video> videos = this.videoRepository.findAllByVideoId(videoUploadFailed.getVideoId());
+            if(videos.size() != 1)
+                throw new InvalidVideoIdException();
+            
+            Video videoToUpdate = videos.get(0);
+            videoToUpdate.setStatus("VideoUploadFailed");
+            this.videoRepository.save(videoToUpdate);
+
+            CustomLogger.debug(CustomLoggerType.EXIT);
+
+        } catch (Exception e) {
+            CustomLogger.error(e, "", String.format("{videoUploadFailed: %s}", videoUploadFailed.toString()));
         }
     }
 

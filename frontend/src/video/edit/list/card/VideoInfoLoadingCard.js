@@ -9,7 +9,8 @@ const VideoInfoLoadingCard = ({uploadVideo}) => {
         "VideoUrlUploaded": "자막 생성중...[2/6]",
         "SubtitleMetadataUploaded": "자막 생성중...[3/6]",
         "GeneratedSubtitleUploaded": "자막 번역중...[4/6]",
-        "TranlatedSubtitleUploaded": "질문 및 응답 생성중...[5/6]"
+        "TranlatedSubtitleUploaded": "질문 및 응답 생성중...[5/6]",
+        "VideoUploadFailed": "비디오 업로드를 실패했습니다 !"
     }
     
     return (
