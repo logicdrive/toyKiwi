@@ -9,8 +9,8 @@ import CuttedVideoPlayer from './videoPlayer/CuttedVideoPlayer';
 import VideoPlayerControllerCard from './videoPlayer/VideoPlayerControllerCard';
 import VideoQuizCard from './videoQuiz/VideoQuizCard';
 import VideoQuizTryAppBar from './VideoQuizTryAppBar';
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import BoldText from '../../../_global/text/BoldText';
+import QnACard from './QnACard';
 import PersonIcon from '@mui/icons-material/Person';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 
@@ -196,18 +196,13 @@ In the above sentence, ${subtitleInfos[videoPlayerProps.currentTimeIndex].questi
                             <VideoPlayerControllerCard videoPlayerProps={videoPlayerProps} 
                                         onClickPrevButton={onClickPrevButton} onClickNextButton={onClickNextButton}/>
 
+
                             <VideoQuizCard videoPlayerProps={videoPlayerProps} subtitleInfos={subtitleInfos}
                                            quizInfo={quizInfo} onAllCorrect={onAllCorrect}/>
-                            
-                            <Card variant="outlined" sx={{padding: 1}}>
-                                <BoldText sx={{fontSize: 12, float: "left", marginTop: 1}}>
-                                    {subtitleInfos[videoPlayerProps.currentTimeIndex].question.length <= 60 ? subtitleInfos[videoPlayerProps.currentTimeIndex].question :
-                                     (subtitleInfos[videoPlayerProps.currentTimeIndex].question.substr(0, 60) + "...")}
-                                </BoldText>
-                                <Button sx={{float: "right"}} onClick={()=>{setUserQuestion("");setIsChatDialogOpened(true);}}>
-                                    <QuestionAnswerIcon sx={{color: "black", fontSize: 20}}/>
-                                </Button>
-                            </Card>
+
+
+                            <QnACard videoPlayerProps={videoPlayerProps} subtitleInfos={subtitleInfos} 
+                                     onClickChatButton={()=>{setUserQuestion("");setIsChatDialogOpened(true);}}/>
 
                             <Dialog open={isChatDialogOpened} onClose={()=>{setIsChatDialogOpened(false);}}>
                                 <DialogTitle sx={{color: "black", fontWeight: "bolder", fontFamily: "BMDfont"}}>AI 채팅</DialogTitle>
