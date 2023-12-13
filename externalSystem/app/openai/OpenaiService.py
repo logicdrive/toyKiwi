@@ -8,6 +8,10 @@ from .._global.logger import CustomLoggerType
 from .reqDtos.GenerateSubtitleReqDto import GenerateSubtitleReqDto
 from .resDtos.GenerateSubtitleResDto import GenerateSubtitleResDto
 from .resDtos.SubtitleResDto import SubtitleResDto
+from .reqDtos.GetQnAForSentenceReqDto import GetQnAForSentenceReqDto
+from .resDtos.GetQnAForSentenceResDto import GetQnAForSentenceResDto
+from .reqDtos.GetChatResponseReqDto import GetChatResponseReqDto
+from .resDtos.GetChatResponseResDto import GetChatResponseResDto
 
 from .services.AudioSplitService import ChunkDto, ChunkDtos, splitAudiosBaseOnSlience
 from .services.OpenAIProxyService import generateAudioText
@@ -30,3 +34,11 @@ def generateSubtitle(generateSubtitleReqDto:GenerateSubtitleReqDto) -> GenerateS
             subtitles.append(SubtitleResDto(audioText, chunckDto.startSecond, chunckDto.endSecond))
     
     return GenerateSubtitleResDto(subtitles)
+
+# 주어진 문장에 대한 질문 및 답변을 생성하기 위해서
+def getQnAForSentence(getQnAForSentenceReqDto:GetQnAForSentenceReqDto) -> GetQnAForSentenceResDto :
+    return GetQnAForSentenceResDto("getQnAForSentence Question", "getQnAForSentence Answer")
+
+# 주어진 채팅 내역에 대한 답변을 생성하기 위해서
+def getChatResponse(getChatResponseReqDto:GetChatResponseReqDto) -> GetChatResponseResDto :
+    return GetChatResponseResDto("getChatResponse RES")
