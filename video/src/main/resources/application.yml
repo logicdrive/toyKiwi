@@ -5,21 +5,16 @@ spring:
   application:
     name: video
 
----
-
-spring:
-  profiles: default
   jpa:
     properties:
       hibernate:
         show_sql: false
         format_sql: true
         implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+
   cloud:
     stream:
       kafka:
-        binder:
-          brokers: localhost:9092
         streams:
           binder:
             configuration:
@@ -28,6 +23,7 @@ spring:
                   serde: org.apache.kafka.common.serialization.Serdes$StringSerde
                 value:
                   serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+
       bindings:
         event-in:
           group: video
@@ -42,37 +38,16 @@ logging:
     root: WARN
     toykiwi.video.custom: DEBUG
 
-server:
-  port: 8082
+---
+
+spring:
+  profiles: default
+  cloud.stream.kafka.binder.brokers: localhost:9092
+
+server.port: 8082
 
 ---
 
 spring:
   profiles: docker
-  jpa:
-    properties:
-      hibernate:
-        show_sql: false
-        format_sql: true
-        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
-  cloud:
-    stream:
-      kafka:
-        binder:
-          brokers: my-kafka:9092
-        streams:
-          binder:
-            configuration:
-              default:
-                key:
-                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-                value:
-                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-      bindings:
-        event-in:
-          group: video
-          destination: toykiwi
-          contentType: application/json
-        event-out:
-          destination: toykiwi
-          contentType: application/json
+  cloud.stream.kafka.binder.brokers: my-kafka:9092
