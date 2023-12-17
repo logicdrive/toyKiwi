@@ -1,0 +1,1 @@
+docker run --name toykiwi_subtitle_con -e SPRING_PROFILES_ACTIVE=docker -p 8083:8080 sinsung6722/toykiwi_subtitle:v1

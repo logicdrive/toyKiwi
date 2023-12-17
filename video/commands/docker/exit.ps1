@@ -1,0 +1,2 @@
+docker container stop toykiwi_video_con
+docker container rm toykiwi_video_con

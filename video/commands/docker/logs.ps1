@@ -1,0 +1,1 @@
+docker logs toykiwi_video_con

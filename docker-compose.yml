@@ -31,3 +31,12 @@ services:
       - "8082:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+
+  toykiwi_subtitle:
+    image: sinsung6722/toykiwi_subtitle:v1
+    depends_on:
+      - kafka
+    ports:
+      - "8083:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
