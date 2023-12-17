@@ -41,7 +41,7 @@ logging:
 ---
 
 spring:
-  profiles: default
+  profiles: host
   cloud.stream.kafka.binder.brokers: localhost:9092
 
 server.port: 8082
@@ -50,4 +50,12 @@ server.port: 8082
 
 spring:
   profiles: docker
+  cloud.stream.kafka.binder.brokers: host.docker.internal:9092
+
+server.port: 8082
+
+---
+
+spring:
+  profiles: kubernates
   cloud.stream.kafka.binder.brokers: my-kafka:9092
