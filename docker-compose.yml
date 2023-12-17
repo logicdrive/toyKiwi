@@ -40,3 +40,12 @@ services:
       - "8083:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+
+  toykiwi_external_system_proxy:
+    image: sinsung6722/toykiwi_external_system_proxy:v1
+    depends_on:
+      - kafka
+    ports:
+      - "8086:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker

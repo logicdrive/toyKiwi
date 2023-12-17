@@ -1,0 +1,1 @@
+docker logs toykiwi_external_system_proxy_con

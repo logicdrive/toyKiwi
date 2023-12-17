@@ -4,21 +4,17 @@ server:
 spring:
   application:
     name: externalsystemproxy
----
 
-spring:
-  profiles: default
   jpa:
     properties:
       hibernate:
         show_sql: false
         format_sql: true
         implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+
   cloud:
     stream:
       kafka:
-        binder:
-          brokers: localhost:9092
         streams:
           binder:
             configuration:
@@ -27,9 +23,10 @@ spring:
                   serde: org.apache.kafka.common.serialization.Serdes$StringSerde
                 value:
                   serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+
       bindings:
         event-in:
-          group: externalSystemProxy
+          group: externalsystemproxy
           destination: toykiwi
           contentType: application/json
         event-out:
@@ -41,9 +38,13 @@ logging:
     root: WARN
     toykiwi.externalSystemProxy.custom: DEBUG
 
+---
 
-server:
-  port: 8086
+spring:
+  profiles: host
+  cloud.stream.kafka.binder.brokers: localhost:9092
+
+server.port: 8086
 
 externalSystem:
   ip: localhost
@@ -53,34 +54,18 @@ externalSystem:
 
 spring:
   profiles: docker
-  jpa:
-    properties:
-      hibernate:
-        show_sql: false
-        format_sql: true
-        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
-  cloud:
-    stream:
-      kafka:
-        binder:
-          brokers: my-kafka:9092
-        streams:
-          binder:
-            configuration:
-              default:
-                key:
-                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-                value:
-                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-      bindings:
-        event-in:
-          group: externalSystemProxy
-          destination: toykiwi
-          contentType: application/json
-        event-out:
-          destination: toykiwi
-          contentType: application/json
+  cloud.stream.kafka.binder.brokers: host.docker.internal:9092
 
 externalSystem:
-  ip: localhost
+  ip: host.docker.internal
+  port: 8085
+
+---
+
+spring:
+  profiles: kubernates
+  cloud.stream.kafka.binder.brokers: my-kafka:9092
+
+externalSystem:
+  ip: toykiwi_externalSystem
   port: 8085

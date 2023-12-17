@@ -36,7 +36,7 @@ spring:
 logging:
   level:
     root: WARN
-    toykiwi.video.custom: DEBUG
+    toykiwi.subtitle.custom: DEBUG
 
 ---
 

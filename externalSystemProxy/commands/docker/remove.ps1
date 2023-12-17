@@ -1,0 +1,3 @@
+docker container stop toykiwi_external_system_proxy_con
+docker container rm toykiwi_external_system_proxy_con
+docker image rm sinsung6722/toykiwi_external_system_proxy:v1
