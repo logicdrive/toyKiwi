@@ -1,0 +1,1 @@
+docker build -t sinsung6722/toykiwi_external_system:v1 .
