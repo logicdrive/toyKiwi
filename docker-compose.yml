@@ -60,3 +60,12 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       DEEPL_API_KEY: ${DEEPL_API_KEY}
+
+  toykiwi_collecteddata:
+    image: sinsung6722/toykiwi_collecteddata:v1
+    depends_on:
+      - kafka
+    ports:
+      - "8084:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker

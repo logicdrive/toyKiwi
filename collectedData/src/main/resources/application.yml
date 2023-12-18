@@ -4,21 +4,17 @@ server:
 spring:
   application:
     name: collecteddata
----
 
-spring:
-  profiles: default
   jpa:
     properties:
       hibernate:
         show_sql: false
         format_sql: true
         implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+
   cloud:
     stream:
       kafka:
-        binder:
-          brokers: localhost:9092
         streams:
           binder:
             configuration:
@@ -27,9 +23,10 @@ spring:
                   serde: org.apache.kafka.common.serialization.Serdes$StringSerde
                 value:
                   serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+
       bindings:
         event-in:
-          group: collectedData
+          group: collecteddata
           destination: toykiwi
           contentType: application/json
         event-out:
@@ -41,40 +38,22 @@ logging:
     root: WARN
     toykiwi.collectedData.custom: DEBUG
 
+---
 
-server:
-  port: 8084
+spring:
+  profiles: host
+  cloud.stream.kafka.binder.brokers: localhost:9092
+
+server.port: 8084
 
 ---
 
 spring:
   profiles: docker
-  jpa:
-    properties:
-      hibernate:
-        show_sql: false
-        format_sql: true
-        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
-  cloud:
-    stream:
-      kafka:
-        binder:
-          brokers: my-kafka:9092
-        streams:
-          binder:
-            configuration:
-              default:
-                key:
-                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-                value:
-                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-      bindings:
-        event-in:
-          group: collectedData
-          destination: toykiwi
-          contentType: application/json
-        event-out:
-          destination: toykiwi
-          contentType: application/json
+  cloud.stream.kafka.binder.brokers: host.docker.internal:9092
 
+---
 
+spring:
+  profiles: kubernates
+  cloud.stream.kafka.binder.brokers: my-kafka:9092

@@ -1,0 +1,2 @@
+docker container stop toykiwi_collecteddata_con
+docker container rm toykiwi_collecteddata_con

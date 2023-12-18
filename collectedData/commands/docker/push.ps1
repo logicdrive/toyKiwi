@@ -1,0 +1,1 @@
+docker push sinsung6722/toykiwi_collecteddata:v1
