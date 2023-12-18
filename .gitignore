@@ -12,6 +12,7 @@ externalSystem/**/__pycache__
 externalSystem/envs/development.env
 externalSystem/envs/production.env
 externalSystem/.flaskenv
+externalSystem/venv
 
 # frontend
 frontend/node_modules
