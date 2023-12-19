@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Toolbar, Link, AppBar } from '@mui/material';
+import SettingButton from './button/SettingButton';
 
 const TopAppBar = ({children, title}) => {
     return (
@@ -11,6 +12,8 @@ const TopAppBar = ({children, title}) => {
                     </Link>
 
                     {children}
+
+                    <SettingButton/>
                 </Toolbar>
             </Container>
         </AppBar>
