@@ -1,0 +1,2 @@
+docker container stop toykiwi_gateway_con
+docker container rm toykiwi_gateway_con

@@ -1,0 +1,1 @@
+docker logs toykiwi_gateway_con
