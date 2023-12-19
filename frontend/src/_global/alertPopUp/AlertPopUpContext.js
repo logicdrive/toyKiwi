@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import React, { useState, createContext, useReducer } from 'react';
 
 const initialState = {
     alertPopUps: []
@@ -35,17 +35,22 @@ const AlertPopupContext = createContext();
 const AlertPopupProvider = ({ children }) => {
     const [alertPopupState, dispatch] = useReducer(reducer, initialState);
 
-    const addAlertPopUp = (message, type) => {
-        const alertId = Date.now()
-        setTimeout(() => {
-            dispatch({type: DELETE_ALERT_POP_UP, payload: alertId})
-        }, 5000);
-    
-        dispatch({type: ADD_ALERT_POP_UP, payload: {message: message, type:type, id:alertId}})
-    };
-    const deleteAlertPopUp = (id) => {
-        dispatch({type: DELETE_ALERT_POP_UP, payload: id})
-    };
+    const [addAlertPopUp] = useState(() => {
+        return (message, type) => {
+            const alertId = Date.now()
+            setTimeout(() => {
+                dispatch({type: DELETE_ALERT_POP_UP, payload: alertId})
+            }, 5000);
+        
+            dispatch({type: ADD_ALERT_POP_UP, payload: {message: message, type:type, id:alertId}})
+        };
+    });
+
+    const [deleteAlertPopUp] = useState(() => {
+        return (id) => {
+                dispatch({type: DELETE_ALERT_POP_UP, payload: id})
+            };
+    });
 
     return (
         <AlertPopupContext.Provider value={{ alertPopupState, addAlertPopUp, deleteAlertPopUp }}>
