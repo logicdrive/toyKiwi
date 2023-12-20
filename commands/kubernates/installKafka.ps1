@@ -1,0 +1,1 @@
+helm install my-kafka bitnami/kafka --version 23.0.5

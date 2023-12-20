@@ -1,0 +1,1 @@
+kubectl exec -it siege -- /bin/bash

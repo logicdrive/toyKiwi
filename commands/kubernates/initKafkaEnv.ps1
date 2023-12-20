@@ -1,0 +1,1 @@
+bash.exe ./commands/kubernates/initKafkaEnv.sh
