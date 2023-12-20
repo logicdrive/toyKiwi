@@ -60,6 +60,8 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       DEEPL_API_KEY: ${DEEPL_API_KEY}
+      AWS_BUCKET_NAME: "sinsung6722-toywiki"
+      AWS_REGION_CODE: "ap-northeast-2"
 
   toykiwi_collecteddata:
     image: sinsung6722/toykiwi_collecteddata:v1

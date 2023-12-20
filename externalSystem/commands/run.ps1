@@ -1,7 +1,8 @@
 .\venv\Scripts\activate
 
 
-
+$env:AWS_BUCKET_NAME = "sinsung6722-toywiki"
+$env:AWS_REGION_CODE = "ap-northeast-2"
 cp envs/development.env .flaskenv
 
 
