@@ -1,0 +1,2 @@
+docker container stop toykiwi_frontend_con
+docker container rm toykiwi_frontend_con

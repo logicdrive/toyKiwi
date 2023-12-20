@@ -79,3 +79,8 @@ services:
       - "8088:8088"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+
+  toykiwi_frontend:
+    image: sinsung6722/toykiwi_frontend:v1
+    ports:
+      - "3000:3000"

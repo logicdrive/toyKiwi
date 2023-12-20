@@ -1,0 +1,1 @@
+docker logs toykiwi_frontend_con
