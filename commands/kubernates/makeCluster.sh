@@ -1,7 +1,7 @@
 # ToyKiwi가 EKS에서 작동하기 위한 최소한의 컴퓨팅 환경을 생성시켜줌
 
 export REGION=ap-northeast-2
-export CLUSTER_NAME=usgmeta02-eks
+export CLUSTER_NAME=usgmeta03-eks
 export ROOT_ACCOUNT_UID=252337848848
 
 

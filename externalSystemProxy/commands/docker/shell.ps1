@@ -1,1 +1,1 @@
-docker run --name toykiwi_external_system_proxy_con -e SPRING_PROFILES_ACTIVE=docker -p 8086:8080 --rm -it --entrypoint /bin/sh sinsung6722/toykiwi_external_system_proxy:v1
+docker run --name toykiwi_external_system_proxy_con -e SPRING_PROFILES_ACTIVE=docker -p 8086:8080 --rm -it --entrypoint /bin/sh sinsung6722/toykiwi_external_system_proxy:v2

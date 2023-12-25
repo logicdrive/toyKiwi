@@ -67,5 +67,5 @@ spring:
   cloud.stream.kafka.binder.brokers: my-kafka:9092
 
 externalSystem:
-  ip: toykiwi_externalSystem
+  ip: external-system
   port: 8085

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-system-proxy
+  labels:
+    app: external-system-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: external-system-proxy
+  template:
+    metadata:
+      labels:
+        app: external-system-proxy
+    spec:
+      containers:
+        - name: external-system-proxy
+          image: sinsung6722/toykiwi_external_system_proxy:v2
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kubernates

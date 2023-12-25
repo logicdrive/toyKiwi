@@ -1,1 +1,1 @@
-docker push sinsung6722/toykiwi_external_system_proxy:v1
+docker push sinsung6722/toykiwi_external_system_proxy:v2

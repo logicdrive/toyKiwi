@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: externalSystemProxy
+  name: external-system-proxy
   labels:
-    app: externalSystemProxy
+    app: external-system-proxy
 spec:
   ports:
     - port: 8080
       targetPort: 8080
   selector:
-    app: externalSystemProxy
+    app: external-system-proxy
