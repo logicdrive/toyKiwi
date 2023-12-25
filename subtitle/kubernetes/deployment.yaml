@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subtitle
+  labels:
+    app: subtitle
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subtitle
+  template:
+    metadata:
+      labels:
+        app: subtitle
+    spec:
+      containers:
+        - name: subtitle
+          image: sinsung6722/toykiwi_subtitle:v1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kubernates
