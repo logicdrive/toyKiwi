@@ -59,6 +59,12 @@
 			<artifactId>spring-cloud-starter-stream-kafka</artifactId>
 		</dependency>
 
+		<!-- 웹 소켓 의존성 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+
 		<!-- 기타 헬퍼 의존성 -->
 		<dependency>
 				<groupId>org.projectlombok</groupId>
