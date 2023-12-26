@@ -6,11 +6,11 @@ import { AlertPopupContext } from '../../../_global/alertPopUp/AlertPopUpContext
 import VideoEditListAppBar from './appBar/VideoEditListAppBar';
 import VideoInfoCard from './card/VideoInfoCard';
 import VideoInfoLoadingCard from './card/VideoInfoLoadingCard';
-import { SanityCheckSocket } from './socket/SanityCheckSocket';
+import SanityCheckSocket from './socket/SanityCheckSocket';
 
 const VideoEditListPage = () => {
     const {addAlertPopUp} = useContext(AlertPopupContext);
-
+    SanityCheckSocket();
 
     const [uploadVideos, setUploadVideos] = useState([]);
     const [isUploadVideoMenuOpeneds, setIsUploadVideoMenuOpeneds] = useState([]);
@@ -96,8 +96,6 @@ const VideoEditListPage = () => {
                 })
             }
         </Grid>
-
-        <SanityCheckSocket/>
         </>
     );
 }

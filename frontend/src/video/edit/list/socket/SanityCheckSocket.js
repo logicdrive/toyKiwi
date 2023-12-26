@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import useWebSocket, { ReadyState } from "react-use-websocket"
 import APIConfig from '../../../../APIConfig';
 
-export const SanityCheckSocket = () => {
+const SanityCheckSocket = () => {
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
     `${APIConfig.collectedDataSocketUrl}/sanityCheck`,
     {
@@ -23,7 +23,6 @@ export const SanityCheckSocket = () => {
   useEffect(() => {
     console.log(`[EFFECT] Got message from sanityCheck socket server: <lastJsonMessage:${JSON.stringify(lastJsonMessage)}>`)
   }, [lastJsonMessage])
-
-
-  return <div className="SanityCheckSocket"/>
 }
+
+export default SanityCheckSocket;
