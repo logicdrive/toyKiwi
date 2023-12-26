@@ -19,6 +19,17 @@ spec:
           image: sinsung6722/toykiwi_video:v1
           ports:
             - containerPort: 8080
+          
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: kubernates
+          
+          livenessProbe:
+            httpGet:
+              path: '/sanityCheck'
+              port: 8080
+            initialDelaySeconds: 15
+            timeoutSeconds: 2
+            successThreshold: 1
+            periodSeconds: 5
+            failureThreshold: 3

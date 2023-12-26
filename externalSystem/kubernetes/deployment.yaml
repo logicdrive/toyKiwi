@@ -19,6 +19,7 @@ spec:
           image: sinsung6722/toykiwi_external_system:v1
           ports:
             - containerPort: 8085
+
           env:
             - name: AWS_ACCESS_KEY
               value: AWS_ACCESS_KEY_VALUE
@@ -32,3 +33,13 @@ spec:
               value: sinsung6722-toywiki
             - name: AWS_REGION_CODE
               value: ap-northeast-2
+
+          livenessProbe:
+            httpGet:
+              path: '/sanityCheck/'
+              port: 8085
+            initialDelaySeconds: 15
+            timeoutSeconds: 2
+            successThreshold: 1
+            periodSeconds: 5
+            failureThreshold: 3
