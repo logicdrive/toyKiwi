@@ -1,0 +1,7 @@
+Start-Process powershell -ArgumentList "-Command", "cd ./video;./commands/kubernetes/deleteAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./subtitle;./commands/kubernetes/deleteAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./externalSystemProxy;./commands/kubernetes/deleteAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./externalSystem;./commands/kubernetes/deleteAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./collectedData;./commands/kubernetes/deleteAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./gateway;./commands/kubernetes/deleteAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./frontend;./commands/kubernetes/deleteAll.ps1"

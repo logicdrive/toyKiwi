@@ -1,0 +1,7 @@
+Start-Process powershell -ArgumentList "-Command", "cd ./video;./commands/kubernetes/makeAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./subtitle;./commands/kubernetes/makeAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./externalSystemProxy;./commands/kubernetes/makeAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./externalSystem;./commands/kubernetes/makeAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./collectedData;./commands/kubernetes/makeAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./gateway;./commands/kubernetes/makeAll.ps1"
+Start-Process powershell -ArgumentList "-Command", "cd ./frontend;./commands/kubernetes/makeAll.ps1"
