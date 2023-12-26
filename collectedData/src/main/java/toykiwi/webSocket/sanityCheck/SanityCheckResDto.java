@@ -15,7 +15,7 @@ public class SanityCheckResDto {
 
     public TextMessage jsonTextMessage() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("message", message);
+        jsonObject.put("message", this.message);
         return new TextMessage(jsonObject.toString());
     }
 }
