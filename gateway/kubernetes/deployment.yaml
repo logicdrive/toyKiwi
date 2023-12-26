@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: gateway
-          image: sinsung6722/toykiwi_gateway:v2
+          image: sinsung6722/toykiwi_gateway:v3
           ports:
             - containerPort: 8088
           env:

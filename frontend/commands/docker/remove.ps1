@@ -1,3 +1,3 @@
 docker container stop toykiwi_frontend_con
 docker container rm toykiwi_frontend_con
-docker image rm sinsung6722/toykiwi_frontend:v1
+docker image rm sinsung6722/toykiwi_frontend:v2

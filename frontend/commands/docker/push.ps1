@@ -1,1 +1,1 @@
-docker push sinsung6722/toykiwi_frontend:v1
+docker push sinsung6722/toykiwi_frontend:v2

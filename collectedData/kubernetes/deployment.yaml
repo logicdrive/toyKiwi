@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: collected-data
-          image: sinsung6722/toykiwi_collecteddata:v1
+          image: sinsung6722/toykiwi_collecteddata:v2
           ports:
             - containerPort: 8080
 

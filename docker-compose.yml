@@ -42,7 +42,7 @@ services:
       SPRING_PROFILES_ACTIVE: docker
 
   toykiwi_external_system_proxy:
-    image: sinsung6722/toykiwi_external_system_proxy:v1
+    image: sinsung6722/toykiwi_external_system_proxy:v2
     depends_on:
       - kafka
     ports:
@@ -64,7 +64,7 @@ services:
       AWS_REGION_CODE: "ap-northeast-2"
 
   toykiwi_collecteddata:
-    image: sinsung6722/toykiwi_collecteddata:v1
+    image: sinsung6722/toykiwi_collecteddata:v2
     depends_on:
       - kafka
     ports:
@@ -74,13 +74,13 @@ services:
 
 
   toykiwi_gateway:
-    image: sinsung6722/toykiwi_gateway:v1
+    image: sinsung6722/toykiwi_gateway:v3
     ports:
       - "8088:8088"
     environment:
       SPRING_PROFILES_ACTIVE: docker
 
   toykiwi_frontend:
-    image: sinsung6722/toykiwi_frontend:v1
+    image: sinsung6722/toykiwi_frontend:v2
     ports:
       - "3000:3000"

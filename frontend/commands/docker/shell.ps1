@@ -1,1 +1,1 @@
-docker run --name toykiwi_frontend_con -p 3000:3000 --rm -it --entrypoint /bin/sh sinsung6722/toykiwi_frontend:v1
+docker run --name toykiwi_frontend_con -p 3000:3000 --rm -it --entrypoint /bin/sh sinsung6722/toykiwi_frontend:v2
