@@ -1,1 +1,1 @@
-docker push sinsung6722/toykiwi_gateway:v1
+docker push sinsung6722/toykiwi_gateway:v2

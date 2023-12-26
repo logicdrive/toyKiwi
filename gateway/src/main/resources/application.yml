@@ -106,14 +106,14 @@ spring:
             - RewritePath=/api/video/(?<segment>.*), /${segment}
 
         - id: collectedData
-          uri: http://collectedData:8080
+          uri: http://collected-data:8080
           predicates:
             - Path=/api/collectedData/**
           filters:
             - RewritePath=/api/collectedData/(?<segment>.*), /${segment}
 
         - id: externalSystem
-          uri: http://externalSystem:8085
+          uri: http://external-system:8085
           predicates:
             - Path=/api/externalSystem/**
           filters:
