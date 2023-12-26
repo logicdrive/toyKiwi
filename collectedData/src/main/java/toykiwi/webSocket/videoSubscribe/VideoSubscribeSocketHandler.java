@@ -1,9 +1,7 @@
 package toykiwi.webSocket.videoSubscribe;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 // import toykiwi._global.exceptions.InvalidVideoIdException;
 import toykiwi._global.logger.CustomLogger;
@@ -23,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class VideoSubscribeSocketHandler extends TextWebSocketHandler {
-    private final HashMap<Long, List<WebSocketSession>> subscribes = new HashMap<>();
+    private final HashMap<Long, HashMap<String, WebSocketSession>> subscribes = new HashMap<>();
     // private final VideoRepository videoRepository;
 
     @Override
@@ -52,9 +50,9 @@ public class VideoSubscribeSocketHandler extends TextWebSocketHandler {
 
 
             if(!this.subscribes.containsKey(videoSubscribeReqDto.getVideoId()))
-                this.subscribes.put(videoSubscribeReqDto.getVideoId(), new ArrayList<>());
-            if(!this.subscribes.get(videoSubscribeReqDto.getVideoId()).contains(session))
-                this.subscribes.get(videoSubscribeReqDto.getVideoId()).add(session);
+                this.subscribes.put(videoSubscribeReqDto.getVideoId(), new HashMap<>());
+            if(!this.subscribes.get(videoSubscribeReqDto.getVideoId()).containsKey(session.getId()))
+                this.subscribes.get(videoSubscribeReqDto.getVideoId()).put(session.getId(), session);
 
         } catch (Exception e) {
             CustomLogger.error(e, "", String.format("{message: %s}", message.toString()));
@@ -66,8 +64,15 @@ public class VideoSubscribeSocketHandler extends TextWebSocketHandler {
 
         try {
 
-            List<WebSocketSession> subscribedSessions = this.subscribes.get(video.getVideoId());
-            for(WebSocketSession session : subscribedSessions) {
+            HashMap<String, WebSocketSession> subscribedSessions = this.subscribes.get(video.getVideoId());
+            for(String sessionId : subscribedSessions.keySet()) {
+                WebSocketSession session = subscribedSessions.get(sessionId);
+                if(!session.isOpen())
+                {
+                    subscribedSessions.remove(sessionId);
+                    return;
+                }
+
                 VideoSubscribeResDto videoSubscribeResDto = new VideoSubscribeResDto(video.getVideoId(), video.getStatus());
                 CustomLogger.debug(CustomLoggerType.EFFECT, "Notify changed video status", String.format("{videoSubscribeResDto: %s}", videoSubscribeResDto.toString()));
                 session.sendMessage(videoSubscribeResDto.jsonTextMessage());
