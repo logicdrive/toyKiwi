@@ -13,6 +13,7 @@ import toykiwi._global.exceptions.InvalidSubtitleIdException;
 import toykiwi._global.exceptions.InvalidVideoIdException;
 import toykiwi._global.logger.CustomLogger;
 import toykiwi._global.logger.CustomLoggerType;
+import toykiwi.webSocket.videoSubscribe.VideoSubscribeSocketHandler;
 
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class CollectedDataViewHandler {
 
     @Autowired
     private SubtitleRepository subtitleRepository;
+
+    @Autowired
+    private VideoSubscribeSocketHandler videoSubscribeSocketHandler;
 
 
     @StreamListener(
@@ -48,8 +52,10 @@ public class CollectedDataViewHandler {
             videoToCreate.setCuttedStartSecond(videoUploadRequested.getCuttedStartSecond());
             videoToCreate.setCuttedEndSecond(videoUploadRequested.getCuttedEndSecond());
             videoToCreate.setStatus("VideoUploadRequested");
-            this.videoRepository.save(videoToCreate);
+            Video savedVideo = this.videoRepository.save(videoToCreate);
 
+
+            videoSubscribeSocketHandler.notifyVideoUpdate(savedVideo);
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{videoToCreate: %s}", videoToCreate.toString()));
 
         } catch (Exception e) {
@@ -81,8 +87,10 @@ public class CollectedDataViewHandler {
             videoToUpdate.setUploadedUrl(videoUrlUploaded.getUploadedUrl());
             videoToUpdate.setThumbnailUrl(videoUrlUploaded.getThumbnailUrl());
             videoToUpdate.setStatus("VideoUrlUploaded");
-            this.videoRepository.save(videoToUpdate);
+            Video savedVideo = this.videoRepository.save(videoToUpdate);
 
+
+            videoSubscribeSocketHandler.notifyVideoUpdate(savedVideo);
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{videoToUpdate: %s}", videoToUpdate.toString()));
 
         } catch (Exception e) {
@@ -110,8 +118,10 @@ public class CollectedDataViewHandler {
             Video videoToUpdate = videos.get(0);
             videoToUpdate.setSubtitleCount(subtitleMetadataUploaded.getSubtitleCount());
             videoToUpdate.setStatus("SubtitleMetadataUploaded");
-            this.videoRepository.save(videoToUpdate);
+            Video savedVideo = this.videoRepository.save(videoToUpdate);
 
+
+            videoSubscribeSocketHandler.notifyVideoUpdate(savedVideo);
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{videoToUpdate: %s}", videoToUpdate.toString()));
 
         } catch (Exception e) {
@@ -152,10 +162,12 @@ public class CollectedDataViewHandler {
             if(subtitlesToCheck.size() == subtitleVideo.getSubtitleCount())
             {
                 subtitleVideo.setStatus("GeneratedSubtitleUploaded");
-                this.videoRepository.save(subtitleVideo);
+
+                Video savedVideo = this.videoRepository.save(subtitleVideo);
+                videoSubscribeSocketHandler.notifyVideoUpdate(savedVideo);
             }
 
-
+            
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{subtitleToCreate: %s, subtitlesToCheckSize: %d}", subtitleToCreate.toString(), subtitlesToCheck.size()));
 
         } catch (Exception e) {
@@ -200,7 +212,9 @@ public class CollectedDataViewHandler {
             if(translatedSubtitleCount == subtitleVideo.getSubtitleCount())
             {
                 subtitleVideo.setStatus("TranlatedSubtitleUploaded");
-                this.videoRepository.save(subtitleVideo);
+
+                Video savedVideo = this.videoRepository.save(subtitleVideo);
+                videoSubscribeSocketHandler.notifyVideoUpdate(savedVideo);
             }
 
 
@@ -249,7 +263,9 @@ public class CollectedDataViewHandler {
             if(questionedSubtitleCount == subtitleVideo.getSubtitleCount())
             {
                 subtitleVideo.setStatus("GeneratedQnAUploaded");
-                this.videoRepository.save(subtitleVideo);
+                
+                Video savedVideo = this.videoRepository.save(subtitleVideo);
+                videoSubscribeSocketHandler.notifyVideoUpdate(savedVideo);
             }
 
 
@@ -279,8 +295,9 @@ public class CollectedDataViewHandler {
             
             Video videoToUpdate = videos.get(0);
             videoToUpdate.setStatus("VideoUploadFailed");
-            this.videoRepository.save(videoToUpdate);
+            Video savedVideo = this.videoRepository.save(videoToUpdate);
 
+            videoSubscribeSocketHandler.notifyVideoUpdate(savedVideo);
             CustomLogger.debug(CustomLoggerType.EXIT);
 
         } catch (Exception e) {
@@ -315,6 +332,7 @@ public class CollectedDataViewHandler {
             this.videoRepository.delete(subtitleVideo);
 
 
+            videoSubscribeSocketHandler.notifyVideoUpdate(subtitleVideo);
             CustomLogger.debug(CustomLoggerType.EXIT);
 
         } catch (Exception e) {
