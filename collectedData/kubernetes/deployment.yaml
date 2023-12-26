@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collected-data
+  labels:
+    app: collected-data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: collected-data
+  template:
+    metadata:
+      labels:
+        app: collected-data
+    spec:
+      containers:
+        - name: collected-data
+          image: sinsung6722/toykiwi_collecteddata:v1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kubernates
