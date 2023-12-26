@@ -44,6 +44,13 @@ spring:
           filters:
             - RewritePath=/api/collectedData/(?<segment>.*), /${segment}
 
+        - id: collectedDataSocket
+          uri: ws://localhost:8084
+          predicates:
+            - Path=/socket/collectedData/**
+          filters:
+            - RewritePath=/socket/collectedData/(?<segment>.*), /socket/${segment}
+
         - id: externalSystem
           uri: http://localhost:8085
           predicates:
@@ -78,6 +85,13 @@ spring:
           filters:
             - RewritePath=/api/collectedData/(?<segment>.*), /${segment}
 
+        - id: collectedDataSocket
+          uri: ws://host.docker.internal:8084
+          predicates:
+            - Path=/socket/collectedData/**
+          filters:
+            - RewritePath=/socket/collectedData/(?<segment>.*), /socket/${segment}
+
         - id: externalSystem
           uri: http://host.docker.internal:8085
           predicates:
@@ -111,6 +125,13 @@ spring:
             - Path=/api/collectedData/**
           filters:
             - RewritePath=/api/collectedData/(?<segment>.*), /${segment}
+
+        - id: collectedDataSocket
+          uri: ws://collected-data:8080
+          predicates:
+            - Path=/socket/collectedData/**
+          filters:
+            - RewritePath=/socket/collectedData/(?<segment>.*), /socket/${segment}
 
         - id: externalSystem
           uri: http://external-system:8085
